@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "595410747042",
+    "firebase_url": "https://negosio-c5304.firebaseio.com",
+    "project_id": "negosio-c5304",
+    "storage_bucket": "negosio-c5304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595410747042:android:98b45d675e3cf2ea",
+        "android_client_info": {
+          "package_name": "id.sch.smktelkom_mlg.projectwork.negosio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595410747042-1uib78fdlto85ok64uf546t7arbcus15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.sch.smktelkom_mlg.projectwork.negosio",
+            "certificate_hash": "2EED731A7DCE4A66675CA30CD61D6DB377441C77"
+          }
+        },
+        {
+          "client_id": "595410747042-shkub7oos4vdbm8nr0q2s9nfv4qt3qlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv7_aijnjllQSxIBHfm5TrhaB7gpPtAPQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595410747042-shkub7oos4vdbm8nr0q2s9nfv4qt3qlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
