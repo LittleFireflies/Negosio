@@ -21,6 +21,9 @@ public class AppController extends Application {
             case R.string.ClassHome:
                 fragment = new HomeBoard();
                 break;
+            case R.string.ClassLogin:
+                fragment = new LoginBoard();
+                break;
         }
 
         return fragment;

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         displayView(R.string.ClassHome);
     }
 
-    private void displayView(int titleDrawer) {
+    public void displayView(int titleDrawer) {
         Fragment fragment = null;
         String title = getApplicationContext().getString(titleDrawer);
         AppController moveClass = new AppController();

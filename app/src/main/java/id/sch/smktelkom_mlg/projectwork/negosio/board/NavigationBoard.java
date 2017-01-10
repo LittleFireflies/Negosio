@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
@@ -26,6 +27,8 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToogle;
     private FragmentDrawerListener fragmentDrawerListener;
+    LinearLayout llLogin;
+    LinearLayout llRegister;
 
     public NavigationBoard() {
         // Required empty public constructor
@@ -45,12 +48,33 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         containerView = inflater.inflate(R.layout.navigationboard, container, false);
         ctx = getContext();
+        assignView();
+        onSetView();
 
         return containerView;
     }
 
+    private void onSetView() {
+        llLogin.setOnClickListener(this);
+        llRegister.setOnClickListener(this);
+    }
+
+    private void assignView() {
+        llLogin = (LinearLayout) containerView.findViewById(R.id.llLogin);
+        llRegister = (LinearLayout) containerView.findViewById(R.id.llRegister);
+    }
+
     @Override
     public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.llLogin:
+                ((MainActivity)ctx).displayView(R.string.ClassLogin);
+                break;
+            case R.id.llRegister:
+                ((MainActivity)ctx).displayView(R.string.ClassRegister);
+                break;
+        }
+        drawerLayout.closeDrawers();
 
     }
 

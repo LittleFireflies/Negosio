@@ -8,4 +8,5 @@
 
     <!--Activity Class-->
     <string name="ClassHome">Home</string>
+    <string name="ClassLogin">Login</string>
 </resources>
