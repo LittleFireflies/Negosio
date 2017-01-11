@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 
-public class HomeBoard extends Fragment {
+public class HomeBoard extends Fragment implements View.OnClickListener{
 
     View rootView;
     Context ctx;
@@ -26,7 +28,20 @@ public class HomeBoard extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_board, container, false);
         ctx = getContext();
+        assignToView();
+        onSetView();
 
         return rootView;
+    }
+
+    private void onSetView() {
+    }
+
+    private void assignToView() {
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
