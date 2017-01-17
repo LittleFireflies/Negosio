@@ -11,23 +11,46 @@
 
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/llLogin"
+        android:id="@+id/UNLOGGED"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <TextView
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/llLogin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Login"
-            android:gravity="center_vertical"/>
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Login"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llRegister"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Register"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/llRegister"
+        android:id="@+id/LOGGED"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
-        <TextView
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/llLogout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Register"
-            android:gravity="center_vertical"/>
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Logout"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

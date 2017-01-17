@@ -14,8 +14,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
+import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +29,14 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
 
     private View containerView;
     Context ctx;
+    private Realm realm;
+    private LoginHelper loginHelper;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToogle;
     private FragmentDrawerListener fragmentDrawerListener;
-    LinearLayout llLogin;
-    LinearLayout llRegister;
+    LinearLayout logged, unlogged;
+    LinearLayout llLogin, llRegister;
+    LinearLayout llLogout;
 
     public NavigationBoard() {
         // Required empty public constructor
@@ -55,13 +63,38 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
     }
 
     private void onSetView() {
+        setNavigationBoard();
+
         llLogin.setOnClickListener(this);
         llRegister.setOnClickListener(this);
+        llLogout.setOnClickListener(this);
+    }
+
+    private void setNavigationBoard() {
+        realm = Realm.getDefaultInstance();
+        loginHelper = new LoginHelper(realm);
+
+        ArrayList<UserLogin> login = new ArrayList<>();
+
+        login = loginHelper.getUserLogin();
+
+        if(login.size() == 1){
+            logged.setVisibility(View.VISIBLE);
+            unlogged.setVisibility(View.GONE);
+        } else {
+            logged.setVisibility(View.GONE);
+            unlogged.setVisibility(View.VISIBLE);
+            loginHelper.logOut();
+        }
     }
 
     private void assignView() {
+        logged = (LinearLayout) containerView.findViewById(R.id.LOGGED);
+        unlogged = (LinearLayout) containerView.findViewById(R.id.UNLOGGED);
+
         llLogin = (LinearLayout) containerView.findViewById(R.id.llLogin);
         llRegister = (LinearLayout) containerView.findViewById(R.id.llRegister);
+        llLogout = (LinearLayout) containerView.findViewById(R.id.llLogout);
     }
 
     @Override
@@ -72,6 +105,13 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
                 break;
             case R.id.llRegister:
                 ((MainActivity)ctx).displayView(R.string.ClassRegister);
+                break;
+            case R.id.llLogout:
+                loginHelper.logOut();
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if(mainActivity != null){
+                    mainActivity.refreshActivity();
+                }
                 break;
         }
         drawerLayout.closeDrawers();

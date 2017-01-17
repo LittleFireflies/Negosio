@@ -7,12 +7,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.board.NavigationBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationBoard.FragmentDrawerListener{
 
@@ -20,14 +21,16 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     private NavigationBoard navigationBoard;
     private DrawerLayout drawerLayout;
     private LinearLayout navigationDrawer;
+    private Realm realm;
+    private LoginHelper loginHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mainboard);
 
 //        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        navigationDrawer = (LinearLayout) findViewById(R.id.navigationDrawer);
+        setContentView(R.layout.mainboard);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -73,5 +76,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     @Override
     public void onDrawerProfileSelected(View view) {
 
+    }
+
+    public void refreshActivity() {
+        finish();
+        startActivity(getIntent());
     }
 }

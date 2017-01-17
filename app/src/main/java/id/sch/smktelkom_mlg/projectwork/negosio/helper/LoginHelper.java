@@ -2,7 +2,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.helper;
 
 import java.util.ArrayList;
 
-import id.sch.smktelkom_mlg.projectwork.negosio.database.User;
+import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -10,23 +10,23 @@ import io.realm.RealmResults;
  * Created by LittleFireflies on 09-Jan-17.
  */
 
-public class UserHelper {
+public class LoginHelper {
     private Realm realm;
     private static final String TAG = "userHelper";
 
-    public UserHelper(Realm realm){
+    public LoginHelper(Realm realm){
         this.realm = realm;
     }
 
-    public void addUser(User obj){
+    public void logIn(UserLogin obj){
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(obj);
         realm.commitTransaction();
     }
 
-    public ArrayList<User> getUser(){
-        ArrayList<User> hasil = new ArrayList<>();
-        RealmResults<User> results = realm.where(User.class).findAll();
+    public ArrayList<UserLogin> getUserLogin(){
+        ArrayList<UserLogin> hasil = new ArrayList<>();
+        RealmResults<UserLogin> results = realm.where(UserLogin.class).findAll();
 
         if(results.size() > 0){
             for(int i=0; i<results.size(); i++){
@@ -38,7 +38,7 @@ public class UserHelper {
     }
 
     public void logOut(){
-        RealmResults<User> results = realm.where(User.class).findAll();
+        RealmResults<UserLogin> results = realm.where(UserLogin.class).findAll();
 
         realm.beginTransaction();
         results.deleteAllFromRealm();
