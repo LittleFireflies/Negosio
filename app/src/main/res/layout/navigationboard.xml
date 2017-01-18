@@ -8,9 +8,26 @@
         android:layout_width="match_parent"
         android:layout_height="125dp"
         android:background="@color/DarkOrange">
-
+        <TextView
+            android:id="@+id/tvProfil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Username"
+            android:textSize="18sp"/>
     </RelativeLayout>
     <LinearLayout
+        android:id="@+id/llHome"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Home"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
         android:id="@+id/UNLOGGED"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,6 +59,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/llSewa"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Penyewaan"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llSetting"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Pengaturan"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/llLogout"
             android:layout_width="match_parent"
