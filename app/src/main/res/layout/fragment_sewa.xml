@@ -7,6 +7,9 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,20 +18,12 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Category"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="13sp" />
-
         <Spinner
             android:id="@+id/spCategory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.10"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.44"
             android:entries="@array/category" />
 
         <android.support.design.widget.TextInputLayout
@@ -39,7 +34,7 @@
                 android:id="@+id/etProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:hint="Product Name"
                 android:inputType="textPersonName" />
@@ -49,6 +44,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <Spinner
+                android:id="@+id/sptype"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:entries="@array/type" />
+
             <EditText
                 android:id="@+id/etPrice"
                 android:layout_width="match_parent"
@@ -57,6 +58,16 @@
                 android:ems="10"
                 android:hint="Price (Rp)"
                 android:inputType="numberSigned" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:text="*An additional price may be included on description box"
+                android:textSize="11sp" />
+
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -79,6 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Add Product" />
+            android:text="Add" />
+
     </LinearLayout>
+    </ScrollView>
 </FrameLayout>

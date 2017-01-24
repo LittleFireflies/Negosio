@@ -9,22 +9,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 
 public class SewaBoard extends Fragment implements View.OnClickListener {
     View rootView;
     Context ctx;
     EditText etProduct, etPrice, etDesc;
-    Spinner spCategory;
+    Spinner spCategory, spType;
     Button btnAdd;
     private DatabaseReference dbRef;
     private FirebaseAuth firebaseAuth;
+    //TextView hasil;
 
     public SewaBoard() {
         // Required empty public constructor
@@ -54,12 +58,49 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         etProduct = (EditText) rootView.findViewById(R.id.etProduct);
         etPrice = (EditText) rootView.findViewById(R.id.etPrice);
         etDesc = (EditText) rootView.findViewById(R.id.etDesc);
+        spCategory = (Spinner) rootView.findViewById(R.id.spCategory);
+        spType = (Spinner) rootView.findViewById(R.id.sptype);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
+
+        //hasil = (TextView) rootView.findViewById(R.id.textView5);
     }
 
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnAdd:
+                add();
+                break;
+        }
+    }
 
+    private void add1() {
+        //hasil.setText(etProduct.getText().toString() + " " + etPrice.getText().toString() + " " + etDesc.getText().toString() + " " + spCategory.getSelectedItemPosition());
+    }
+
+    private void add() {
+        if (etProduct.getText().toString().equals("")
+                || etPrice.getText().toString().equals("")
+                || etDesc.getText().toString().equals("")) {
+            Toast.makeText(ctx, "Field Vacant", Toast.LENGTH_SHORT).show();
+        } else {
+            final String productname = etProduct.getText().toString().trim();
+            final int price = Integer.parseInt(etPrice.getText().toString());
+            final String description = etDesc.getText().toString().trim();
+            final int category = spCategory.getSelectedItemPosition();
+            final int type = spType.getSelectedItemPosition();
+
+            Barang barang = new Barang();
+            barang.setProductname(productname);
+            barang.setPrice(price);
+            barang.setDescription(description);
+            barang.setCategory(category);
+            barang.setType(type);
+
+            dbRef.child("Barang").child(productname).setValue(barang);
+            Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
+            ((MainActivity) ctx).displayView(R.string.ClassHome);
+        }
     }
 }
