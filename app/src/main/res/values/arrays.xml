@@ -5,6 +5,13 @@
         <item>Kabupaten Malang</item>
         <item>Kota Batu</item>
     </string-array>
+    <string-array name="category">
+        <item>Baby Care</item>
+        <item>Technology</item>
+        <item>Travelling</item>
+        <item>Transportation</item>
+        <item>Others</item>
+    </string-array>
     <string-array name="places">
         <item>Palais Garnie</item>
         <item>Piazza del Duomo</item>

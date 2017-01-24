@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,16 +26,16 @@ import io.realm.Realm;
  */
 public class NavigationBoard extends Fragment implements View.OnClickListener{
 
-    private View containerView;
     Context ctx;
+    LinearLayout logged, unlogged;
+    LinearLayout llLogin, llRegister, llSewa;
+    LinearLayout llLogout;
+    private View containerView;
     private Realm realm;
     private LoginHelper loginHelper;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToogle;
     private FragmentDrawerListener fragmentDrawerListener;
-    LinearLayout logged, unlogged;
-    LinearLayout llLogin, llRegister;
-    LinearLayout llLogout;
 
     public NavigationBoard() {
         // Required empty public constructor
@@ -68,6 +67,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         llLogin.setOnClickListener(this);
         llRegister.setOnClickListener(this);
         llLogout.setOnClickListener(this);
+        llSewa.setOnClickListener(this);
     }
 
     private void setNavigationBoard() {
@@ -95,6 +95,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         llLogin = (LinearLayout) containerView.findViewById(R.id.llLogin);
         llRegister = (LinearLayout) containerView.findViewById(R.id.llRegister);
         llLogout = (LinearLayout) containerView.findViewById(R.id.llLogout);
+        llSewa = (LinearLayout) containerView.findViewById(R.id.llSewa);
     }
 
     @Override
@@ -105,6 +106,9 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
                 break;
             case R.id.llRegister:
                 ((MainActivity)ctx).displayView(R.string.ClassRegister);
+                break;
+            case R.id.llSewa:
+                ((MainActivity) ctx).displayView(R.string.ClassSewa);
                 break;
             case R.id.llLogout:
                 loginHelper.logOut();
@@ -127,7 +131,8 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
 
 
     public interface FragmentDrawerListener{
-        public void onDrawerItemSelected(View view, int position);
-        public void onDrawerProfileSelected(View view);
+        void onDrawerItemSelected(View view, int position);
+
+        void onDrawerProfileSelected(View view);
     }
 }

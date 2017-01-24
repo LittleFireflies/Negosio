@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/LightGrey">
+    android:background="@color/LightGrey"
+    android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="125dp"
@@ -23,15 +23,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Home"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:text="Home" />
     </LinearLayout>
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/UNLOGGED"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
         <LinearLayout
             android:id="@+id/llLogin"
             android:layout_width="match_parent"
@@ -39,8 +39,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Login"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Login" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/llRegister"
@@ -49,8 +49,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Register"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Register" />
         </LinearLayout>
     </LinearLayout>
 
@@ -63,11 +63,13 @@
             android:id="@+id/llSewa"
             android:layout_width="match_parent"
             android:layout_height="40dp">
+
             <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Penyewaan"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Penyewaan" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/llSetting"
@@ -76,8 +78,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Pengaturan"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Pengaturan" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/llLogout"
@@ -86,8 +88,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Logout"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:text="Logout" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

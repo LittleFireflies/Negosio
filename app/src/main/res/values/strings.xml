@@ -10,4 +10,5 @@
     <string name="ClassHome">Home</string>
     <string name="ClassLogin">Login</string>
     <string name="ClassRegister">Register</string>
+    <string name="ClassSewa">Add Product</string>
 </resources>

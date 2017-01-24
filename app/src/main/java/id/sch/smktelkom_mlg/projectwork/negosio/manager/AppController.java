@@ -8,6 +8,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HomeBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.LoginBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.RegisterBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -40,6 +41,9 @@ public class AppController extends Application {
                 break;
             case R.string.ClassRegister:
                 fragment = new RegisterBoard();
+                break;
+            case R.string.ClassSewa:
+                fragment = new SewaBoard();
                 break;
         }
 
