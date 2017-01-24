@@ -10,6 +10,7 @@ public class Barang {
     public String description;
     public int category;
     public int type;
+    public String username;
 
     public String getProductname() {
         return productname;
@@ -51,4 +52,11 @@ public class Barang {
         this.type = type;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

@@ -6,7 +6,6 @@
         <item>Kota Batu</item>
     </string-array>
     <string-array name="category">
-        <item>--Category--</item>
         <item>Baby Care</item>
         <item>Technology</item>
         <item>Travelling</item>
@@ -14,7 +13,6 @@
         <item>Others</item>
     </string-array>
     <string-array name="type">
-        <item>--Type--</item>
         <item>Per Hour</item>
         <item>Per 3 Hour</item>
         <item>Per 12 Hour</item>

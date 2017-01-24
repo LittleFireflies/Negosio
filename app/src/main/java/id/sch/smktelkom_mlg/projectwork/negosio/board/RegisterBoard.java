@@ -32,17 +32,16 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
     View rootView;
     Context ctx;
-    private DatabaseReference dbRef;
-    private FirebaseAuth firebaseAuth;
     EditText etUsername, etName, etPassword, etRePassword, etEmail, etPhone;
-    private Spinner spCity, spSub;
-    private Button btnRegister;
-
     String[][] arKota = {{"Klojen", "Blimbing", "Kedungkandang", "Lowokwaru", "Sukun"},
                               {},
                               {"Batu", "Bumiaji", "Junrejo"}};
     ArrayList<String> listKota = new ArrayList<>();
     ArrayAdapter<String> adapterKota;
+    private DatabaseReference dbRef;
+    private FirebaseAuth firebaseAuth;
+    private Spinner spCity, spSub;
+    private Button btnRegister;
 
     public RegisterBoard() {
         // Required empty public constructor
@@ -132,6 +131,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             final String email = etEmail.getText().toString().trim();
             final String phone = etPhone.getText().toString().trim();
             final String location = spSub.getSelectedItem().toString() + ", " + spCity.getSelectedItem().toString();
+
 
             UserRegistration userRegistration = new UserRegistration();
             userRegistration.setUsername(username);

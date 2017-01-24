@@ -15,9 +15,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
+import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
+import io.realm.Realm;
 
 
 public class SewaBoard extends Fragment implements View.OnClickListener {
@@ -28,6 +33,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     Button btnAdd;
     private DatabaseReference dbRef;
     private FirebaseAuth firebaseAuth;
+    private Realm realm;
+    private LoginHelper loginHelper;
     //TextView hasil;
 
     public SewaBoard() {
@@ -54,6 +61,9 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        realm = Realm.getDefaultInstance();
+        loginHelper = new LoginHelper(realm);
 
         etProduct = (EditText) rootView.findViewById(R.id.etProduct);
         etPrice = (EditText) rootView.findViewById(R.id.etPrice);
@@ -88,8 +98,18 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             final String productname = etProduct.getText().toString().trim();
             final int price = Integer.parseInt(etPrice.getText().toString());
             final String description = etDesc.getText().toString().trim();
-            final int category = spCategory.getSelectedItemPosition();
-            final int type = spType.getSelectedItemPosition();
+            int category = 0;
+            int type = 0;
+            String username = "";
+
+            type = spType.getSelectedItemPosition();
+            category = spCategory.getSelectedItemPosition();
+
+            ArrayList<UserLogin> login = new ArrayList<>();
+            login = loginHelper.getUserLogin();
+            for (int i = 0; i < login.size(); i++) {
+                username = login.get(i).getUsername();
+            }
 
             Barang barang = new Barang();
             barang.setProductname(productname);
@@ -97,6 +117,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             barang.setDescription(description);
             barang.setCategory(category);
             barang.setType(type);
+            barang.setUsername(username);
 
             dbRef.child("Barang").child(productname).setValue(barang);
             Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
