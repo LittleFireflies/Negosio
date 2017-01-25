@@ -11,4 +11,7 @@
     <string name="ClassLogin">Login</string>
     <string name="ClassRegister">Register</string>
     <string name="ClassSewa">Add Product</string>
+
+    <!--Validation Error-->
+    <string name="EmptyField">Please enter the field</string>
 </resources>

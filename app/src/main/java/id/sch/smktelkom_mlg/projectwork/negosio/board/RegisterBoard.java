@@ -4,6 +4,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.board;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
@@ -37,9 +41,9 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
                               {},
                               {"Batu", "Bumiaji", "Junrejo"}};
     ArrayList<String> listKota = new ArrayList<>();
+    ArrayList<String> user = new ArrayList<>();
     ArrayAdapter<String> adapterKota;
     private DatabaseReference dbRef;
-    private FirebaseAuth firebaseAuth;
     private Spinner spCity, spSub;
     private Button btnRegister;
 
@@ -56,8 +60,28 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
         ctx = getContext();
         assignToView();
         setSpinner();
+        getUser();
         onSetView();
         return rootView;
+    }
+
+    private void getUser() {
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    String dbUsername = map.get("username");
+                    user.add(dbUsername);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setSpinner() {
@@ -88,7 +112,6 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     private void assignToView() {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
 
         etUsername = (EditText) rootView.findViewById(R.id.etUsername);
         etName = (EditText) rootView.findViewById(R.id.etName);
@@ -112,18 +135,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     }
 
     private void register() {
-
-        if(etUsername.getText().toString().equals("")
-                || etName.getText().toString().equals("")
-                || etPassword.getText().toString().equals("")
-                || etRePassword.getText().toString().equals("")
-                || etEmail.getText().toString().equals("")
-                || etPhone.getText().toString().equals("")){
-            Toast.makeText(ctx, "Field Vacant", Toast.LENGTH_SHORT).show();
-        } else if(!etPassword.getText().toString().equals(etRePassword.getText().toString())){
-            Toast.makeText(ctx, "Please check your password", Toast.LENGTH_SHORT).show();
-            etRePassword.setError("Password doesn't match");
-        } else {
+        if(isValid()){
             final String username = etUsername.getText().toString().trim();
             final String name = etName.getText().toString().trim();
             final String password = etPassword.getText().toString().trim();
@@ -132,11 +144,10 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             final String phone = etPhone.getText().toString().trim();
             final String location = spSub.getSelectedItem().toString() + ", " + spCity.getSelectedItem().toString();
 
-
             UserRegistration userRegistration = new UserRegistration();
             userRegistration.setUsername(username);
             userRegistration.setName(name);
-            userRegistration.setPassword(password);
+            userRegistration.setPassword(Base64.encodeToString(password.getBytes(), Base64.DEFAULT));
             userRegistration.setEmail(email);
             userRegistration.setPhone(phone);
             userRegistration.setLocation(location);
@@ -145,28 +156,91 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             Toast.makeText(ctx, "Register Success", Toast.LENGTH_SHORT).show();
             ((MainActivity)ctx).displayView(R.string.ClassLogin);
         }
+    }
+
+    private boolean isValid() {
+        boolean isValid = true;
+        String username = etUsername.getText().toString().trim();
+        String name = etName.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String rePassword = etRePassword.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+
+        //validation username
+        if(username.equals("")){
+            etUsername.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else if(username.length() < 6 || username.length() > 20){
+            etUsername.setError("Your username must have 6-20 characters");
+            isValid = false;
+        } else if(isExist(username)){
+            etUsername.setError("Username already exist");
+            isValid = false;
+        } else {
+            etUsername.setError(null);
+        }
+
+        //Full Name validation
+        if (name.equals("")){
+            etName.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else {
+            etName.setError(null);
+        }
+
+        //password validation
+        if(password.equals("")){
+            etPassword.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else if(password.length() <6){
+            etPassword.setError("Password must have at least 6 characters");
+            isValid = false;
+        } else {
+            etPassword.setError(null);
+        }
+
+        //rePassword validation
+        if(rePassword.equals("")){
+            etRePassword.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else if(!rePassword.equals(password)){
+            etRePassword.setError("Please check your password again");
+            isValid = false;
+        } else {
+            etRePassword.setError(null);
+        }
+
+        //email validation
+        if(email.equals("")){
+            etEmail.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else {
+            etEmail.setError(null);
+        }
+
+        //phone validation
+        if(phone.equals("")){
+            etPhone.setError(String.valueOf(R.string.EmptyField));
+            isValid = false;
+        } else {
+            etPhone.setError(null);
+        }
+
+        return isValid;
+    }
 
 
 
+    private boolean isExist(final String username) {
+        boolean exist = false;
 
-//        firebaseAuth.createUserWithEmailAndPassword(username, password)
-//                .addOnCompleteListener((Activity) ctx, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(task.isSuccessful()){
-//                            UserRegistration userRegistration = new UserRegistration();
-//                            userRegistration.setUsername(username);
-//                            userRegistration.setPassword(password);
-//
-//                            dbRef.child("User").push().setValue(userRegistration);
-//
-////                            ((MainActivity)ctx).displayView(R.string.ClassLogin);
-//                            Toast.makeText(ctx, "Register Successfull", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(ctx, "Register Failed", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    }
-//                });
+        for (int i =0; i<user.size(); i++){
+            if(user.get(i).equals(username)){
+                exist = true;
+            }
+        }
+
+        return exist;
     }
 }

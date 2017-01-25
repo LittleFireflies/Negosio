@@ -4,6 +4,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.board;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,39 +84,34 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         final String password = etPassword.getText().toString().trim();
         final String[] tampil = {""};
 
-        if(username.equals("")){
-            etUsername.setError("Field Vacant");
-        } else if(password.equals("")){
-            etPassword.setError("Field Vacant");
-        } else {
-            dbRef.child("User").addValueEventListener(new ValueEventListener() {
+        if(isValid(username, password)){
+            dbRef.child("User").child(username).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot dataSnapshots : dataSnapshot.getChildren()){
-                        try{
-                            Map<String, String> map = (Map<String, String>) dataSnapshots.getValue();
-                            String dbUsername = map.get("username");
-                            String dbPassword = map.get("password");
+                    try {
+                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
+                        String dbUsername = map.get("username");
+                        String dbPassword = new String(Base64.decode(map.get("password"), Base64.DEFAULT));
 
-                            if(dbUsername.equals(username) && dbPassword.equals(password)){
-                                UserLogin obj = new UserLogin();
-                                obj.setUsername(username);
-                                obj.setPassword(password);
-                                loginHelper.logIn(obj);
+                        if(dbUsername.equals(username) && dbPassword.equals(password)){
+                            UserLogin obj = new UserLogin();
+                            obj.setUsername(username);
+                            obj.setPassword(password);
+                            loginHelper.logIn(obj);
 
-                                Toast.makeText(ctx, "Login Successfull", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ctx, "Login Successfull", Toast.LENGTH_SHORT).show();
 //                                ((MainActivity)ctx).displayView(R.string.ClassHome);
 
-                                MainActivity mainActivity = (MainActivity) getActivity();
-                                if(mainActivity != null){
-                                    mainActivity.refreshActivity();
-                                }
+                            MainActivity mainActivity = (MainActivity) getActivity();
+                            if(mainActivity != null){
+                                mainActivity.refreshActivity();
                             }
-                        } catch (Exception e){
-                            Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                         }
+                    } catch (Exception e){
+                        Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(ctx, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -124,6 +120,28 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                 }
             });
         }
+    }
+
+    private boolean isValid(String username, String password) {
+        boolean isValid = true;
+
+        //validation username
+        if(username.equals("")){
+            etUsername.setError("Please enter your username");
+            isValid = false;
+        } else {
+            etUsername.setError(null);
+        }
+
+        //validation password
+        if(password.equals("")){
+            etPassword.setError("Please enter your password");
+            isValid = false;
+        } else {
+            etPassword.setError(null);
+        }
+
+        return isValid;
     }
 
 }
