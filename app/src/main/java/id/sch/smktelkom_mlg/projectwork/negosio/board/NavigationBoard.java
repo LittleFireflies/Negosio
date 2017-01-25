@@ -28,7 +28,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
 
     Context ctx;
     LinearLayout logged, unlogged;
-    LinearLayout llLogin, llRegister, llSewa;
+    LinearLayout llHome, llLogin, llRegister, llSewa;
     LinearLayout llLogout;
     private View containerView;
     private Realm realm;
@@ -64,6 +64,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
     private void onSetView() {
         setNavigationBoard();
 
+        llHome.setOnClickListener(this);
         llLogin.setOnClickListener(this);
         llRegister.setOnClickListener(this);
         llLogout.setOnClickListener(this);
@@ -92,6 +93,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         logged = (LinearLayout) containerView.findViewById(R.id.LOGGED);
         unlogged = (LinearLayout) containerView.findViewById(R.id.UNLOGGED);
 
+        llHome = (LinearLayout) containerView.findViewById(R.id.llHome);
         llLogin = (LinearLayout) containerView.findViewById(R.id.llLogin);
         llRegister = (LinearLayout) containerView.findViewById(R.id.llRegister);
         llLogout = (LinearLayout) containerView.findViewById(R.id.llLogout);
@@ -101,6 +103,9 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.llHome:
+                ((MainActivity)ctx).displayView(R.string.ClassHome);
+                break;
             case R.id.llLogin:
                 ((MainActivity)ctx).displayView(R.string.ClassLogin);
                 break;

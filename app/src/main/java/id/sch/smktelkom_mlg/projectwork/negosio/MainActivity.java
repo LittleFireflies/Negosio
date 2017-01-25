@@ -5,8 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     private Toolbar toolbar;
     private NavigationBoard navigationBoard;
     private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     private LinearLayout navigationDrawer;
     private Realm realm;
     private LoginHelper loginHelper;
@@ -33,9 +36,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         setContentView(R.layout.mainboard);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+
         navigationBoard = (NavigationBoard) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
-        navigationBoard.setUp(R.id.navigationFragment, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
+        navigationBoard.setUp(R.id.navigationFragment, drawerLayout, toolbar);
         navigationBoard.setFragmentDrawerListener(this);
         displayView(R.string.ClassHome);
     }
