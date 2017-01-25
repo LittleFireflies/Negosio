@@ -119,7 +119,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             barang.setType(type);
             barang.setUsername(username);
 
-            dbRef.child("Barang").child(productname).setValue(barang);
+            dbRef.child("Barang").push();
             Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
             ((MainActivity) ctx).displayView(R.string.ClassHome);
         }
