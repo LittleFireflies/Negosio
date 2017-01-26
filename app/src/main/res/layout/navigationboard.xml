@@ -7,13 +7,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="125dp"
-        android:background="@color/DarkOrange">
+        android:background="@color/colorPrimary">
         <TextView
             android:id="@+id/tvProfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Username"
+            android:textColor="@color/White"
             android:textSize="18sp"/>
     </RelativeLayout>
     <LinearLayout
