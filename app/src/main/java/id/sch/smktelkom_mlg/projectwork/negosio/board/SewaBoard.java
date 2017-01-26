@@ -32,7 +32,6 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     Spinner spCategory, spType;
     Button btnAdd;
     private DatabaseReference dbRef;
-    private FirebaseAuth firebaseAuth;
     private Realm realm;
     private LoginHelper loginHelper;
     //TextView hasil;
@@ -60,7 +59,6 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     private void assignToView() {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
 
         realm = Realm.getDefaultInstance();
         loginHelper = new LoginHelper(realm);
@@ -101,27 +99,30 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             int category = 0;
             int type = 0;
             String username = "";
-
             type = spType.getSelectedItemPosition();
             category = spCategory.getSelectedItemPosition();
 
-            ArrayList<UserLogin> login = new ArrayList<>();
-            login = loginHelper.getUserLogin();
-            for (int i = 0; i < login.size(); i++) {
-                username = login.get(i).getUsername();
+            try {
+                ArrayList<UserLogin> login = new ArrayList<>();
+                login = loginHelper.getUserLogin();
+                for (int i = 0; i < login.size(); i++) {
+                    username = login.get(i).getUsername();
+                }
+
+                Barang barang = new Barang();
+                barang.setProductname(productname);
+                barang.setPrice(price);
+                barang.setDescription(description);
+                barang.setCategory(category);
+                barang.setType(type);
+                barang.setUsername(username);
+
+                dbRef.child("Barang").push().setValue(barang);
+                Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
+                ((MainActivity) ctx).displayView(R.string.ClassHome);
+            } catch (Exception e) {
+
             }
-
-            Barang barang = new Barang();
-            barang.setProductname(productname);
-            barang.setPrice(price);
-            barang.setDescription(description);
-            barang.setCategory(category);
-            barang.setType(type);
-            barang.setUsername(username);
-
-            dbRef.child("Barang").push();
-            Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
-            ((MainActivity) ctx).displayView(R.string.ClassHome);
         }
     }
 }
