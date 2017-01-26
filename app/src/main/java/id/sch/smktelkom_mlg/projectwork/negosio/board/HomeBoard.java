@@ -17,11 +17,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.adapter.HotelAdapter;
+import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Hotel;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
+import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 public class HomeBoard extends Fragment implements View.OnClickListener{
 
@@ -29,8 +31,11 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     Context ctx;
     Realm realm;
     LoginHelper loginHelper;
+    private FeatureCoverFlow coverFlow;
+    private CoverFlowAdapter coverFlowAdapter;
+    private ArrayList<Kategori> listKategori = new ArrayList<>();
+
     ArrayList<Hotel> mList = new ArrayList<>();
-    HotelAdapter mAdapter;
     private String username = "";
     private TextView tvUsername;
     private int size = 0;
@@ -69,14 +74,41 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
         //tvUsername = (TextView) rootView.findViewById(R.id.tvUser);
         //Script recycle view;
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        GridLayoutManager layoutManager = new GridLayoutManager(ctx, 2);
-        recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new HotelAdapter(mList);
-        recyclerView.setAdapter(mAdapter);
+//        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+//        GridLayoutManager layoutManager = new GridLayoutManager(ctx, 2);
+//        recyclerView.setLayoutManager(layoutManager);
+//        mAdapter = new HotelAdapter(mList);
+//        recyclerView.setAdapter(mAdapter);
+        coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
+        setDummyData();
+        coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
+        coverFlow.setAdapter(coverFlowAdapter);
+        coverFlow.setOnScrollPositionListener(onScrollListener());
 
         fillData();
         // Akhir
+    }
+
+    private FeatureCoverFlow.OnScrollPositionListener onScrollListener() {
+        return new FeatureCoverFlow.OnScrollPositionListener() {
+            @Override
+            public void onScrolledToPosition(int position) {
+
+            }
+
+            @Override
+            public void onScrolling() {
+
+            }
+        };
+    }
+
+    private void setDummyData() {
+        listKategori.add(new Kategori("A", "Kamera"));
+        listKategori.add(new Kategori("B", "Home"));
+        listKategori.add(new Kategori("C", "Technology"));
+        listKategori.add(new Kategori("D", "Car"));
+        listKategori.add(new Kategori("E", "Daily"));
     }
 
     @Override
