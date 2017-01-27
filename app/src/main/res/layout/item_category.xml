@@ -2,12 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
     android:layout_height="200dp"
-    android:background="@color/Aqua">
+    android:background="@drawable/rounded_background_category">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/negosio_3"
+        android:id="@+id/ivCategory" />
     <TextView
         android:id="@+id/category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Category"
-        android:layout_centerInParent="true"
-        android:textSize="20sp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ivCategory"
+        android:textSize="16sp"/>
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="38dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/icon_category"/>
 </RelativeLayout>

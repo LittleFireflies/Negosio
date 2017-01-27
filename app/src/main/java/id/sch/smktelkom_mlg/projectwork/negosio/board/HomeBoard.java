@@ -14,7 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
@@ -34,6 +41,7 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     private FeatureCoverFlow coverFlow;
     private CoverFlowAdapter coverFlowAdapter;
     private ArrayList<Kategori> listKategori = new ArrayList<>();
+    private DatabaseReference dbRef;
 
     ArrayList<Hotel> mList = new ArrayList<>();
     private String username = "";
@@ -79,6 +87,7 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
 //        recyclerView.setLayoutManager(layoutManager);
 //        mAdapter = new HotelAdapter(mList);
 //        recyclerView.setAdapter(mAdapter);
+        dbRef = FirebaseDatabase.getInstance().getReference();
         coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
         setDummyData();
         coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
@@ -104,11 +113,30 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     }
 
     private void setDummyData() {
-        listKategori.add(new Kategori("A", "Kamera"));
-        listKategori.add(new Kategori("B", "Home"));
-        listKategori.add(new Kategori("C", "Technology"));
-        listKategori.add(new Kategori("D", "Car"));
-        listKategori.add(new Kategori("E", "Daily"));
+//        listKategori.clear();
+//        listKategori.add(new Kategori("A", "Kamera"));
+//        listKategori.add(new Kategori("B", "Home"));
+//        listKategori.add(new Kategori("C", "Technology"));
+//        listKategori.add(new Kategori("D", "Car"));
+//        listKategori.add(new Kategori("E", "Daily"));
+        dbRef.child("Kategori").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listKategori.clear();
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    String id = map.get("id");
+                    String nama = map.get("nama");
+
+                    listKategori.add(new Kategori(id, nama));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

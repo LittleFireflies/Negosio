@@ -7,6 +7,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.model;
 public class Kategori {
     private String id;
     private String nama;
+    private String imgUrl;
 
     public Kategori(String id, String nama) {
         this.id = id;
@@ -27,5 +28,13 @@ public class Kategori {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
