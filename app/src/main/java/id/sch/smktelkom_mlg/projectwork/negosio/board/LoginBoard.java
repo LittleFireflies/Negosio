@@ -37,14 +37,13 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
     View rootView;
     Context ctx;
+    ArrayList<UserRegistration> listUser = new ArrayList<>();
     private DatabaseReference dbRef;
     private LoginHelper loginHelper;
     private Realm realm;
     private EditText etUsername, etPassword;
     private TextView etCoba;
     private Button btnLogin;
-
-    ArrayList<UserRegistration> listUser = new ArrayList<>();
 
     public LoginBoard() {
         // Required empty public constructor
@@ -64,6 +63,16 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         assignToView();
         onSetView();
 
+//        rootView.findViewById(R.id.etPassword).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                etPassword.setText("");
+//                etPassword.setHint("Password");
+//                etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//
+//
+//            }
+//        });
         return rootView;
     }
 
