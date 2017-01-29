@@ -88,11 +88,13 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
 //        mAdapter = new HotelAdapter(mList);
 //        recyclerView.setAdapter(mAdapter);
         dbRef = FirebaseDatabase.getInstance().getReference();
-        coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
         setDummyData();
-        coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
-        coverFlow.setAdapter(coverFlowAdapter);
-        coverFlow.setOnScrollPositionListener(onScrollListener());
+            coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
+            coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
+            coverFlow.setAdapter(coverFlowAdapter);
+            coverFlow.setOnScrollPositionListener(onScrollListener());
+
+
 
         fillData();
         // Akhir
@@ -114,29 +116,40 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
 
     private void setDummyData() {
 //        listKategori.clear();
-//        listKategori.add(new Kategori("A", "Kamera"));
-//        listKategori.add(new Kategori("B", "Home"));
-//        listKategori.add(new Kategori("C", "Technology"));
-//        listKategori.add(new Kategori("D", "Car"));
-//        listKategori.add(new Kategori("E", "Daily"));
-        dbRef.child("Kategori").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listKategori.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                    String id = map.get("id");
-                    String nama = map.get("nama");
-
-                    listKategori.add(new Kategori(id, nama));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        listKategori.add(new Kategori("001", "Camera", R.drawable.camera));
+        listKategori.add(new Kategori("002", "Transportation", R.drawable.car));
+        listKategori.add(new Kategori("003", "Property", R.drawable.property));
+        listKategori.add(new Kategori("004", "Event", R.drawable.event));
+        listKategori.add(new Kategori("005", "Heavy Equipment", R.drawable.heavy_equipment));
+        listKategori.add(new Kategori("006", "Baby Care", R.drawable.baby));
+        listKategori.add(new Kategori("007", "Others", R.drawable.placeholder));
+//        dbRef.child("Kategori").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+////                listKategori.clear();
+//                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+//                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+//                    String id = map.get("id");
+//                    String nama = map.get("nama");
+//                    String url = map.get("imgUrl");
+//
+//                    Kategori kategori = new Kategori();
+//                    kategori.setId(id);
+//                    kategori.setNama(nama);
+//                    kategori.setImgUrl(url);
+//                    kategoriHelper.setKategori(kategori);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        if(kategoriHelper.getKategori().size() <=0){
+//            setDummyData();
+//        }
     }
 
     @Override
@@ -145,18 +158,5 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     }
 
     private void fillData() {
-//        Resources resources = getResources();
-//        String[] arJudul = resources.getStringArray(R.array.places);
-//        String[] arDeskripsi = resources.getStringArray(R.array.place_desc);
-//        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-//        Drawable[] arFoto = new Drawable[a.length()];
-//        for (int i = 0; i < arFoto.length; i++) {
-//            arFoto[i] = a.getDrawable(i);
-//        }
-//        a.recycle();
-//        for (int i = 0; i < arJudul.length; i++) {
-//            mList.add(new Hotel(arJudul[i], arDeskripsi[i], arFoto[i]));
-//        }
-//        mAdapter.notifyDataSetChanged();
     }
 }

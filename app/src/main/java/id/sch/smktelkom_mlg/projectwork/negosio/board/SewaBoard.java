@@ -21,12 +21,14 @@ import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import io.realm.Realm;
 
 
 public class SewaBoard extends Fragment implements View.OnClickListener {
     View rootView;
+    AppController controller;
     Context ctx;
     EditText etProduct, etPrice, etDesc;
     Spinner spCategory, spType;
@@ -60,6 +62,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
 
+        controller = new AppController();
         realm = Realm.getDefaultInstance();
         loginHelper = new LoginHelper(realm);
 
@@ -94,13 +97,11 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             Toast.makeText(ctx, "Field Vacant", Toast.LENGTH_SHORT).show();
         } else {
             final String productname = etProduct.getText().toString().trim();
-            final int price = Integer.parseInt(etPrice.getText().toString());
+            final String price = etPrice.getText().toString().trim();
             final String description = etDesc.getText().toString().trim();
-            int category = 0;
-            int type = 0;
+            String type = spType.getSelectedItem().toString().trim();
+            String category = spCategory.getSelectedItem().toString().trim();
             String username = "";
-            type = spType.getSelectedItemPosition();
-            category = spCategory.getSelectedItemPosition();
 
             try {
                 ArrayList<UserLogin> login = new ArrayList<>();
@@ -116,6 +117,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 barang.setCategory(category);
                 barang.setType(type);
                 barang.setUsername(username);
+                barang.setDate(controller.getDate("dd MMMM yyyy"));
+
 
                 dbRef.child("Barang").push().setValue(barang);
                 Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();

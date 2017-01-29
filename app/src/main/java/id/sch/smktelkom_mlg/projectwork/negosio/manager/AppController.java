@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import java.text.SimpleDateFormat;
+
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HomeBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.LoginBoard;
@@ -48,5 +50,13 @@ public class AppController extends Application {
         }
 
         return fragment;
+    }
+
+    public String getDate(String format){
+        String _setDate;
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        _setDate = sdf.format(date);
+        return _setDate;
     }
 }

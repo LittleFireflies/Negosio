@@ -11,7 +11,10 @@
     <string name="ClassLogin">Login</string>
     <string name="ClassRegister">Register</string>
     <string name="ClassSewa">Add Product</string>
+    <string name="ClassCamera">Camera</string>
 
     <!--Validation Error-->
     <string name="EmptyField">Please enter the field</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

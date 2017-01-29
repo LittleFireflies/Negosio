@@ -36,24 +36,17 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_person_black_24dp" />
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.90">
-
-            <EditText
-                android:id="@+id/etUsername"
-                style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:ems="10"
-
-                android:inputType="textPersonName"
-                android:text="Username"
-                android:textColor="#fff" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/White"
+            android:textColor="#fff" />
 
 
     </LinearLayout>
@@ -76,26 +69,22 @@
                 android:layout_alignParentTop="true"
                 android:src="@drawable/ic_lock_black_24dp" />
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etPassword"
-                    style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginRight="20dp"
-                    android:ems="10"
-                    android:text="Password"
-                    android:textColor="#fff" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="Password"
+                android:textColorHint="#FFFFFF"
+                android:textColor="#FFFFFF" />
 
 
         </LinearLayout>
         <Button
             android:id="@+id/btnLogin"
+            android:background="@drawable/rounded_button_white"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,11 +93,5 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="#fff"
             android:text="LOGIN" />
-        <TextView
-            android:id="@+id/etCoba"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            />
     </LinearLayout>
 </FrameLayout>
