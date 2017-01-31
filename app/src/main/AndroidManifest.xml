@@ -36,7 +36,8 @@
         <activity android:name=".board.PropertyBoard" />
         <activity android:name=".board.EventBoard" />
         <activity android:name=".board.HeavyEquipmentBoard" />
-        <activity android:name=".board.BabyCareBoard"></activity>
+        <activity android:name=".board.BabyCareBoard" />
+        <activity android:name=".board.OthersBoard"></activity>
     </application>
 
 </manifest>

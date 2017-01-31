@@ -17,6 +17,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.board.BabyCareBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.EventBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HeavyEquipmentBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.OthersBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.PropertyBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.TransportationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
@@ -101,6 +102,9 @@ public class CoverFlowAdapter extends BaseAdapter{
                         break;
                     case "Baby Care":
                         context.startActivity(new Intent(context, BabyCareBoard.class));
+                        break;
+                    case "Others":
+                        context.startActivity(new Intent(context, OthersBoard.class));
                         break;
                 }
             }
