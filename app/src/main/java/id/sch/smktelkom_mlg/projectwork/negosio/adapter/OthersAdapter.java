@@ -5,28 +5,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 /**
- * Created by LittleFireflies on 28-Jan-17.
+ * Created by Dwi Enggar on 31/01/2017.
  */
 
-public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder>{
-    List<Barang> listCamera;
+public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder> {
+    List<Barang> listOthers;
     View layout;
     private Context ctx;
 
-    public CameraAdapter(List<Barang> param){
-        listCamera = param;
+    public OthersAdapter(List<Barang> param) {
+        listOthers = param;
     }
 
     @Override
@@ -39,17 +35,17 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvTitle.setText(listCamera.get(position).getProductname());
-        holder.tvPrice.setText(listCamera.get(position).getPrice());
-        holder.tvSeller.setText(listCamera.get(position).getUsername());
-        holder.tvDate.setText(listCamera.get(position).getDate());
-        PicassoClient.downloadImage(ctx, listCamera.get(position).getImg(), holder.ivImage);
+        holder.tvTitle.setText(listOthers.get(position).getProductname());
+        holder.tvPrice.setText(listOthers.get(position).getPrice());
+        holder.tvSeller.setText(listOthers.get(position).getUsername());
+        holder.tvDate.setText(listOthers.get(position).getDate());
+
     }
 
     @Override
     public int getItemCount() {
-        if(listCamera != null){
-            return listCamera.size();
+        if (listOthers != null) {
+            return listOthers.size();
         } else {
             return 0;
         }
@@ -57,7 +53,6 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvTitle, tvPrice, tvSeller;
-        ImageView ivImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -65,7 +60,6 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
             tvSeller = (TextView) itemView.findViewById(R.id.tvSeller);
-            ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
         }
     }
 }

@@ -2,8 +2,6 @@ package id.sch.smktelkom_mlg.projectwork.negosio.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +9,17 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.BabyCareBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.EventBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.HeavyEquipmentBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.OthersBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.PropertyBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.TransportationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
 
@@ -71,12 +71,7 @@ public class CoverFlowAdapter extends BaseAdapter{
         viewHolder.ivCategory.setImageResource(kategori.get(position).getPict());
 
         view.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
-//        viewHolder.btnCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                context.startActivity(new Intent(context, CameraBoard.class));
-//            }
-//        });
+        viewHolder.btnCategory.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
         return view;
     }
 
@@ -88,8 +83,23 @@ public class CoverFlowAdapter extends BaseAdapter{
                     case "Camera":
                         context.startActivity(new Intent(context, CameraBoard.class));
                         break;
+                    case "Transportation":
+                        context.startActivity(new Intent(context, TransportationBoard.class));
+                        break;
+                    case "Property":
+                        context.startActivity(new Intent(context, PropertyBoard.class));
+                        break;
+                    case "Event":
+                        context.startActivity(new Intent(context, EventBoard.class));
+                        break;
                     case "Heavy Equipment":
-                        context.startActivity(new Intent(context, CameraBoard.class));
+                        context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
+                        break;
+                    case "Baby Care":
+                        context.startActivity(new Intent(context, BabyCareBoard.class));
+                        break;
+                    case "Others":
+                        context.startActivity(new Intent(context, OthersBoard.class));
                         break;
                 }
             }
