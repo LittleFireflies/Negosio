@@ -8,13 +8,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.board.NavigationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.ServerManager;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationBoard.FragmentDrawerListener{
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         navigationBoard = (NavigationBoard) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
         navigationBoard.setUp(R.id.navigationFragment, drawerLayout, toolbar);
         navigationBoard.setFragmentDrawerListener(this);
+//        ServerManager server = new ServerManager();
+//        server.insertKategori();
         displayView(R.string.ClassHome);
     }
 

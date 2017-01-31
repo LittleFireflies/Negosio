@@ -6,11 +6,12 @@ package id.sch.smktelkom_mlg.projectwork.negosio.model;
 
 public class Barang {
     public String productname;
-    public int price;
+    public String price;
     public String description;
-    public int category;
-    public int type;
+    public String category;
+    public String type;
     public String username;
+    public String date;
 
     public String getProductname() {
         return productname;
@@ -20,11 +21,11 @@ public class Barang {
         this.productname = productname;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -36,19 +37,19 @@ public class Barang {
         this.description = description;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -58,5 +59,13 @@ public class Barang {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

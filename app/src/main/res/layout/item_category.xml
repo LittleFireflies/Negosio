@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/negosio_3"
+        android:background="@drawable/placeholder"
         android:id="@+id/ivCategory" />
     <TextView
         android:id="@+id/category_name"
@@ -17,6 +17,7 @@
         android:layout_below="@+id/ivCategory"
         android:textSize="16sp"/>
     <ImageButton
+        android:id="@+id/btnCategory"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"

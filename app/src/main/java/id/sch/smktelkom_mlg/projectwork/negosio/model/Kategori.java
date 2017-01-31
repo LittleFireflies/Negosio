@@ -1,17 +1,22 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by LittleFireflies on 26-Jan-17.
  */
 
-public class Kategori {
+public class Kategori{
+//    @PrimaryKey
     private String id;
     private String nama;
-    private String imgUrl;
+    private int pict;
 
-    public Kategori(String id, String nama) {
+    public Kategori(String id, String nama, int pict) {
         this.id = id;
         this.nama = nama;
+        this.pict = pict;
     }
 
     public String getId() {
@@ -30,11 +35,11 @@ public class Kategori {
         this.nama = nama;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public int getPict() {
+        return pict;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setPict(int pict) {
+        this.pict = pict;
     }
 }

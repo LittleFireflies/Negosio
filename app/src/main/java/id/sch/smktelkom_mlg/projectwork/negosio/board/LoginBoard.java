@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +41,6 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
     private LoginHelper loginHelper;
     private Realm realm;
     private EditText etUsername, etPassword;
-    private TextView etCoba;
     private Button btnLogin;
 
     public LoginBoard() {
@@ -56,7 +54,6 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ctx = getContext();
-        Firebase.setAndroidContext(ctx);
         dbRef = FirebaseDatabase.getInstance().getReference();
         realm = Realm.getDefaultInstance();
         loginHelper = new LoginHelper(realm);
@@ -79,7 +76,6 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
     private void assignToView() {
         etUsername = (EditText) rootView.findViewById(R.id.etUsername);
         etPassword = (EditText) rootView.findViewById(R.id.etPassword);
-        etCoba = (TextView) rootView.findViewById(R.id.etCoba);
         btnLogin = (Button) rootView.findViewById(R.id.btnLogin);
     }
 
