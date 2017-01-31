@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.EventBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.HeavyEquipmentBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.PropertyBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.TransportationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
@@ -86,8 +89,14 @@ public class CoverFlowAdapter extends BaseAdapter{
                     case "Transportation":
                         context.startActivity(new Intent(context, TransportationBoard.class));
                         break;
+                    case "Property":
+                        context.startActivity(new Intent(context, PropertyBoard.class));
+                        break;
+                    case "Event":
+                        context.startActivity(new Intent(context, EventBoard.class));
+                        break;
                     case "Heavy Equipment":
-                        context.startActivity(new Intent(context, CameraBoard.class));
+                        context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
                         break;
                 }
             }

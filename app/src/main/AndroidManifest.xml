@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".model.SplashSreen"
             android:screenOrientation="portrait">
@@ -24,11 +24,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".board.CameraBoard" />
-        <activity android:name=".board.TransportationBoard"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity android:name=".board.TransportationBoard" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".board.PropertyBoard" />
+        <activity android:name=".board.EventBoard" />
+        <activity android:name=".board.HeavyEquipmentBoard"></activity>
     </application>
 
 </manifest>
