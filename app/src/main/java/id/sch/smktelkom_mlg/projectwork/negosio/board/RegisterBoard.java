@@ -62,6 +62,8 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
         setSpinner();
         getUser();
         onSetView();
+
+
         return rootView;
     }
 

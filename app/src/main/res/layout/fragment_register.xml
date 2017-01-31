@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/background"
     tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.RegisterBoard">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,81 +13,159 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/etUsername"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:ems="10"
-            android:hint="Username"
-            android:inputType="textPersonName" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="10dp"
 
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/usericon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
+                android:src="@drawable/ic_assignment_ind_black_24dp" />
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="0.9">
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+
             android:ems="10"
             android:hint="Name"
             android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/passicon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
+                android:src="@drawable/ic_person_black_24dp" />
         <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9">
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:ems="10"
+            android:hint="Username"
+            android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
+                android:src="@drawable/ic_lock_black_24dp" />
+
+            <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:ems="10"
 
+            android:layout_weight="0.9"
+            android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="35dp">
         <EditText
             android:id="@+id/etRePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+
             android:ems="10"
             android:hint="Re-type Password"
             android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="0dp"
+
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
+                android:src="@drawable/ic_mail_black_24dp" />
+
+            <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+
             android:ems="10"
             android:hint="Email"
             android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -96,6 +175,7 @@
                 android:layout_weight="1"
                 android:text="City"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff"
                 android:textSize="13sp" />
 
             <TextView
@@ -105,25 +185,29 @@
                 android:layout_weight="1"
                 android:text="Subdistrict"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="#fff"
                 android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal">
             <Spinner
                 android:id="@+id/spKota"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/city" />
+                android:entries="@array/city"
+                android:textColor="@android:color/white" />
 
             <Spinner
                 android:id="@+id/spKecamatan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -133,6 +217,7 @@
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="Phone Number"
@@ -144,7 +229,9 @@
             android:layout_width="310dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:background="@drawable/roundedbutton"
+
+            android:backgroundTint="#fff"
             android:gravity="center_vertical|center_horizontal|center"
             android:text="REGISTER"
             android:textAlignment="center" />

@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
         android:orientation="vertical"
         android:weightSum="1">
 
@@ -16,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:layout_marginBottom="20dp"
+
             android:layout_marginTop="20dp"
             android:layout_weight="0.19"
             android:src="@drawable/icon_splash" />
@@ -37,22 +39,20 @@
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_person_black_24dp" />
         <android.support.design.widget.TextInputLayout
+
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.90">
 
             <EditText
                 android:id="@+id/etUsername"
-                style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:ems="10"
 
-                android:inputType="textPersonName"
-                android:text="Username"
-                android:textColor="#fff" />
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -69,26 +69,27 @@
             android:weightSum="1">
 
             <ImageView
-
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
                 android:src="@drawable/ic_lock_black_24dp" />
 
             <android.support.design.widget.TextInputLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9">
 
                 <EditText
                     android:id="@+id/etPassword"
-                    style="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginRight="20dp"
                     android:ems="10"
-                    android:text="Password"
+                    android:hint="Password"
                     android:textColor="#fff" />
             </android.support.design.widget.TextInputLayout>
 
