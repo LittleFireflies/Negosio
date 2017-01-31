@@ -14,7 +14,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 public class PicassoClient {
     public static void downloadImage(Context ctx, String url, ImageView imageView){
         if(url != null && url.length()>0){
-            Picasso.with(ctx).load(url).placeholder(R.drawable.placeholder).into(imageView);
+            Picasso.with(ctx).load(url).fit().centerCrop().placeholder(R.drawable.placeholder).into(imageView);
         } else {
             Picasso.with(ctx).load(R.drawable.placeholder).into(imageView);
         }

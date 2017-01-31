@@ -71,12 +71,7 @@ public class CoverFlowAdapter extends BaseAdapter{
         viewHolder.ivCategory.setImageResource(kategori.get(position).getPict());
 
         view.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
-//        viewHolder.btnCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                context.startActivity(new Intent(context, CameraBoard.class));
-//            }
-//        });
+        viewHolder.btnCategory.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
         return view;
     }
 

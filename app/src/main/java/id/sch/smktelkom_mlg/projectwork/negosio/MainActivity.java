@@ -11,7 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 import id.sch.smktelkom_mlg.projectwork.negosio.board.NavigationBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.ServerManager;
@@ -25,14 +28,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private LinearLayout navigationDrawer;
     private Realm realm;
-    private LoginHelper loginHelper;
+    private static LoginHelper loginHelper;
+    static ArrayList<UserLogin> login = new ArrayList<>();
+    private static String userLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        navigationDrawer = (LinearLayout) findViewById(R.id.navigationDrawer);
         setContentView(R.layout.mainboard);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,15 +44,14 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationBoard = (NavigationBoard) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
         navigationBoard.setUp(R.id.navigationFragment, drawerLayout, toolbar);
         navigationBoard.setFragmentDrawerListener(this);
-//        ServerManager server = new ServerManager();
-//        server.insertKategori();
         displayView(R.string.ClassHome);
+
+        realm = Realm.getDefaultInstance();
+        loginHelper = new LoginHelper(realm);
     }
 
     public void displayView(int titleDrawer) {
@@ -92,5 +95,14 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     public void refreshActivity() {
         finish();
         startActivity(getIntent());
+    }
+
+
+    public static String getUserLogin() {
+        login = loginHelper.getUserLogin();
+        for (int i = 0; i < login.size(); i++) {
+            userLogin = login.get(i).getUsername();
+        }
+        return userLogin;
     }
 }

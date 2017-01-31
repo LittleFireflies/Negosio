@@ -1,5 +1,10 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.model;
 
+import android.net.Uri;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Dwi Enggar on 24/01/2017.
  */
@@ -12,6 +17,7 @@ public class Barang {
     public String type;
     public String username;
     public String date;
+    public String img;
 
     public String getProductname() {
         return productname;
@@ -67,5 +73,13 @@ public class Barang {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

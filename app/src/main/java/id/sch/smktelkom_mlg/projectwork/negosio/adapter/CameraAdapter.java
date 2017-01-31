@@ -5,11 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 /**
@@ -39,6 +43,7 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
         holder.tvPrice.setText(listCamera.get(position).getPrice());
         holder.tvSeller.setText(listCamera.get(position).getUsername());
         holder.tvDate.setText(listCamera.get(position).getDate());
+        PicassoClient.downloadImage(ctx, listCamera.get(position).getImg(), holder.ivImage);
     }
 
     @Override
@@ -52,6 +57,7 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvTitle, tvPrice, tvSeller;
+        ImageView ivImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -59,6 +65,7 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
             tvSeller = (TextView) itemView.findViewById(R.id.tvSeller);
+            ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
         }
     }
 }

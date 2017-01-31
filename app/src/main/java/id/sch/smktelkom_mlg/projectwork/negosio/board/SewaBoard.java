@@ -1,8 +1,17 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,32 +20,51 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.Utility;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import io.realm.Realm;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class SewaBoard extends Fragment implements View.OnClickListener {
+    public static final int REQUEST_CAMERA = 1;
+    public static final int SELECT_FILE = 2;
     View rootView;
     AppController controller;
     Context ctx;
     EditText etProduct, etPrice, etDesc;
     Spinner spCategory, spType;
-    Button btnAdd;
+    Button btnAdd, btnAttach;
+    Dialog dialog;
     private DatabaseReference dbRef;
+    private StorageReference storeageRef;
     private Realm realm;
     private LoginHelper loginHelper;
-    //TextView hasil;
+    private String username  = MainActivity.getUserLogin();
+    private ProgressDialog progressDialog;
+    Uri downloadUri;
 
     public SewaBoard() {
         // Required empty public constructor
@@ -54,13 +82,16 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    private void onSetView() {
+    private void
+    onSetView() {
         btnAdd.setOnClickListener(this);
+        btnAttach.setOnClickListener(this);
     }
 
     private void assignToView() {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
+        storeageRef = FirebaseStorage.getInstance().getReference();
 
         controller = new AppController();
         realm = Realm.getDefaultInstance();
@@ -72,8 +103,10 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         spCategory = (Spinner) rootView.findViewById(R.id.spCategory);
         spType = (Spinner) rootView.findViewById(R.id.sptype);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
+        btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
 
-        //hasil = (TextView) rootView.findViewById(R.id.textView5);
+        dialog = new Dialog(ctx);
+        progressDialog = new ProgressDialog(ctx);
     }
 
 
@@ -83,11 +116,91 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             case R.id.btnAdd:
                 add();
                 break;
+            case R.id.btnAttach:
+                uploadImage();
+                break;
         }
     }
 
-    private void add1() {
-        //hasil.setText(etProduct.getText().toString() + " " + etPrice.getText().toString() + " " + etDesc.getText().toString() + " " + spCategory.getSelectedItemPosition());
+    private void uploadImage() {
+        final String[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder((ctx));
+        builder.setTitle("Add Attachment");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                boolean result = Utility.checkPermission(ctx);
+
+                if(items[i].equals("Take Photo")){
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else if(items[i].equals("Choose from Gallery")){
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                } else if(items[i].equals("Cancel")){
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if(requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        if(data != null){
+            progressDialog.setMessage("Uploading. Please wait...");
+            progressDialog.show();
+
+            Uri uri = data.getData();
+            StorageReference filePath = storeageRef.child("Photos").child(username).child(uri.getLastPathSegment());
+            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
+//                    img.add(downloadUri);
+//                    if(img.size() >=1 ){
+                        btnAttach.setEnabled(false);
+//                    }
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
+
+    private void onSelectFromGalleryResult(Intent data) {
+        if(data != null){
+            progressDialog.setMessage("Uploading. Please wait...");
+            progressDialog.show();
+
+            Uri uri = data.getData();
+            StorageReference filePath = storeageRef.child("Photos").child(username).child(uri.getLastPathSegment());
+            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                    Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
+//                    img.add(downloadUri);
+//                    if(img.size() >=3 ){
+                        btnAttach.setEnabled(false);
+//                    }
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void add() {
@@ -101,15 +214,9 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             final String description = etDesc.getText().toString().trim();
             String type = spType.getSelectedItem().toString().trim();
             String category = spCategory.getSelectedItem().toString().trim();
-            String username = "";
+//            String username = "";
 
             try {
-                ArrayList<UserLogin> login = new ArrayList<>();
-                login = loginHelper.getUserLogin();
-                for (int i = 0; i < login.size(); i++) {
-                    username = login.get(i).getUsername();
-                }
-
                 Barang barang = new Barang();
                 barang.setProductname(productname);
                 barang.setPrice(price);
@@ -118,7 +225,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 barang.setType(type);
                 barang.setUsername(username);
                 barang.setDate(controller.getDate("dd MMMM yyyy"));
-
+                barang.setImg(String.valueOf(downloadUri));
 
                 dbRef.child("Barang").push().setValue(barang);
                 Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
