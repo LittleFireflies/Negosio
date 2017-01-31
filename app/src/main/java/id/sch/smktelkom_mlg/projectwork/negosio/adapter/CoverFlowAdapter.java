@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.BabyCareBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.EventBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HeavyEquipmentBoard;
@@ -97,6 +98,9 @@ public class CoverFlowAdapter extends BaseAdapter{
                         break;
                     case "Heavy Equipment":
                         context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
+                        break;
+                    case "Baby Care":
+                        context.startActivity(new Intent(context, BabyCareBoard.class));
                         break;
                 }
             }
