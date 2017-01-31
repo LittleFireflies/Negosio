@@ -2,8 +2,6 @@ package id.sch.smktelkom_mlg.projectwork.negosio.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.TransportationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
 
@@ -87,6 +82,9 @@ public class CoverFlowAdapter extends BaseAdapter{
                 switch (name){
                     case "Camera":
                         context.startActivity(new Intent(context, CameraBoard.class));
+                        break;
+                    case "Transportation":
+                        context.startActivity(new Intent(context, TransportationBoard.class));
                         break;
                     case "Heavy Equipment":
                         context.startActivity(new Intent(context, CameraBoard.class));
