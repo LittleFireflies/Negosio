@@ -1,10 +1,10 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
@@ -39,6 +38,8 @@ public class CameraBoard extends AppCompatActivity {
         initializeData();
         cameraAdapter = new CameraAdapter(listCamera);
         rvCamera.setAdapter(cameraAdapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initializeData() {
@@ -69,5 +70,14 @@ public class CameraBoard extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

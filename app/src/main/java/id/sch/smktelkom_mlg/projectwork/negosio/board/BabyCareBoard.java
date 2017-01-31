@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +38,8 @@ public class BabyCareBoard extends AppCompatActivity {
         initializeData();
         babyCareAdapter = new BabyCareAdapter(listBabyCare);
         rvBabyCare.setAdapter(babyCareAdapter);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initializeData() {
@@ -66,5 +69,14 @@ public class BabyCareBoard extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
