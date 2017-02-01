@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 /**
@@ -39,6 +41,7 @@ public class TransportationAdapter extends RecyclerView.Adapter<TransportationAd
         holder.tvPrice.setText(listTransportation.get(position).getPrice());
         holder.tvSeller.setText(listTransportation.get(position).getUsername());
         holder.tvDate.setText(listTransportation.get(position).getDate());
+        PicassoClient.downloadImage(ctx, listTransportation.get(position).getImg(), holder.ivImage);
     }
 
     @Override
@@ -52,6 +55,7 @@ public class TransportationAdapter extends RecyclerView.Adapter<TransportationAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvTitle, tvPrice, tvSeller;
+        ImageView ivImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -59,6 +63,7 @@ public class TransportationAdapter extends RecyclerView.Adapter<TransportationAd
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
             tvSeller = (TextView) itemView.findViewById(R.id.tvSeller);
+            ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
         }
     }
 }

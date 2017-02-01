@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 /**
@@ -39,6 +41,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.tvPrice.setText(listEvent.get(position).getPrice());
         holder.tvSeller.setText(listEvent.get(position).getUsername());
         holder.tvDate.setText(listEvent.get(position).getDate());
+        PicassoClient.downloadImage(ctx, listEvent.get(position).getImg(), holder.ivImage);
 
     }
 
@@ -53,6 +56,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvTitle, tvPrice, tvSeller;
+        ImageView ivImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -60,6 +64,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
             tvSeller = (TextView) itemView.findViewById(R.id.tvSeller);
+            ivImage = (ImageView) itemView.findViewById(R.id.ivImage);
         }
     }
 }
