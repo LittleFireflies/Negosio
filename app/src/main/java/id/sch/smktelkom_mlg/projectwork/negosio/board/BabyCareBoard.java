@@ -58,6 +58,7 @@ public class BabyCareBoard extends AppCompatActivity {
                         obj.setProductname(map.get("productname"));
                         obj.setUsername(map.get("username"));
                         obj.setDate(map.get("date"));
+                        obj.setImg(map.get("img"));
                         listBabyCare.add(obj);
                     }
                 }

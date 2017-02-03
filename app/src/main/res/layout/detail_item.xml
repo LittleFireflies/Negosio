@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="25dp">
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,11 +13,62 @@
             android:layout_height="match_parent"
             android:weightSum="2"
             android:orientation="vertical">
-            <ImageView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/placeholder"/>
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/ivDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/placeholder"/>
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="31 January 2017"
+                    android:layout_margin="8dp"
+                    android:textColor="@color/White"/>
+                <TextView
+                    android:id="@+id/tvTextPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/llPrice"
+                    android:text="Price"
+                    android:textColor="@color/White"
+                    android:layout_marginTop="125dp"
+                    android:textSize="16sp"/>
+                <LinearLayout
+                    android:id="@+id/llPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/tvTextPrice"
+                    android:layout_alignParentEnd="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/White"
+                        android:text="Rp. "
+                        android:textSize="24sp"/>
+                    <TextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/White"
+                        android:text="100.000"
+                        android:textSize="24sp"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/llPrice"
+                    android:layout_alignParentEnd="true"
+                    android:text="Per Day"
+                    android:textColor="@color/White"/>
+            </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -24,6 +76,7 @@
                 android:background="@color/White"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Title"
@@ -32,9 +85,10 @@
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/Black"/>
                 <TextView
+                    android:id="@+id/tvDesc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:layout_height="90dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor neque ac mauris ultrices semper a vel nunc. Pellentesque fringilla nulla id nisl porttitor, in viverra sapien lacinia. Morbi nibh diam, ornare ut nibh in, lacinia turpis duis."
                     android:layout_marginBottom="10dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,32 +99,57 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="From"/>
+                        android:orientation="vertical"
+                        android:layout_marginRight="10dp">
                         <EditText
+                            android:id="@+id/etDateFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="date"
+                            android:hint="From"
+                            android:textSize="10sp"
+                            android:editable="false"
                             android:drawableRight="@drawable/icon_date"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="To"/>
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp">
                         <EditText
+                            android:id="@+id/etDateTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="date"
+                            android:hint="To"
+                            android:textSize="10sp"
+                            android:editable="false"
                             android:drawableRight="@drawable/icon_date"/>
                     </LinearLayout>
                 </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*Note :"
+                    android:textStyle="italic"/>
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/btnSewa"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_button_sewa"
+            android:layout_centerInParent="true"
+            android:text="Sewa Barang"
+            android:textColor="@color/White"/>
     </RelativeLayout>
 </RelativeLayout>

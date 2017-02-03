@@ -58,6 +58,7 @@ public class OthersBoard extends AppCompatActivity {
                         obj.setProductname(map.get("productname"));
                         obj.setUsername(map.get("username"));
                         obj.setDate(map.get("date"));
+                        obj.setImg(map.get("img"));
                         listOthers.add(obj);
                     }
                 }

@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/placeholder"
-        android:id="@+id/ivCategory" />
+        android:id="@+id/ivCategory"
+        />
     <TextView
         android:id="@+id/category_name"
         android:layout_width="wrap_content"
@@ -16,13 +17,4 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/ivCategory"
         android:textSize="16sp"/>
-    <ImageButton
-        android:id="@+id/btnCategory"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="38dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/icon_category"/>
 </RelativeLayout>

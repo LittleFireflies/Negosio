@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,7 +72,6 @@ public class CoverFlowAdapter extends BaseAdapter{
         viewHolder.ivCategory.setImageResource(kategori.get(position).getPict());
 
         view.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
-        viewHolder.btnCategory.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
         return view;
     }
 
@@ -109,12 +109,11 @@ public class CoverFlowAdapter extends BaseAdapter{
     private static class ViewHolder{
         private TextView categoryName;
         private ImageView ivCategory;
-        private ImageButton btnCategory;
+//        private ImageButton btnCategory;
 
         public ViewHolder(View v){
             categoryName = (TextView)v.findViewById(R.id.category_name);
             ivCategory = (ImageView)v.findViewById(R.id.ivCategory);
-            btnCategory = (ImageButton)v.findViewById(R.id.btnCategory);
         }
     }
 }

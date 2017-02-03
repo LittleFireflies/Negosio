@@ -41,6 +41,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.Utility;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import io.realm.Realm;
@@ -104,6 +105,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         spType = (Spinner) rootView.findViewById(R.id.sptype);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
         btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
+
+        etPrice.addTextChangedListener(new NumberTextWatcher(etPrice, "#,###", "currency", null));
 
         dialog = new Dialog(ctx);
         progressDialog = new ProgressDialog(ctx);
@@ -171,10 +174,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     downloadUri = taskSnapshot.getDownloadUrl();
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
-//                    img.add(downloadUri);
-//                    if(img.size() >=1 ){
-                        btnAttach.setEnabled(false);
-//                    }
+                    btnAttach.setEnabled(false);
                     progressDialog.dismiss();
                 }
             });
@@ -193,10 +193,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     downloadUri = taskSnapshot.getDownloadUrl();
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
-//                    img.add(downloadUri);
-//                    if(img.size() >=3 ){
-                        btnAttach.setEnabled(false);
-//                    }
+                    btnAttach.setEnabled(false);
                     progressDialog.dismiss();
                 }
             });
