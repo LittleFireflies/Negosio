@@ -26,8 +26,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/usericon"
@@ -36,17 +35,19 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_person_black_24dp" />
+
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
+
+            android:drawableLeft="@+id/usericon"
             android:ems="10"
             android:hint="Username"
             android:inputType="textPersonName"
-            android:textColorHint="@color/White"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:textColorHint="@color/White" />
 
 
     </LinearLayout>
@@ -73,24 +74,24 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="Password"
-                android:textColorHint="#FFFFFF"
-                android:textColor="#FFFFFF" />
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF" />
 
 
         </LinearLayout>
         <Button
             android:id="@+id/btnLogin"
-            android:background="@drawable/rounded_button_white"
             style="@style/Base.TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_button_white"
             android:backgroundTint="#fff"
             android:text="LOGIN" />
     </LinearLayout>
