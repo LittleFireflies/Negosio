@@ -91,6 +91,7 @@
                 android:layout_weight="0.63"
                 android:ems="10"
                 android:hint="Product Description"
+                android:maxLength="250"
                 android:inputType="textMultiLine" />
         </android.support.design.widget.TextInputLayout>
         <TextView

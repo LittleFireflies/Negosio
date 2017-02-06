@@ -1,17 +1,14 @@
-package id.sch.smktelkom_mlg.projectwork.negosio.model;
+package id.sch.smktelkom_mlg.projectwork.negosio;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
-import id.sch.smktelkom_mlg.projectwork.negosio.R;
-
 /**
  * Created by Dwi Enggar on 30/01/2017.
  */
 
-public class SplashSreen extends Activity {
+public class SplashScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +20,7 @@ public class SplashSreen extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    startActivity(new Intent(SplashSreen.this, MainActivity.class));
+                    startActivity(new Intent(SplashScreen.this, MainActivity.class));
                     finish();
                 }
             }

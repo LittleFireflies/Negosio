@@ -105,10 +105,9 @@
                             android:id="@+id/etDateFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="date"
                             android:hint="From"
                             android:textSize="10sp"
-                            android:editable="false"
+                            android:inputType="none"
                             android:drawableRight="@drawable/icon_date"/>
                     </LinearLayout>
                     <LinearLayout
@@ -121,10 +120,9 @@
                             android:id="@+id/etDateTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="date"
+                            android:inputType="none"
                             android:hint="To"
                             android:textSize="10sp"
-                            android:editable="false"
                             android:drawableRight="@drawable/icon_date"/>
                     </LinearLayout>
                 </LinearLayout>
