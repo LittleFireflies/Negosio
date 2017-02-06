@@ -15,7 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +33,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import io.realm.Realm;
 
@@ -45,7 +49,10 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     EditText etProduct, etPrice, etDesc;
     Spinner spCategory, spType;
     Button btnAdd, btnAttach;
+    ImageView ivAttachment;
+    TextView tvDelete;
     Dialog dialog;
+    LinearLayout llAttachment;
     private DatabaseReference dbRef;
     private StorageReference storageRef;
     private Realm realm;
@@ -71,10 +78,10 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    private void
-    onSetView() {
+    private void onSetView() {
         btnAdd.setOnClickListener(this);
         btnAttach.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
     }
 
     private void assignToView() {
@@ -93,6 +100,9 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         spType = (Spinner) rootView.findViewById(R.id.sptype);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
         btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
+        ivAttachment = (ImageView) rootView.findViewById(R.id.ivAttachment);
+        tvDelete = (TextView) rootView.findViewById(R.id.tvDelete);
+        llAttachment = (LinearLayout) rootView.findViewById(R.id.llAttachment);
 
         etPrice.addTextChangedListener(new NumberTextWatcher(etPrice, "#,###", "currency", null));
 
@@ -110,7 +120,15 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             case R.id.btnAttach:
                 uploadImage();
                 break;
+            case R.id.tvDelete:
+                deleteImage();
+                break;
         }
+    }
+
+    private void deleteImage() {
+        llAttachment.setVisibility(View.GONE);
+        btnAttach.setEnabled(true);
     }
 
     private void uploadImage() {
@@ -164,6 +182,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
                     btnAttach.setEnabled(false);
                     progressDialog.dismiss();
+                    llAttachment.setVisibility(View.VISIBLE);
+                    PicassoClient.downloadImage(ctx, String.valueOf(downloadUri), ivAttachment);
                 }
             });
         }
@@ -183,6 +203,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
                     btnAttach.setEnabled(false);
                     progressDialog.dismiss();
+                    llAttachment.setVisibility(View.VISIBLE);
+                    PicassoClient.downloadImage(ctx, String.valueOf(downloadUri), ivAttachment);
                 }
             });
         }

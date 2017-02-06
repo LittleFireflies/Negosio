@@ -50,8 +50,8 @@ dependencies {
     compile 'com.github.moondroid.coverflow:library:1.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-appindexing:9.6.1'
+    testCompile 'junit:junit:4.12'
 }
 
 apply plugin: 'com.google.gms.google-services'

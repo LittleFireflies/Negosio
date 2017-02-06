@@ -107,6 +107,7 @@
                             android:layout_height="wrap_content"
                             android:hint="From"
                             android:textSize="10sp"
+                            android:editable="false"
                             android:inputType="none"
                             android:drawableRight="@drawable/icon_date"/>
                     </LinearLayout>
@@ -121,6 +122,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
+                            android:editable="false"
                             android:hint="To"
                             android:textSize="10sp"
                             android:drawableRight="@drawable/icon_date"/>

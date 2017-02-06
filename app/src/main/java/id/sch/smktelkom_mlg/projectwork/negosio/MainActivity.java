@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -99,10 +101,32 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
 
 
     public static String getUserLogin() {
-        login = loginHelper.getUserLogin();
+         login = loginHelper.getUserLogin();
         for (int i = 0; i < login.size(); i++) {
             userLogin = login.get(i).getUsername();
         }
         return userLogin;
+    }
+
+    private boolean backPressedToExitOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedToExitOnce) {
+//            super.onBackPressed();
+//            logout();
+            finish();
+        } else {
+            this.backPressedToExitOnce = true;
+            Toast.makeText(this,"Press again to Exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    backPressedToExitOnce = false;
+                }
+            }, 2000);
+
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -44,16 +45,17 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
     List<Barang> listCamera;
     View layout;
     private Context ctx;
-    private Dialog dialogDetail;
-    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvType;
+    private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess;
+    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvType, dialog_btnBack;
     private ImageView dialog_ivImage;
     private EditText dialog_etFrom, dialog_etTo;
-    private Button dialog_btnSewa;
+    private Button dialog_btnSewa, dialog_back, dialog_btnYes, dialog_btnOk;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatabaseReference dbRef;
     private AppController controller;
     private String username = MainActivity.getUserLogin();
     private boolean valid;
+    private MainActivity mainActivity;
 
     public CameraAdapter(List<Barang> param){
         listCamera = param;
@@ -78,6 +80,27 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
         dialogDetail.setCanceledOnTouchOutside(false);
         dialogDetail.onBackPressed();
 
+        dialogUnlogged = new Dialog(ctx);
+        dialogUnlogged.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogUnlogged.setContentView(R.layout.dialog_not_login);
+        dialogUnlogged.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogUnlogged.setCanceledOnTouchOutside(false);
+        dialogUnlogged.onBackPressed();
+
+        dialogConfirm = new Dialog(ctx);
+        dialogConfirm.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogConfirm.setContentView(R.layout.dialog_confirm);
+        dialogConfirm.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogConfirm.setCanceledOnTouchOutside(false);
+        dialogConfirm.onBackPressed();
+
+        dialogSuccess = new Dialog(ctx);
+        dialogSuccess.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSuccess.setContentView(R.layout.dialog_success);
+        dialogSuccess.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogSuccess.setCanceledOnTouchOutside(false);
+        dialogSuccess.onBackPressed();
+
         dialog_tvUsername = (TextView) dialogDetail.findViewById(R.id.tvUsername);
         dialog_ivImage = (ImageView) dialogDetail.findViewById(R.id.ivDetail);
         dialog_tvDate = (TextView) dialogDetail.findViewById(R.id.tvDate);
@@ -88,6 +111,11 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
         dialog_etFrom = (EditText) dialogDetail.findViewById(R.id.etDateFrom);
         dialog_etTo = (EditText) dialogDetail.findViewById(R.id.etDateTo);
         dialog_btnSewa = (Button) dialogDetail.findViewById(R.id.btnSewa);
+
+        dialog_back = (Button) dialogUnlogged.findViewById(R.id.btnBack);
+        dialog_btnYes = (Button) dialogConfirm.findViewById(R.id.btnYes);
+        dialog_btnBack = (TextView) dialogConfirm.findViewById(R.id.tvBack);
+        dialog_btnOk = (Button) dialogSuccess.findViewById(R.id.btnOK);
     }
 
     @Override
@@ -116,25 +144,59 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
                     @Override
                     public void onClick(View view) {
                         if (isValid(dialog_etFrom.getText().toString(), dialog_etTo.getText().toString())) {
-                            int time = calculateTime(dialog_tvType.getText().toString(), dialog_etFrom.getText().toString(), dialog_etTo.getText().toString());
+                            final int time = calculateTime(dialog_tvType.getText().toString(), dialog_etFrom.getText().toString(), dialog_etTo.getText().toString());
                             double price = controller.currencyTonumber(dialog_tvPrice.getText().toString());
-                            double total = time * price;
+                            final double total = time * price;
 
                             if (username != null) {
-                                Booking booking = new Booking();
-                                booking.setTgl_booking(controller.getDate("dd MMMM yyyy hh:mm"));
-                                booking.setProduct_name(dialog_tvTitle.getText().toString());
-                                booking.setPrice("Rp. " + dialog_tvPrice.getText().toString() + " " + dialog_tvType.getText().toString());
-                                booking.setStart_date(dialog_etFrom.getText().toString());
-                                booking.setEnd_date(dialog_etTo.getText().toString());
-                                booking.setTime(String.valueOf(time));
-                                booking.setTotal(controller.numberTocurrency(total));
-                                booking.setBuyer(username);
-                                booking.setSeller(dialog_tvUsername.getText().toString());
+                                dialogConfirm.show();
+                                dialog_btnYes.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        try{
+                                            Booking booking = new Booking();
+                                            booking.setTgl_booking(controller.getDate("dd MMMM yyyy hh:mm"));
+                                            booking.setProduct_name(dialog_tvTitle.getText().toString());
+                                            booking.setPrice("Rp. " + dialog_tvPrice.getText().toString() + " " + dialog_tvType.getText().toString());
+                                            booking.setStart_date(dialog_etFrom.getText().toString());
+                                            booking.setEnd_date(dialog_etTo.getText().toString());
+                                            booking.setTime(String.valueOf(time));
+                                            booking.setTotal(controller.numberTocurrency(total));
+                                            booking.setBuyer(username);
+                                            booking.setSeller(dialog_tvUsername.getText().toString());
 
-                                dbRef.child("Booking").push().setValue(booking);
+                                            dbRef.child("Booking").push().setValue(booking);
+                                            dialogConfirm.dismiss();
+
+                                            dialogSuccess.show();
+                                            dialog_btnOk.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    dialogSuccess.dismiss();
+                                                    ctx.startActivity(new Intent(ctx, MainActivity.class));
+                                                }
+                                            });
+                                        } catch (Exception e){
+                                            Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+                                dialog_btnBack.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialogConfirm.dismiss();
+                                    }
+                                });
                             } else {
-                                Toast.makeText(ctx, "You haven't login!", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(ctx, "You haven't login!", Toast.LENGTH_LONG).show();
+                                dialogUnlogged.show();
+                                dialog_back.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialogUnlogged.dismiss();
+                                    }
+                                });
                             }
                         }
                     }

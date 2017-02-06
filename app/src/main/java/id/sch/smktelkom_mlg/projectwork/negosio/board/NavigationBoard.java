@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ import io.realm.Realm;
 public class NavigationBoard extends Fragment implements View.OnClickListener{
 
     Context ctx;
+    TextView tvProfil;
     LinearLayout logged, unlogged;
     LinearLayout llHome, llLogin, llRegister, llSewa;
     LinearLayout llLogout;
@@ -82,14 +84,17 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         if(login.size() == 1){
             logged.setVisibility(View.VISIBLE);
             unlogged.setVisibility(View.GONE);
+            tvProfil.setText(login.get(0).getUsername());
         } else {
             logged.setVisibility(View.GONE);
             unlogged.setVisibility(View.VISIBLE);
             loginHelper.logOut();
+            tvProfil.setText("");
         }
     }
 
     private void assignView() {
+        tvProfil = (TextView) containerView.findViewById(R.id.tvProfil);
         logged = (LinearLayout) containerView.findViewById(R.id.LOGGED);
         unlogged = (LinearLayout) containerView.findViewById(R.id.UNLOGGED);
 

@@ -108,6 +108,24 @@
             android:layout_height="wrap_content"
             android:text="Add Attachment"
             android:textAllCaps="false"/>
+        <LinearLayout
+            android:id="@+id/llAttachment"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/ivAttachment"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+            <TextView
+                android:id="@+id/tvDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:layout_marginLeft="10dp"
+                android:textSize="20sp"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnAdd"
