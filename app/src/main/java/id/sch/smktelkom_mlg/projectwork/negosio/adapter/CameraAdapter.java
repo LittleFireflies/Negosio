@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.squareup.picasso.Picasso;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -135,7 +133,44 @@ public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder
 //                        dialog_etFrom.setText(dateFrom[0]);
                     }
                 });
+
+                dialog_etTo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Calendar calendar = Calendar.getInstance();
+                        mYear = calendar.get(Calendar.YEAR);
+                        mMonth = calendar.get(Calendar.MONTH);
+                        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                        mHour = calendar.get(Calendar.HOUR_OF_DAY);
+                        mMinute = calendar.get(Calendar.MINUTE);
+
+
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, final int year, final int month, final int day) {
+                                TimePickerDialog timePickerDialog = new TimePickerDialog(ctx, new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                        Calendar time = Calendar.getInstance();
+                                        time.set(Calendar.DAY_OF_MONTH, day);
+                                        time.set(Calendar.MONTH, month);
+                                        time.set(Calendar.YEAR, year);
+                                        time.set(Calendar.HOUR_OF_DAY, hour);
+                                        time.set(Calendar.MINUTE, minute);
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy hh:mm");
+                                        dialog_etTo.setText(sdf.format(time.getTime()));
+//                                        dialog_etFrom.setText(day + " " + (month+1) + " " + year + " " + hour + ":" + minute);
+                                    }
+                                }, mHour, mMinute, false);
+                                timePickerDialog.show();
+                            }
+                        }, mYear, mMonth, mDay);
+                        datePickerDialog.show();
+                    }
+                });
             }
+
         });
     }
 
