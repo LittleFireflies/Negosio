@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -26,11 +28,11 @@ import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
 /**
- * Created by Dwi Enggar on 31/01/2017.
+ * Created by LittleFireflies on 28-Jan-17.
  */
 
-public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHolder> {
-    List<Barang> listProperty;
+public class CameraAdapter extends RecyclerView.Adapter<CameraAdapter.ViewHolder>{
+    List<Barang> listCamera;
     View layout;
     private Context ctx;
     private Dialog dialogDetail;
@@ -39,8 +41,8 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
     private EditText dialog_etFrom, dialog_etTo;
     private int mYear, mMonth, mDay, mHour, mMinute;
 
-    public PropertyAdapter(List<Barang> param) {
-        listProperty = param;
+    public CameraAdapter(List<Barang> param){
+        listCamera = param;
     }
 
     @Override
@@ -73,25 +75,25 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.tvTitle.setText(listProperty.get(position).getProductname());
-        holder.tvPrice.setText(listProperty.get(position).getPrice());
-        holder.tvSeller.setText(listProperty.get(position).getUsername());
-        holder.tvDate.setText(listProperty.get(position).getDate());
-        PicassoClient.downloadImage(ctx, listProperty.get(position).getImg(), holder.ivImage);
+        holder.tvTitle.setText(listCamera.get(position).getProductname());
+        holder.tvPrice.setText(listCamera.get(position).getPrice());
+        holder.tvSeller.setText(listCamera.get(position).getUsername());
+        holder.tvDate.setText(listCamera.get(position).getDate());
+        PicassoClient.downloadImage(ctx, listCamera.get(position).getImg(), holder.ivImage);
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialogDetail.show();
-                dialog_tvUsername.setText(listProperty.get(position).getUsername());
-                dialog_tvDate.setText(listProperty.get(position).getDate());
-                dialog_tvTitle.setText(listProperty.get(position).getProductname());
-                dialog_tvDesc.setText(listProperty.get(position).getDescription());
-                dialog_tvPrice.setText(listProperty.get(position).getPrice());
-                dialog_tvType.setText(listProperty.get(position).getType());
+                dialog_tvUsername.setText(listCamera.get(position).getUsername());
+                dialog_tvDate.setText(listCamera.get(position).getDate());
+                dialog_tvTitle.setText(listCamera.get(position).getProductname());
+                dialog_tvDesc.setText(listCamera.get(position).getDescription());
+                dialog_tvPrice.setText(listCamera.get(position).getPrice());
+                dialog_tvType.setText(listCamera.get(position).getType());
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
-                PicassoClient.downloadImage(ctx, listProperty.get(position).getImg(), dialog_ivImage);
+                PicassoClient.downloadImage(ctx, listCamera.get(position).getImg(), dialog_ivImage);
 
                 dialog_etFrom.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -104,6 +106,7 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
 
                         mHour = calendar.get(Calendar.HOUR_OF_DAY);
                         mMinute = calendar.get(Calendar.MINUTE);
+
 
 
                         DatePickerDialog datePickerDialog = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
@@ -132,50 +135,14 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.ViewHo
 //                        dialog_etFrom.setText(dateFrom[0]);
                     }
                 });
-
-                dialog_etTo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Calendar calendar = Calendar.getInstance();
-                        mYear = calendar.get(Calendar.YEAR);
-                        mMonth = calendar.get(Calendar.MONTH);
-                        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-                        mHour = calendar.get(Calendar.HOUR_OF_DAY);
-                        mMinute = calendar.get(Calendar.MINUTE);
-
-
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(ctx, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, final int year, final int month, final int day) {
-                                TimePickerDialog timePickerDialog = new TimePickerDialog(ctx, new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                                        Calendar time = Calendar.getInstance();
-                                        time.set(Calendar.DAY_OF_MONTH, day);
-                                        time.set(Calendar.MONTH, month);
-                                        time.set(Calendar.YEAR, year);
-                                        time.set(Calendar.HOUR_OF_DAY, hour);
-                                        time.set(Calendar.MINUTE, minute);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy hh:mm");
-                                        dialog_etTo.setText(sdf.format(time.getTime()));
-//                                        dialog_etFrom.setText(day + " " + (month+1) + " " + year + " " + hour + ":" + minute);
-                                    }
-                                }, mHour, mMinute, false);
-                                timePickerDialog.show();
-                            }
-                        }, mYear, mMonth, mDay);
-                        datePickerDialog.show();
-                    }
-                });
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        if (listProperty != null) {
-            return listProperty.size();
+        if(listCamera != null){
+            return listCamera.size();
         } else {
             return 0;
         }
