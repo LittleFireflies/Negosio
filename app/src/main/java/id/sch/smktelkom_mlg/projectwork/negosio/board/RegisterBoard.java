@@ -43,6 +43,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     ArrayList<String> listKota = new ArrayList<>();
     ArrayList<String> user = new ArrayList<>();
     ArrayAdapter<String> adapterKota;
+    ArrayAdapter<String> spinnerArrayAdapter;
     private DatabaseReference dbRef;
     private Spinner spCity, spSub;
     private Button btnRegister;
@@ -87,7 +88,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     }
 
     private void setSpinner() {
-        adapterKota = new ArrayAdapter<>(ctx, android.R.layout.simple_spinner_item, listKota);
+        adapterKota = new ArrayAdapter<>(ctx, R.layout.spinner_item, listKota);
         adapterKota.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSub.setAdapter(adapterKota);
 
@@ -125,6 +126,15 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
         spSub = (Spinner) rootView.findViewById(R.id.spKecamatan);
 
         btnRegister = (Button) rootView.findViewById(R.id.btnRegister);
+
+        String[] city = new String[]{
+                "Kota Malang",
+                "Kabupaten Malang",
+                "Kota Batu"
+        };
+        spinnerArrayAdapter = new ArrayAdapter<String>(ctx, R.layout.spinner_item, city);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCity.setAdapter(spinnerArrayAdapter);
     }
 
     @Override

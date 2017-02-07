@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:coverflow="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1a1044"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
     tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.HomeBoard">
     <it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow
+        android:id="@+id/coverFlow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/coverFlow"
         coverflow:coverHeight="200dp"
         coverflow:coverWidth="150dp"
         coverflow:maxScaleFactor="1.5"

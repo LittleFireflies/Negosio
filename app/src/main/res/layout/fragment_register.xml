@@ -2,14 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#1a1044"
     tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.RegisterBoard">
 
     <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="false">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,25 +33,19 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/ic_assignment_ind_black_24dp" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <EditText
                         android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full name"
-
                         android:inputType="textPersonName"
-                        android:textColor="#fff" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="#fff"
+                        android:textColorHint="#FFFFFF" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -59,10 +56,6 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/ic_person_black_24dp" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <EditText
                         android:id="@+id/etUsername"
                         android:layout_width="match_parent"
@@ -70,8 +63,8 @@
                         android:hint="Username"
 
                         android:inputType="textPersonName"
-                        android:textColor="#fff" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="#fff"
+                        android:textColorHint="#fff" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,10 +81,6 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/ic_lock_black_24dp" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <EditText
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
@@ -99,8 +88,8 @@
                         android:hint="Password"
 
                         android:inputType="textPassword"
-                        android:textColor="#fff" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="#fff"
+                        android:textColorHint="#fff" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,29 +98,22 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp">
-
                     <EditText
                         android:id="@+id/etRePassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
                         android:hint="RePassword"
-
                         android:inputType="textPassword"
-                        android:textColor="#fff" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="#fff"
+                        android:textColorHint="#fff" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -159,24 +141,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <Spinner
                     android:id="@+id/spKota"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:entries="@array/city"
-                    android:textColor="@android:color/white" />
+                    android:layout_height="40dp"
+                    android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/spKecamatan"
                     android:layout_width="0dp"
-
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:textColor="@android:color/white" />
             </LinearLayout>
@@ -184,7 +161,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -195,19 +171,14 @@
                     android:layout_alignParentTop="true"
                     android:src="@drawable/ic_call_black_24dp" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
                     <EditText
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Phone number"
-
                         android:inputType="textPersonName"
-                        android:textColor="#fff" />
-                </android.support.design.widget.TextInputLayout>
+                        android:textColor="#fff"
+                        android:textColorHint="#FFFFFF" />
             </LinearLayout>
 
             <Button
@@ -215,7 +186,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/rounded_button_white"
                 android:backgroundTint="#fff"
                 android:gravity="center_vertical|center_horizontal|center"
