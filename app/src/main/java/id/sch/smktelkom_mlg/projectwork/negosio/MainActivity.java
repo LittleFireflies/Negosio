@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +62,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_home) {
+                    displayView(R.string.ClassHome);
+                    // Handle the camera action
+                } else if (id == R.id.nav_sewa) {
+                    displayView(R.string.ClassSewa);
+                } else if (id == R.id.nav_transaksi) {
+                    displayView(R.string.ClassLogin);
+                } else if (id == R.id.nav_login) {
+                    displayView(R.string.ClassLogin);
+                } else if (id == R.id.nav_setting) {
+
+                }
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 return false;
             }
         });
