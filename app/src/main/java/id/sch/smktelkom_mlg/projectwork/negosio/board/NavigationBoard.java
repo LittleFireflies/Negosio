@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,8 +30,9 @@ import io.realm.Realm;
 public class NavigationBoard extends Fragment implements View.OnClickListener{
 
     Context ctx;
+    TextView tvProfil;
     LinearLayout logged, unlogged;
-    LinearLayout llHome, llLogin, llRegister, llSewa;
+    LinearLayout llHome, llLogin, llRegister, llSewa, llSetting;
     LinearLayout llLogout;
     private View containerView;
     private Realm realm;
@@ -69,6 +73,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         llRegister.setOnClickListener(this);
         llLogout.setOnClickListener(this);
         llSewa.setOnClickListener(this);
+        llSetting.setOnClickListener(this);
     }
 
     private void setNavigationBoard() {
@@ -82,14 +87,17 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         if(login.size() == 1){
             logged.setVisibility(View.VISIBLE);
             unlogged.setVisibility(View.GONE);
+            tvProfil.setText(login.get(0).getUsername());
         } else {
             logged.setVisibility(View.GONE);
             unlogged.setVisibility(View.VISIBLE);
             loginHelper.logOut();
+            tvProfil.setText("");
         }
     }
 
     private void assignView() {
+        tvProfil = (TextView) containerView.findViewById(R.id.tvProfil);
         logged = (LinearLayout) containerView.findViewById(R.id.LOGGED);
         unlogged = (LinearLayout) containerView.findViewById(R.id.UNLOGGED);
 
@@ -98,6 +106,7 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
         llRegister = (LinearLayout) containerView.findViewById(R.id.llRegister);
         llLogout = (LinearLayout) containerView.findViewById(R.id.llLogout);
         llSewa = (LinearLayout) containerView.findViewById(R.id.llSewa);
+        llSetting = (LinearLayout) containerView.findViewById(R.id.llSetting);
     }
 
     @Override
@@ -127,10 +136,40 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
 
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawer_layout, Toolbar toolbar) {
+    public void setUp(int fragmentId, DrawerLayout drawer_layout, final Toolbar toolbar) {
         containerView = getActivity().findViewById(fragmentId);
         drawerLayout = drawer_layout;
-        actionBarDrawerToogle = new ActionBarDrawerToggle(getActivity(), drawer_layout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        actionBarDrawerToogle = new ActionBarDrawerToggle(getActivity(), drawer_layout, toolbar, R.string.drawer_open, R.string.drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                InputMethodManager inputMethodManager = (InputMethodManager)  getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                InputMethodManager inputMethodManager = (InputMethodManager)  getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                toolbar.setAlpha(1 - slideOffset / 2);
+            }
+        };
+
+        drawerLayout.setDrawerListener(actionBarDrawerToogle);
+        drawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                actionBarDrawerToogle.syncState();
+            }
+        });
+
     }
 
 

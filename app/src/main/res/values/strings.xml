@@ -12,6 +12,12 @@
     <string name="ClassRegister">Register</string>
     <string name="ClassSewa">Add Product</string>
     <string name="ClassCamera">Camera</string>
+    <string name="ClassTransportation">Transportation</string>
+    <string name="ClassProperty">Property</string>
+    <string name="ClassEvent">Event</string>
+    <string name="ClassHeavyEquipment">Heavy Equipment</string>
+    <string name="ClassBabyCare">Baby Care</string>
+    <string name="ClassOthers">Others</string>
 
     <!--Validation Error-->
     <string name="EmptyField">Please enter the field</string>

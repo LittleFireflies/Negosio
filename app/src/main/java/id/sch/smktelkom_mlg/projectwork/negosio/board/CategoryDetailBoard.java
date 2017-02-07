@@ -1,7 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -16,28 +16,31 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.adapter.EventAdapter;
+import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ProductAdapter;
+import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
-public class EventBoard extends AppCompatActivity {
-    private RecyclerView rvEvent;
-    private EventAdapter eventAdapter;
-    private ArrayList<Barang> listEvent = new ArrayList<>();
+public class CategoryDetailBoard extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private ProductAdapter adapter;
+    private ArrayList<Barang> listBarang = new ArrayList<>();
     private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_board);
+        setContentView(R.layout.activity_camera_board);
+        setTitle(getIntent().getStringExtra(CoverFlowAdapter.CATEGORY));
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView
-        rvEvent = (RecyclerView) findViewById(R.id.rvEvent);
+        recyclerView = (RecyclerView) findViewById(R.id.rvCamera);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        rvEvent.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         initializeData();
-        eventAdapter = new EventAdapter(listEvent);
-        rvEvent.setAdapter(eventAdapter);
+        adapter = new ProductAdapter(listBarang);
+        recyclerView.setAdapter(adapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -46,10 +49,10 @@ public class EventBoard extends AppCompatActivity {
         dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listEvent.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                listBarang.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                    if (map.get("category").equals("Event")) {
+                    if(map.get("category").equals(getIntent().getStringExtra(CoverFlowAdapter.CATEGORY))){
                         Barang obj = new Barang();
                         obj.setCategory(map.get("category"));
                         obj.setDescription(map.get("description"));
@@ -59,10 +62,10 @@ public class EventBoard extends AppCompatActivity {
                         obj.setUsername(map.get("username"));
                         obj.setDate(map.get("date"));
                         obj.setImg(map.get("img"));
-                        listEvent.add(obj);
+                        listBarang.add(obj);
                     }
                 }
-                eventAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override

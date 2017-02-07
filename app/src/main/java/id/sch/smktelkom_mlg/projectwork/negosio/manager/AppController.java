@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
@@ -58,5 +59,22 @@ public class AppController extends Application {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         _setDate = sdf.format(date);
         return _setDate;
+    }
+
+    public String numberTocurrency(Double nilai)
+    {
+//        double x =20000;
+        String currencyUI;
+        DecimalFormat format = new DecimalFormat("###,###,###,###,###");
+        currencyUI = format.format(nilai);
+        currencyUI = currencyUI.replace(",", ".");
+        return currencyUI;
+    }
+
+    public Double currencyTonumber(String nilai)
+    {
+        Double currencyDB;
+        currencyDB = Double.valueOf(nilai.replace(".",""));
+        return currencyDB;
     }
 }

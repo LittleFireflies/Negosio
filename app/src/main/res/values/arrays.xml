@@ -20,6 +20,7 @@
         <item>Per 12 Hour</item>
         <item>Per Day</item>
         <item>Per 3 Days</item>
+        <item>Per Month</item>
         <item>Per year</item>
     </string-array>
     <string-array name="places">

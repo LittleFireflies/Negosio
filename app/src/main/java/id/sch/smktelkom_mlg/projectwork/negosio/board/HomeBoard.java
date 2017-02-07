@@ -27,7 +27,6 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
-import id.sch.smktelkom_mlg.projectwork.negosio.model.Hotel;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
@@ -43,7 +42,6 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     private ArrayList<Kategori> listKategori = new ArrayList<>();
     private DatabaseReference dbRef;
 
-    ArrayList<Hotel> mList = new ArrayList<>();
     private String username = "";
     private TextView tvUsername;
     private int size = 0;

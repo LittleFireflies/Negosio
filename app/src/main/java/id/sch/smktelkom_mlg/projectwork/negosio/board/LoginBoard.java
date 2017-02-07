@@ -2,6 +2,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
@@ -51,7 +52,6 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ctx = getContext();
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -59,28 +59,17 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         loginHelper = new LoginHelper(realm);
         assignToView();
         onSetView();
-
-//        rootView.findViewById(R.id.etPassword).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                etPassword.setText("");
-//                etPassword.setHint("Password");
-//                etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//
-//
-//            }
-//        });
         return rootView;
+    }
+
+    private void onSetView() {
+        btnLogin.setOnClickListener(this);
     }
 
     private void assignToView() {
         etUsername = (EditText) rootView.findViewById(R.id.etUsername);
         etPassword = (EditText) rootView.findViewById(R.id.etPassword);
         btnLogin = (Button) rootView.findViewById(R.id.btnLogin);
-    }
-
-    private void onSetView() {
-        btnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -104,13 +93,11 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                             obj.setPassword(password);
                             loginHelper.logIn(obj);
 
-                            Toast.makeText(ctx, "Login Successfull", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ctx, "LoginBoard Successfull", Toast.LENGTH_SHORT).show();
 //                                ((MainActivity)ctx).displayView(R.string.ClassHome);
 
                             MainActivity mainActivity = (MainActivity) getActivity();
-                            if(mainActivity != null){
-                                mainActivity.refreshActivity();
-                            }
+                            mainActivity.refreshActivity();
                         } else {
                             Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                         }
@@ -148,5 +135,4 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
         return isValid;
     }
-
 }

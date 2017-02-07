@@ -6,21 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.BabyCareBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.EventBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.HeavyEquipmentBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.OthersBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.PropertyBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.TransportationBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
 import io.realm.Realm;
 
@@ -29,6 +21,8 @@ import io.realm.Realm;
  */
 
 public class CoverFlowAdapter extends BaseAdapter{
+    public static final int REQUEST_CODE = 123;
+    public static final String CATEGORY = "Category";
     private ArrayList<Kategori> kategori;
     private Context context;
     private Realm realm;
@@ -79,29 +73,32 @@ public class CoverFlowAdapter extends BaseAdapter{
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (name){
-                    case "Camera":
-                        context.startActivity(new Intent(context, CameraBoard.class));
-                        break;
-                    case "Transportation":
-                        context.startActivity(new Intent(context, TransportationBoard.class));
-                        break;
-                    case "Property":
-                        context.startActivity(new Intent(context, PropertyBoard.class));
-                        break;
-                    case "Event":
-                        context.startActivity(new Intent(context, EventBoard.class));
-                        break;
-                    case "Heavy Equipment":
-                        context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
-                        break;
-                    case "Baby Care":
-                        context.startActivity(new Intent(context, BabyCareBoard.class));
-                        break;
-                    case "Others":
-                        context.startActivity(new Intent(context, OthersBoard.class));
-                        break;
-                }
+                Intent intent = new Intent(context, CategoryDetailBoard.class);
+                intent.putExtra(CATEGORY, name);
+//                switch (name){
+//                    case "Camera":
+////                        context.startActivity(new Intent(context, CameraBoard.class));
+//                        break;
+//                    case "Transportation":
+//                        context.startActivity(new Intent(context, TransportationBoard.class));
+//                        break;
+//                    case "Property":
+//                        context.startActivity(new Intent(context, PropertyBoard.class));
+//                        break;
+//                    case "Event":
+//                        context.startActivity(new Intent(context, EventBoard.class));
+//                        break;
+//                    case "Heavy Equipment":
+//                        context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
+//                        break;
+//                    case "Baby Care":
+//                        context.startActivity(new Intent(context, BabyCareBoard.class));
+//                        break;
+//                    case "Others":
+//                        context.startActivity(new Intent(context, OthersBoard.class));
+//                        break;
+//                }
+                context.startActivity(intent);
             }
         };
     }

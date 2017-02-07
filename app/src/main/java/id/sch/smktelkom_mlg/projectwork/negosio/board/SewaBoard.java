@@ -5,10 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,32 +15,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.Utility;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import io.realm.Realm;
 
@@ -58,14 +49,18 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     EditText etProduct, etPrice, etDesc;
     Spinner spCategory, spType;
     Button btnAdd, btnAttach;
+    ImageView ivAttachment;
+    TextView tvDelete;
     Dialog dialog;
+    LinearLayout llAttachment;
     private DatabaseReference dbRef;
-    private StorageReference storeageRef;
+    private StorageReference storageRef;
     private Realm realm;
     private LoginHelper loginHelper;
     private String username  = MainActivity.getUserLogin();
     private ProgressDialog progressDialog;
     Uri downloadUri;
+    private boolean valid;
 
     public SewaBoard() {
         // Required empty public constructor
@@ -83,16 +78,16 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    private void
-    onSetView() {
+    private void onSetView() {
         btnAdd.setOnClickListener(this);
         btnAttach.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
     }
 
     private void assignToView() {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
-        storeageRef = FirebaseStorage.getInstance().getReference();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         controller = new AppController();
         realm = Realm.getDefaultInstance();
@@ -105,6 +100,9 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         spType = (Spinner) rootView.findViewById(R.id.sptype);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
         btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
+        ivAttachment = (ImageView) rootView.findViewById(R.id.ivAttachment);
+        tvDelete = (TextView) rootView.findViewById(R.id.tvDelete);
+        llAttachment = (LinearLayout) rootView.findViewById(R.id.llAttachment);
 
         etPrice.addTextChangedListener(new NumberTextWatcher(etPrice, "#,###", "currency", null));
 
@@ -122,7 +120,15 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             case R.id.btnAttach:
                 uploadImage();
                 break;
+            case R.id.tvDelete:
+                deleteImage();
+                break;
         }
+    }
+
+    private void deleteImage() {
+        llAttachment.setVisibility(View.GONE);
+        btnAttach.setEnabled(true);
     }
 
     private void uploadImage() {
@@ -168,7 +174,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             progressDialog.show();
 
             Uri uri = data.getData();
-            StorageReference filePath = storeageRef.child("Photos").child(username).child(uri.getLastPathSegment());
+            StorageReference filePath = storageRef.child("Photos").child(username).child(uri.getLastPathSegment());
             filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -176,6 +182,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
                     btnAttach.setEnabled(false);
                     progressDialog.dismiss();
+                    llAttachment.setVisibility(View.VISIBLE);
+                    PicassoClient.downloadImage(ctx, String.valueOf(downloadUri), ivAttachment);
                 }
             });
         }
@@ -187,7 +195,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             progressDialog.show();
 
             Uri uri = data.getData();
-            StorageReference filePath = storeageRef.child("Photos").child(username).child(uri.getLastPathSegment());
+            StorageReference filePath = storageRef.child("Photos").child(username).child(uri.getLastPathSegment());
             filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -195,17 +203,15 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                     Toast.makeText(ctx, "Upload Done", Toast.LENGTH_LONG).show();
                     btnAttach.setEnabled(false);
                     progressDialog.dismiss();
+                    llAttachment.setVisibility(View.VISIBLE);
+                    PicassoClient.downloadImage(ctx, String.valueOf(downloadUri), ivAttachment);
                 }
             });
         }
     }
 
     private void add() {
-        if (etProduct.getText().toString().equals("")
-                || etPrice.getText().toString().equals("")
-                || etDesc.getText().toString().equals("")) {
-            Toast.makeText(ctx, "Field Vacant", Toast.LENGTH_SHORT).show();
-        } else {
+        if (isValid()) {
             final String productname = etProduct.getText().toString().trim();
             final String price = etPrice.getText().toString().trim();
             final String description = etDesc.getText().toString().trim();
@@ -231,5 +237,38 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
 
             }
         }
+    }
+
+    public boolean isValid() {
+        valid = true;
+        String product_name = etProduct.getText().toString();
+        String price = etPrice.getText().toString();
+        String description = etDesc.getText().toString();
+
+        if(product_name.equals("")){
+            etProduct.setError(String.valueOf(R.string.EmptyField));
+            valid = false;
+        } else {
+            etProduct.setError(null);
+        }
+
+        if(price.equals("")){
+            etPrice.setError(String.valueOf(R.string.EmptyField));
+            valid = false;
+        } else {
+            etPrice.setError(null);
+        }
+
+        if(description.equals("")){
+            etDesc.setError(String.valueOf(R.string.EmptyField));
+            valid = false;
+        } else if(description.length() > 250){
+            etDesc.setError("Description Max. 250 characters");
+            valid = false;
+        } else {
+            etDesc.setError(null);
+        }
+
+        return valid;
     }
 }
