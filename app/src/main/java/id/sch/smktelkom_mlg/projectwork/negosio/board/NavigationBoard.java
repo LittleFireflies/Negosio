@@ -134,7 +134,6 @@ public class NavigationBoard extends Fragment implements View.OnClickListener{
     }
 
 
-
     public interface FragmentDrawerListener{
         void onDrawerItemSelected(View view, int position);
 

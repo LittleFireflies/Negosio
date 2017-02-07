@@ -1,6 +1,9 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -17,21 +21,28 @@ import id.sch.smktelkom_mlg.projectwork.negosio.board.NavigationBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
 import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.ServerManager;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationBoard.FragmentDrawerListener{
 
+    static ArrayList<UserLogin> login = new ArrayList<>();
+    private static LoginHelper loginHelper;
+    private static String userLogin;
     private Toolbar toolbar;
-    private NavigationBoard navigationBoard;
+    private NavigationView navigationBoard;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private LinearLayout navigationDrawer;
     private Realm realm;
-    private static LoginHelper loginHelper;
-    static ArrayList<UserLogin> login = new ArrayList<>();
-    private static String userLogin;
+    private Context ctx;
 
+    public static String getUserLogin() {
+        login = loginHelper.getUserLogin();
+        for (int i = 0; i < login.size(); i++) {
+            userLogin = login.get(i).getUsername();
+        }
+        return userLogin;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +55,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        ctx = getApplicationContext();
 
-        navigationBoard = (NavigationBoard) getSupportFragmentManager().findFragmentById(R.id.navigationFragment);
-        navigationBoard.setUp(R.id.navigationFragment, drawerLayout, toolbar);
-        navigationBoard.setFragmentDrawerListener(this);
+        navigationBoard = (NavigationView) findViewById(R.id.navigationFragment);
+        navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
         displayView(R.string.ClassHome);
 
         realm = Realm.getDefaultInstance();
@@ -69,18 +85,18 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        finish();
-    }
-
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu_main, menu);
 //        MenuActionBar menuActionBar = new MenuActionBar(this);
 //        return super.onCreateOptionsMenu(menu);
 //    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
@@ -95,14 +111,5 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     public void refreshActivity() {
         finish();
         startActivity(getIntent());
-    }
-
-
-    public static String getUserLogin() {
-        login = loginHelper.getUserLogin();
-        for (int i = 0; i < login.size(); i++) {
-            userLogin = login.get(i).getUsername();
-        }
-        return userLogin;
     }
 }
