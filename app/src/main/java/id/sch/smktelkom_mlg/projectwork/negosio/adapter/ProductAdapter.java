@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
@@ -38,28 +37,26 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 /**
- * Created by Dwi Enggar on 31/01/2017.
+ * Created by LittleFireflies on 28-Jan-17.
  */
 
-public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder> {
-    List<Barang> listOthers;
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>{
+    List<Barang> listProduct;
     View layout;
     private Context ctx;
     private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess;
     private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvType, dialog_btnBack;
     private ImageView dialog_ivImage;
     private EditText dialog_etFrom, dialog_etTo;
-    private Button dialog_btnSewa, dialog_back, dialog_btnYes, dialog_btnOk;
+    private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatabaseReference dbRef;
     private AppController controller;
     private String username = MainActivity.getUserLogin();
     private boolean valid;
-    private MainActivity mainActivity;
 
-
-    public OthersAdapter(List<Barang> param) {
-        listOthers = param;
+    public ProductAdapter(List<Barang> param){
+        listProduct = param;
     }
 
     @Override
@@ -112,6 +109,7 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
         dialog_etFrom = (EditText) dialogDetail.findViewById(R.id.etDateFrom);
         dialog_etTo = (EditText) dialogDetail.findViewById(R.id.etDateTo);
         dialog_btnSewa = (Button) dialogDetail.findViewById(R.id.btnSewa);
+        dialog_btnEdit = (Button) dialogDetail.findViewById(R.id.btnEdit);
 
         dialog_back = (Button) dialogUnlogged.findViewById(R.id.btnBack);
         dialog_btnYes = (Button) dialogConfirm.findViewById(R.id.btnYes);
@@ -121,29 +119,36 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.tvTitle.setText(listOthers.get(position).getProductname());
-        holder.tvPrice.setText(listOthers.get(position).getPrice());
-        holder.tvSeller.setText(listOthers.get(position).getUsername());
-        holder.tvDate.setText(listOthers.get(position).getDate());
-        PicassoClient.downloadImage(ctx, listOthers.get(position).getImg(), holder.ivImage);
+        holder.tvTitle.setText(listProduct.get(position).getProductname());
+        holder.tvPrice.setText(listProduct.get(position).getPrice());
+        holder.tvSeller.setText(listProduct.get(position).getUsername());
+        holder.tvDate.setText(listProduct.get(position).getDate());
+        PicassoClient.downloadImage(ctx, listProduct.get(position).getImg(), holder.ivImage);
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialogDetail.show();
-                dialog_tvUsername.setText(listOthers.get(position).getUsername());
-                dialog_tvDate.setText(listOthers.get(position).getDate());
-                dialog_tvTitle.setText(listOthers.get(position).getProductname());
-                dialog_tvDesc.setText(listOthers.get(position).getDescription());
-                dialog_tvPrice.setText(listOthers.get(position).getPrice());
-                dialog_tvType.setText(listOthers.get(position).getType());
+                dialog_tvUsername.setText(listProduct.get(position).getUsername());
+                dialog_tvDate.setText(listProduct.get(position).getDate());
+                dialog_tvTitle.setText(listProduct.get(position).getProductname());
+                dialog_tvDesc.setText(listProduct.get(position).getDescription());
+                dialog_tvPrice.setText(listProduct.get(position).getPrice());
+                dialog_tvType.setText(listProduct.get(position).getType());
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
-                PicassoClient.downloadImage(ctx, listOthers.get(position).getImg(), dialog_ivImage);
+                if(username != null && username.equals(dialog_tvUsername.getText().toString())){
+                    dialog_btnSewa.setVisibility(View.GONE);
+                    dialog_btnEdit.setVisibility(View.VISIBLE);
+                } else {
+                    dialog_btnSewa.setVisibility(View.VISIBLE);
+                    dialog_btnEdit.setVisibility(View.GONE);
+                }
+                PicassoClient.downloadImage(ctx, listProduct.get(position).getImg(), dialog_ivImage);
 
                 dialog_btnSewa.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         if (isValid(dialog_etFrom.getText().toString(), dialog_etTo.getText().toString())) {
                             final int time = calculateTime(dialog_tvType.getText().toString(), dialog_etFrom.getText().toString(), dialog_etTo.getText().toString());
                             double price = controller.currencyTonumber(dialog_tvPrice.getText().toString());
@@ -154,9 +159,9 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                                 dialog_btnYes.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        try {
+                                        try{
                                             Booking booking = new Booking();
-                                            booking.setTgl_booking(controller.getDate("dd MMMM yyyy hh:mm"));
+                                            booking.setTgl_booking(controller.getDate("dd MMMM yyyy HH:mm"));
                                             booking.setProduct_name(dialog_tvTitle.getText().toString());
                                             booking.setPrice("Rp. " + dialog_tvPrice.getText().toString() + " " + dialog_tvType.getText().toString());
                                             booking.setStart_date(dialog_etFrom.getText().toString());
@@ -177,7 +182,7 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                                                     ctx.startActivity(new Intent(ctx, MainActivity.class));
                                                 }
                                             });
-                                        } catch (Exception e) {
+                                        } catch (Exception e){
                                             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -202,7 +207,6 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                         }
                     }
                 });
-
                 dialog_etFrom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -227,7 +231,7 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                                         time.set(Calendar.YEAR, year);
                                         time.set(Calendar.HOUR_OF_DAY, hour);
                                         time.set(Calendar.MINUTE, minute);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy hh:mm");
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy HH:mm");
                                         dialog_etFrom.setText(sdf.format(time.getTime()));
 //                                        dialog_etFrom.setText(day + " " + (month+1) + " " + year + " " + hour + ":" + minute);
                                     }
@@ -238,10 +242,9 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                         datePickerDialog.show();
                     }
                 });
-
                 dialog_etTo.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         Calendar calendar = Calendar.getInstance();
                         mYear = calendar.get(Calendar.YEAR);
                         mMonth = calendar.get(Calendar.MONTH);
@@ -262,8 +265,9 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                                         time.set(Calendar.YEAR, year);
                                         time.set(Calendar.HOUR_OF_DAY, hour);
                                         time.set(Calendar.MINUTE, minute);
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy hh:mm");
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy HH:mm");
                                         dialog_etTo.setText(sdf.format(time.getTime()));
+//                                        dialog_etFrom.setText(day + " " + (month+1) + " " + year + " " + hour + ":" + minute);
                                     }
                                 }, mHour, mMinute, false);
                                 timePickerDialog.show();
@@ -274,11 +278,10 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
                 });
             }
         });
-
     }
 
     private int calculateTime(String type, String from, String to) {
-        SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy hh:mm");
+        SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy HH:mm");
         Date startDate = null;
         Date endDate = null;
         long difference = 0;
@@ -288,25 +291,29 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
 
             difference = endDate.getTime() - startDate.getTime();
             Log.d("TESTDATE", String.valueOf(difference));
-        } catch (Exception e) {
+        } catch (Exception e){
             Log.d("TESTDATE", e.getMessage());
         }
 
-        int hours = (int) TimeUnit.HOURS.convert(difference, TimeUnit.MILLISECONDS);
-        int days = (int) TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-        int months = (int) (TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS) / 30);
-        int years = months / 12;
-        switch (type) {
+//        int hours = (int) TimeUnit.HOURS.convert(difference, TimeUnit.MILLISECONDS);
+//        int days = (int) TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+//        int months = (int) (TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS) / 30);
+//        int years = months / 12;
+        int days = (int) (difference / (1000 * 60 * 60 * 24));
+        int hours = (int) (difference / (1000 * 60 * 60));
+        int months = days/30;
+        int years = months/12;
+        switch (type){
             case "Per Hour":
                 return hours;
             case "Per 3 Hour":
-                return hours / 3;
+                return hours/3;
             case "Per 12 Hour":
-                return hours / 12;
+                return hours/12;
             case "Per Day":
                 return days;
             case "Per 3 Days":
-                return days / 3;
+                return days/3;
             case "Per Month":
                 return months;
             case "Per year":
@@ -317,8 +324,8 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        if (listOthers != null) {
-            return listOthers.size();
+        if(listProduct != null){
+            return listProduct.size();
         } else {
             return 0;
         }
@@ -326,14 +333,14 @@ public class OthersAdapter extends RecyclerView.Adapter<OthersAdapter.ViewHolder
 
     public boolean isValid(String from, String to) {
         valid = true;
-        if (from.equals("")) {
+        if(from.equals("")){
             dialog_etFrom.setError("Please enter the field");
             valid = false;
         } else {
             dialog_etFrom.setError(null);
         }
 
-        if (to.equals("")) {
+        if(to.equals("")){
             dialog_etTo.setError("Please enter the field");
             valid = false;
         } else {

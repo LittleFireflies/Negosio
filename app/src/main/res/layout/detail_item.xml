@@ -151,5 +151,14 @@
             android:layout_centerInParent="true"
             android:text="Sewa Barang"
             android:textColor="@color/White"/>
+        <Button
+            android:visibility="gone"
+            android:id="@+id/btnEdit"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:background="@drawable/rounded_button_sewa"
+            android:layout_centerInParent="true"
+            android:text="Edit Barang"
+            android:textColor="@color/White"/>
     </RelativeLayout>
 </RelativeLayout>

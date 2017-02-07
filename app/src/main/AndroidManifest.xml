@@ -55,6 +55,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".board.CategoryDetailBoard"></activity>
     </application>
 
 </manifest>
