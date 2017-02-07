@@ -29,6 +29,7 @@ public class CameraBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_board);
+        setTitle(R.string.ClassCamera);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView

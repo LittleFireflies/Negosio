@@ -29,6 +29,7 @@ public class BabyCareBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby_care_board);
+        setTitle(R.string.ClassBabyCare);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView

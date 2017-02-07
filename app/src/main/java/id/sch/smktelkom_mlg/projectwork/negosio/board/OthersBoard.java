@@ -29,6 +29,7 @@ public class OthersBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_others_board);
+        setTitle(R.string.ClassOthers);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView

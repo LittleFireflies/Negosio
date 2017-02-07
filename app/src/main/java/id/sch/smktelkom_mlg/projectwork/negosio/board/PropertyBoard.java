@@ -29,6 +29,7 @@ public class PropertyBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_board);
+        setTitle(R.string.ClassProperty);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView

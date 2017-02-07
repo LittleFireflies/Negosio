@@ -29,6 +29,7 @@ public class EventBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_board);
+        setTitle(R.string.ClassEvent);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView
