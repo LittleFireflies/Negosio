@@ -30,6 +30,7 @@ public class TransportationBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transportation_board);
+        setTitle(R.string.ClassTransportation);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView

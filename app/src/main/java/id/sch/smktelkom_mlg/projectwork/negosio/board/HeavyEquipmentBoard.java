@@ -29,6 +29,7 @@ public class HeavyEquipmentBoard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heavy_equipment_board);
+        setTitle(R.string.ClassHeavyEquipment);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView
