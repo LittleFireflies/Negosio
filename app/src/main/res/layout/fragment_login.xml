@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#1a1044"
     tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.LoginBoard">
 
     <!-- TODO: Update blank fragment layout -->
@@ -13,8 +13,9 @@
         android:weightSum="1">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="180dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:layout_weight="0.19"
@@ -25,7 +26,7 @@
 
         android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -90,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button_white"
             android:backgroundTint="#fff"
             android:text="LOGIN" />

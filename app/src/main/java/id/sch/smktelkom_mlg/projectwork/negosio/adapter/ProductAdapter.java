@@ -120,7 +120,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTitle.setText(listProduct.get(position).getProductname());
-        holder.tvPrice.setText(listProduct.get(position).getPrice());
+        String type = listProduct.get(position).getType().substring(4);
+        holder.tvPrice.setText("Rp " + listProduct.get(position).getPrice() + "/" + type);
         holder.tvSeller.setText(listProduct.get(position).getUsername());
         holder.tvDate.setText(listProduct.get(position).getDate());
         PicassoClient.downloadImage(ctx, listProduct.get(position).getImg(), holder.ivImage);

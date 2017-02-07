@@ -2,19 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
     android:layout_height="200dp"
-    android:background="@drawable/rounded_background_category">
+    android:background="@drawable/rounded_background_category"
+    android:backgroundTint="#fff">
     <ImageView
+        android:id="@+id/ivCategory"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/placeholder"
-        android:id="@+id/ivCategory"
+        android:scaleType="centerCrop"
         />
+
     <TextView
         android:id="@+id/category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/ivCategory"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Category"
+        android:textColor="#1a1044"
         android:textSize="16sp"/>
 </RelativeLayout>
