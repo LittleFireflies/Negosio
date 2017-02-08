@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="city">
+        <item>Kota Malang</item>
+        <item>Kabupaten Malang</item>
+        <item>Kota Batu</item>
+    </string-array>
     <string-array name="category">
         <item>Camera</item>
         <item>Transportation</item>
