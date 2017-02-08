@@ -19,7 +19,7 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".model.SplashSreen"
+            android:name=".SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".board.CameraBoard" />
-        <activity android:name=".board.TransportationBoard" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -37,11 +35,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".board.PropertyBoard" />
-        <activity android:name=".board.EventBoard" />
-        <activity android:name=".board.HeavyEquipmentBoard" />
-        <activity android:name=".board.BabyCareBoard" />
-        <activity android:name=".board.OthersBoard" />
+        <activity android:name=".board.CategoryDetailBoard" />
         <activity
             android:name=".DrawerActivity"
             android:label="@string/title_activity_drawer"
