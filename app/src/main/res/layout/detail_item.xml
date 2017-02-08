@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp">
+    android:layout_marginTop="20dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rounded_background_detail">
+        android:background="#EEE9E9">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="2">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -21,144 +20,224 @@
                     android:id="@+id/ivDetail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="0dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/placeholder"/>
 
                 <TextView
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="31 January 2017"
-                    android:layout_margin="8dp"
-                    android:textColor="@color/White"/>
-                <TextView
-                    android:id="@+id/tvTextPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/llPrice"
-                    android:text="Price"
-                    android:textColor="@color/White"
-                    android:layout_marginTop="125dp"
-                    android:textSize="16sp"/>
-                <LinearLayout
-                    android:id="@+id/llPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_below="@+id/tvTextPrice"
-                    android:layout_alignParentEnd="true">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/White"
-                        android:text="Rp. "
-                        android:textSize="24sp"/>
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/White"
-                        android:text="100.000"
-                        android:textSize="24sp"/>
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/tvType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/llPrice"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:text="Per Day"
-                    android:textColor="@color/White"/>
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="31 January 2017"
+                    android:textAlignment="center"
+                    android:textColor="@color/White"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/tvDate"
+                    android:layout_alignEnd="@+id/tvDate"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Username"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textStyle="normal|bold"
+                    android:visibility="visible" />
+
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/White"
+                android:background="#EEE9E9"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Title"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/Black"/>
-                <TextView
-                    android:id="@+id/tvDesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor neque ac mauris ultrices semper a vel nunc. Pellentesque fringilla nulla id nisl porttitor, in viverra sapien lacinia. Morbi nibh diam, ornare ut nibh in, lacinia turpis duis."
-                    android:layout_marginBottom="10dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_background_category"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="280dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Title"
+                            android:textColor="@color/Black"
+                            android:textSize="12sp"
+                            android:textStyle="normal|bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/tvType"
+                        android:layout_alignParentEnd="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Rp "
+                            android:textColor="#1a1044"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="100.000"
+                            android:textColor="#1a1044"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tvType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="0.08"
+                            android:text="Per Day"
+                            android:textColor="#1a1044"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rounded_background_category"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/des"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Deskripsi"
+                        android:textAllCaps="false"
+                        android:textColor="@color/Black"
+                        android:textSize="14sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/tvDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor neque ac mauris ultrices semper a vel nunc. Pellentesque fringilla nulla id nisl porttitor, in viverra sapien lacinia. Morbi nibh diam, ornare ut nibh in, lacinia turpis duis."
+                        android:textColor="#1a1044" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lltanggal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginRight="10dp">
+                        android:orientation="horizontal">
+
                         <EditText
                             android:id="@+id/etDateFrom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="From"
-                            android:textSize="10sp"
+                            android:layout_weight="1"
+                            android:drawableRight="@drawable/icon_date"
                             android:editable="false"
+                            android:hint="From"
                             android:inputType="none"
-                            android:drawableRight="@drawable/icon_date"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="10dp">
+                            android:textSize="10sp" />
+
                         <EditText
                             android:id="@+id/etDateTo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none"
+                            android:layout_weight="1"
+                            android:drawableRight="@drawable/icon_date"
                             android:editable="false"
                             android:hint="To"
-                            android:textSize="10sp"
-                            android:drawableRight="@drawable/icon_date"/>
+                            android:inputType="none"
+                            android:textSize="10sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnSewa"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="30dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="1"
+                            android:background="#1a1044"
+                            android:text="Rent"
+                            android:textColor="@color/White" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="*Note :"
-                    android:textStyle="italic"/>
+
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_margin="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+
         <Button
-            android:id="@+id/btnSewa"
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:background="@drawable/rounded_button_sewa"
-            android:layout_centerInParent="true"
-            android:text="Sewa Barang"
-            android:textColor="@color/White"/>
-        <Button
-            android:visibility="gone"
             android:id="@+id/btnEdit"
             android:layout_width="200dp"
             android:layout_height="35dp"
-            android:background="@drawable/rounded_button_sewa"
             android:layout_centerInParent="true"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/rounded_button_sewa"
             android:text="Edit Barang"
-            android:textColor="@color/White"/>
+            android:textColor="@color/White"
+            android:visibility="gone" />
     </RelativeLayout>
-</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
