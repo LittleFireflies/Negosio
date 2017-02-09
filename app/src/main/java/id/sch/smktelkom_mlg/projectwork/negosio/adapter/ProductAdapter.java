@@ -115,12 +115,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_btnYes = (Button) dialogConfirm.findViewById(R.id.btnYes);
         dialog_btnBack = (TextView) dialogConfirm.findViewById(R.id.tvBack);
         dialog_btnOk = (Button) dialogSuccess.findViewById(R.id.btnOK);
+
+        dialogDetail.onBackPressed();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.tvTitle.setText(listProduct.get(position).getProductname());
-        String type = listProduct.get(position).getType().substring(4);
+        final String type = listProduct.get(position).getType().substring(4);
         holder.tvPrice.setText("Rp " + listProduct.get(position).getPrice() + "/" + type);
         holder.tvSeller.setText(listProduct.get(position).getUsername());
         holder.tvDate.setText(listProduct.get(position).getDate());
