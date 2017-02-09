@@ -74,6 +74,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@color/White"
+                android:padding="5dp"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/tvTitle"
@@ -88,6 +89,7 @@
                     android:id="@+id/tvDesc"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
+                    android:textSize="1sp"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum auctor neque ac mauris ultrices semper a vel nunc. Pellentesque fringilla nulla id nisl porttitor, in viverra sapien lacinia. Morbi nibh diam, ornare ut nibh in, lacinia turpis duis."
                     android:layout_marginBottom="10dp"/>
                 <LinearLayout

@@ -2,6 +2,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     private LinearLayout navigationDrawer;
     private Realm realm;
     private Context ctx;
+    private View header;
+    private TextView tvUsername, tvEmail;
 
     public static String getUserLogin() {
         login = loginHelper.getUserLogin();
@@ -57,24 +63,32 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         ctx = getApplicationContext();
-
+        realm = Realm.getDefaultInstance();
+        loginHelper = new LoginHelper(realm);
         navigationBoard = (NavigationView) findViewById(R.id.navigationFragment);
+        header = navigationBoard.getHeaderView(0);
+        tvUsername = (TextView)header.findViewById(R.id.tvUsername);
+        tvEmail = (TextView)header.findViewById(R.id.tvEmail);
+
+        setNavigatonMenu();
         navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-
-                if (id == R.id.nav_home) {
-                    displayView(R.string.ClassHome);
-                    // Handle the camera action
-                } else if (id == R.id.nav_sewa) {
-                    displayView(R.string.ClassSewa);
-                } else if (id == R.id.nav_transaksi) {
-                    displayView(R.string.ClassLogin);
-                } else if (id == R.id.nav_login) {
-                    displayView(R.string.ClassLogin);
-                } else if (id == R.id.nav_setting) {
-
+                switch (id){
+                    case R.id.nav_home:
+                        displayView(R.string.ClassHome);
+                        break;
+                    case R.id.nav_sewa:
+                        displayView(R.string.ClassSewa);
+                        break;
+                    case R.id.nav_login:
+                        displayView(R.string.ClassLogin);
+                        break;
+                    case R.id.nav_logout:
+                        loginHelper.logOut();
+                        finish();
+                        startActivity(getIntent());
                 }
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -82,9 +96,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
             }
         });
         displayView(R.string.ClassHome);
+    }
 
-        realm = Realm.getDefaultInstance();
-        loginHelper = new LoginHelper(realm);
+    private void setNavigatonMenu() {
+        Menu nav = navigationBoard.getMenu();
+        if(loginHelper.getUserLogin().size() == 1){
+            nav.findItem(R.id.nav_sewa).setVisible(true);
+            nav.findItem(R.id.nav_transaksi).setVisible(true);
+            nav.findItem(R.id.nav_login).setVisible(false);
+            nav.findItem(R.id.nav_logout).setVisible(true);
+            tvUsername.setText("User");
+            tvEmail.setText("Email User");
+        } else {
+            nav.findItem(R.id.nav_sewa).setVisible(false);
+            nav.findItem(R.id.nav_transaksi).setVisible(false);
+            nav.findItem(R.id.nav_login).setVisible(true);
+            nav.findItem(R.id.nav_logout).setVisible(false);
+        }
     }
 
     public void displayView(int titleDrawer) {
@@ -128,5 +156,27 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
     public void refreshActivity() {
         finish();
         startActivity(getIntent());
+    }
+
+    private boolean backPressedToExitOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedToExitOnce) {
+//            super.onBackPressed();
+//            logout();
+            finish();
+        } else {
+            this.backPressedToExitOnce = true;
+            Toast.makeText(this,"Press again to Exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    backPressedToExitOnce = false;
+                }
+            }, 2000);
+
+        }
     }
 }

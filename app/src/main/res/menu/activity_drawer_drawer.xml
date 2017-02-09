@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_transaksi"
             android:icon="@drawable/ic_compare_arrows_black_24dp"
-            android:title="Transaksi" />
+            android:title="Transaksi"/>
 
     </group>
 
@@ -23,6 +23,10 @@
                 android:id="@+id/nav_login"
                 android:icon="@drawable/ic_perm_contact_calendar_black_24dp1"
                 android:title="Masuk" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_perm_contact_calendar_black_24dp1"
+                android:title="Keluar"/>
             <item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_settings_black_24dp"

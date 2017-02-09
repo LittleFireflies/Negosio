@@ -30,7 +30,7 @@ public class CategoryDetailBoard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera_board);
+        setContentView(R.layout.activity_category_detail);
         setTitle(getIntent().getStringExtra(CoverFlowAdapter.CATEGORY));
 
         dbRef = FirebaseDatabase.getInstance().getReference();
