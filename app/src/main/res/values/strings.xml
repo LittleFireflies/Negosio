@@ -18,6 +18,8 @@
     <string name="ClassHeavyEquipment">Heavy Equipment</string>
     <string name="ClassBabyCare">Baby Care</string>
     <string name="ClassOthers">Others</string>
+    <string name="ClassTransaction">History Transaction</string>
+    <string name="ClassMyItem">My Item</string>
 
     <!--Validation Error-->
     <string name="EmptyField">Please enter the field</string>

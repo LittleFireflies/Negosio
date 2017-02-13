@@ -8,8 +8,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.HistoryTransactionBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HomeBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.LoginBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.MyItemBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.RegisterBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import io.realm.Realm;
@@ -47,6 +49,12 @@ public class AppController extends Application {
                 break;
             case R.string.ClassSewa:
                 fragment = new SewaBoard();
+                break;
+            case R.string.ClassTransaction:
+                fragment = new HistoryTransactionBoard();
+                break;
+            case R.string.ClassMyItem:
+                fragment = new MyItemBoard();
                 break;
         }
 

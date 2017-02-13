@@ -63,6 +63,7 @@ public class CoverFlowAdapter extends BaseAdapter{
         }
 
         viewHolder.categoryName.setText(kategori.get(position).getNama());
+        viewHolder.categoryTitle.setText(kategori.get(position).getNama());
         viewHolder.ivCategory.setImageResource(kategori.get(position).getPict());
 
         view.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
@@ -104,11 +105,12 @@ public class CoverFlowAdapter extends BaseAdapter{
     }
 
     private static class ViewHolder{
-        private TextView categoryName;
+        private TextView categoryName, categoryTitle;
         private ImageView ivCategory;
 //        private ImageButton btnCategory;
 
         public ViewHolder(View v){
+            categoryTitle = (TextView)v.findViewById(R.id.category_title);
             categoryName = (TextView)v.findViewById(R.id.category_name);
             ivCategory = (ImageView)v.findViewById(R.id.ivCategory);
         }

@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="150dp"
-    android:layout_height="200dp"
-    android:background="@drawable/rounded_background_category"
-    android:backgroundTint="#fff">
-    <ImageView
-        android:id="@+id/ivCategory"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/placeholder"
-        android:scaleType="centerCrop"
-        />
-
+    android:layout_height="250dp">
     <TextView
-        android:id="@+id/category_name"
+        android:id="@+id/category_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ivCategory"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_height="25dp"
         android:text="Category"
-        android:textColor="#1a1044"
-        android:textSize="16sp"/>
+        android:gravity="center"
+        android:textColor="@color/White"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:textSize="18sp"/>
+    <RelativeLayout
+        android:layout_below="@+id/category_title"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:background="@drawable/rounded_background_category"
+        android:backgroundTint="#fff">
+        <ImageView
+            android:id="@+id/ivCategory"
+            android:layout_below="@+id/category_title"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/placeholder"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivCategory"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="Category"
+            android:textColor="#1a1044"
+            android:textSize="16sp"/>
+    </RelativeLayout>
 </RelativeLayout>

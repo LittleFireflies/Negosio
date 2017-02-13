@@ -82,6 +82,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
                     case R.id.nav_sewa:
                         displayView(R.string.ClassSewa);
                         break;
+                    case R.id.nav_transaksi:
+                        displayView(R.string.ClassTransaction);
+                        break;
+                    case R.id.nav_myItem:
+                        displayView(R.string.ClassMyItem);
+                        break;
                     case R.id.nav_login:
                         displayView(R.string.ClassLogin);
                         break;

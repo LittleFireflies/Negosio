@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="Penyewaan" />
         <item
+            android:id="@+id/nav_myItem"
+            android:icon="@drawable/ic_dns_black_24dp"
+            android:title="Barang Saya"/>
+        <item
             android:id="@+id/nav_transaksi"
             android:icon="@drawable/ic_compare_arrows_black_24dp"
             android:title="Transaksi"/>
