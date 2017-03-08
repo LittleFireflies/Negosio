@@ -45,7 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     View layout;
     private Context ctx;
     private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess;
-    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvType, dialog_btnBack;
+    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvCategory, dialog_tvType, dialog_btnBack;
     private ImageView dialog_ivImage;
     private EditText dialog_etFrom, dialog_etTo;
     private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk;
@@ -105,6 +105,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_tvTitle = (TextView) dialogDetail.findViewById(R.id.tvTitle);
         dialog_tvDesc = (TextView) dialogDetail.findViewById(R.id.tvDesc);
         dialog_tvPrice = (TextView) dialogDetail.findViewById(R.id.tvPrice);
+        dialog_tvCategory = (TextView) dialogDetail.findViewById(R.id.tvCategory);
         dialog_tvType = (TextView) dialogDetail.findViewById(R.id.tvType);
         dialog_etFrom = (EditText) dialogDetail.findViewById(R.id.etDateFrom);
         dialog_etTo = (EditText) dialogDetail.findViewById(R.id.etDateTo);
@@ -137,6 +138,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 dialog_tvTitle.setText(listProduct.get(position).getProductname());
                 dialog_tvDesc.setText(listProduct.get(position).getDescription());
                 dialog_tvPrice.setText(listProduct.get(position).getPrice());
+                dialog_tvCategory.setText(listProduct.get(position).getCategory());
                 dialog_tvType.setText(listProduct.get(position).getType());
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
@@ -166,6 +168,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             Booking booking = new Booking();
                                             booking.setTgl_booking(controller.getDate("dd MMMM yyyy HH:mm"));
                                             booking.setProduct_name(dialog_tvTitle.getText().toString());
+                                            booking.setCategory(dialog_tvCategory.getText().toString());
                                             booking.setPrice("Rp. " + dialog_tvPrice.getText().toString() + " " + dialog_tvType.getText().toString());
                                             booking.setStart_date(dialog_etFrom.getText().toString());
                                             booking.setEnd_date(dialog_etTo.getText().toString());
@@ -173,6 +176,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             booking.setTotal(controller.numberTocurrency(total));
                                             booking.setBuyer(username);
                                             booking.setSeller(dialog_tvUsername.getText().toString());
+                                            booking.setImg(listProduct.get(position).getImg());
 
                                             dbRef.child("Booking").push().setValue(booking);
                                             dialogConfirm.dismiss();

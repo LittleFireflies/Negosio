@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 /**
  * Created by LittleFireflies on 11-Feb-17.
@@ -26,15 +27,15 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>{
     private View layout;
     private Context ctx;
     private DatabaseReference dbRef;
-    private ArrayList<Barang> listItem;
+    private ArrayList<Booking> listItem;
 
-    public BuyAdapter(ArrayList<Barang> param){
+    public BuyAdapter(ArrayList<Booking> param){
         listItem = param;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_item, parent, false);
+        layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_transaction, parent, false);
         ctx = parent.getContext();
         dbRef = FirebaseDatabase.getInstance().getReference();
         return new ViewHolder(layout);
@@ -42,11 +43,10 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvTitle.setText(listItem.get(position).getProductname());
-        holder.tvPrice.setText(listItem.get(position).getPrice());
-        holder.tvType.setText(listItem.get(position).getType());
+        holder.tvTitle.setText(listItem.get(position).getProduct_name());
+        holder.tvPrice.setText(listItem.get(position).getTotal());
         holder.tvCategory.setText(listItem.get(position).getCategory());
-        holder.tvDate.setText(listItem.get(position).getDate());
+        holder.tvDate.setText(listItem.get(position).getTgl_booking());
         PicassoClient.downloadImage(ctx, listItem.get(position).getImg(), holder.ivItem);
     }
 

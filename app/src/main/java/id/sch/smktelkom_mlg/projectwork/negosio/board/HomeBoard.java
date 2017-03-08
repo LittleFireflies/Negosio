@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +39,7 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     Context ctx;
     Realm realm;
     LoginHelper loginHelper;
+    EditText etSearch;
     private FeatureCoverFlow coverFlow;
     private CoverFlowAdapter coverFlowAdapter;
     private ArrayList<Kategori> listKategori = new ArrayList<>();
@@ -74,6 +77,7 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
 
     private void onSetView() {
 //        tvUsername.setText(String.valueOf(size));
+        etSearch.setOnClickListener(this);
     }
 
     private void assignToView() {
@@ -87,10 +91,11 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
 //        recyclerView.setAdapter(mAdapter);
         dbRef = FirebaseDatabase.getInstance().getReference();
         setDummyData();
-            coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
-            coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
-            coverFlow.setAdapter(coverFlowAdapter);
-            coverFlow.setOnScrollPositionListener(onScrollListener());
+        etSearch = (EditText) rootView.findViewById(R.id.etSearch);
+        coverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverFlow);
+        coverFlowAdapter = new CoverFlowAdapter(ctx, listKategori);
+        coverFlow.setAdapter(coverFlowAdapter);
+        coverFlow.setOnScrollPositionListener(onScrollListener());
 
 
 
@@ -121,38 +126,15 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
         listKategori.add(new Kategori("005", "Heavy Equipment", R.drawable.heavy_equipment));
         listKategori.add(new Kategori("006", "Baby Care", R.drawable.baby));
         listKategori.add(new Kategori("007", "Others", R.drawable.placeholder));
-//        dbRef.child("Kategori").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-////                listKategori.clear();
-//                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
-//                    String id = map.get("id");
-//                    String nama = map.get("nama");
-//                    String url = map.get("imgUrl");
-//
-//                    Kategori kategori = new Kategori();
-//                    kategori.setId(id);
-//                    kategori.setNama(nama);
-//                    kategori.setImgUrl(url);
-//                    kategoriHelper.setKategori(kategori);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        if(kategoriHelper.getKategori().size() <=0){
-//            setDummyData();
-//        }
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.etSearch:
+                ctx.startActivity(new Intent(ctx, SearchBoard.class));
+                break;
+        }
     }
 
     private void fillData() {

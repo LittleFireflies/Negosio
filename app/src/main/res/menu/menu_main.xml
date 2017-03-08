@@ -8,7 +8,9 @@
         <!--android:title="@string/action_settings"-->
         <!--app:showAsAction="never" />-->
     <item
-        android:id="@+id/actionbar_cart"
-        android:title="Cart"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Search"
         app:showAsAction="always"/>
+
 </menu>

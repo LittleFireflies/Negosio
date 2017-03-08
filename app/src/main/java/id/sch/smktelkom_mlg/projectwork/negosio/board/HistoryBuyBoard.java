@@ -26,6 +26,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.BuyAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ProductAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +36,7 @@ public class HistoryBuyBoard extends Fragment {
     private RecyclerView rvBuy;
     private BuyAdapter adapter;
     private DatabaseReference dbRef;
-    private ArrayList<Barang> listItem = new ArrayList<>();
+    private ArrayList<Booking> listItem = new ArrayList<>();
     private Context ctx;
     View rootView;
 
@@ -61,23 +62,26 @@ public class HistoryBuyBoard extends Fragment {
     }
 
     private void initializeData() {
-        dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+        dbRef.child("Booking").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listItem.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                    if(map.get("username").equals(MainActivity.getUserLogin())){
-                        Barang barang = new Barang();
-                        barang.setPrice(map.get("price"));
-                        barang.setProductname(map.get("productname"));
-                        barang.setUsername(map.get("username"));
-                        barang.setDate(map.get("date"));
-                        barang.setCategory(map.get("category"));
-                        barang.setType(map.get("type"));
-                        barang.setDescription(map.get("description"));
-                        barang.setImg(map.get("img"));
-                        listItem.add(barang);
+                    if(map.get("seller").equals(MainActivity.getUserLogin())){
+                        Booking booking = new Booking();
+                        booking.setProduct_name(map.get("product_name"));
+                        booking.setTotal(map.get("total"));
+                        booking.setCategory(map.get("category"));
+                        booking.setStart_date(map.get("start_date"));
+                        booking.setEnd_date(map.get("end_date"));
+                        booking.setPrice(map.get("price"));
+                        booking.setTime(map.get("time"));
+                        booking.setTgl_booking(map.get("tgl_booking"));
+                        booking.setBuyer(map.get("buyer"));
+                        booking.setSeller(map.get("seller"));
+                        booking.setImg(map.get("img"));
+                        listItem.add(booking);
                     }
                 }
                 adapter.notifyDataSetChanged();

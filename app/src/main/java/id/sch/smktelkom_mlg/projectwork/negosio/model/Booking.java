@@ -14,6 +14,8 @@ public class Booking {
     String total;
     String buyer;
     String seller;
+    String category;
+    String img;
 
     public String getTgl_booking() {
         return tgl_booking;
@@ -85,5 +87,21 @@ public class Booking {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
