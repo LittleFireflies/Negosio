@@ -27,18 +27,13 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
-import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Kategori;
-import io.realm.Realm;
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 public class HomeBoard extends Fragment implements View.OnClickListener{
 
     View rootView;
     Context ctx;
-    Realm realm;
-    LoginHelper loginHelper;
     EditText etSearch;
     private FeatureCoverFlow coverFlow;
     private CoverFlowAdapter coverFlowAdapter;
@@ -59,36 +54,16 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_board, container, false);
         ctx = getContext();
-        realm = Realm.getDefaultInstance();
-        loginHelper = new LoginHelper(realm);
         assignToView();
-        getUserData();
         onSetView();
         return rootView;
     }
 
-    private void getUserData() {
-        ArrayList<UserLogin> result = loginHelper.getUserLogin();
-        size = result.size();
-        for(int i=0; i<result.size(); i++){
-            username = result.get(i).getUsername();
-        }
-    }
-
     private void onSetView() {
-//        tvUsername.setText(String.valueOf(size));
         etSearch.setOnClickListener(this);
     }
 
     private void assignToView() {
-        //tvUsername = (TextView) rootView.findViewById(R.id.tvUser);
-        //Script recycle view;
-
-//        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-//        GridLayoutManager layoutManager = new GridLayoutManager(ctx, 2);
-//        recyclerView.setLayoutManager(layoutManager);
-//        mAdapter = new HotelAdapter(mList);
-//        recyclerView.setAdapter(mAdapter);
         dbRef = FirebaseDatabase.getInstance().getReference();
         setDummyData();
         etSearch = (EditText) rootView.findViewById(R.id.etSearch);

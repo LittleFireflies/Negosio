@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Beranda" />
+            android:title="Home" />
         <item
             android:id="@+id/nav_sewa"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Penyewaan" />
+            android:title="Start Renting" />
         <item
             android:id="@+id/nav_myItem"
             android:icon="@drawable/ic_dns_black_24dp"
-            android:title="Barang Saya"/>
+            android:title="My Item"/>
         <item
             android:id="@+id/nav_transaksi"
             android:icon="@drawable/ic_compare_arrows_black_24dp"
-            android:title="Transaksi"/>
+            android:title="My Transaction"/>
 
     </group>
 
@@ -26,15 +26,19 @@
             <item
                 android:id="@+id/nav_login"
                 android:icon="@drawable/ic_perm_contact_calendar_black_24dp1"
-                android:title="Masuk" />
+                android:title="Log In" />
+            <item
+                android:id="@+id/nav_register"
+                android:icon="@drawable/ic_person_add_black_24dp"
+                android:title="Register"/>
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_perm_contact_calendar_black_24dp1"
-                android:title="Keluar"/>
+                android:title="Log Out"/>
             <item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_settings_black_24dp"
-                android:title="Pengaturan" />
+                android:title="Setting" />
         </menu>
     </item>
 

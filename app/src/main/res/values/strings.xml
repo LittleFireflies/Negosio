@@ -20,6 +20,7 @@
     <string name="ClassOthers">Others</string>
     <string name="ClassTransaction">History Transaction</string>
     <string name="ClassMyItem">My Item</string>
+    <string name="ClassProfile">My Profile</string>
 
     <!--Validation Error-->
     <string name="EmptyField">Please enter the field</string>

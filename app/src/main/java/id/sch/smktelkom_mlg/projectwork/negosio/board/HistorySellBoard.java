@@ -23,6 +23,7 @@ import java.util.Map;
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.BuyAdapter;
+import id.sch.smktelkom_mlg.projectwork.negosio.adapter.SellAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 /**
@@ -31,7 +32,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 public class HistorySellBoard extends Fragment {
 
     private RecyclerView rvSell;
-    private BuyAdapter adapter;
+    private SellAdapter adapter;
     private DatabaseReference dbRef;
     private ArrayList<Booking> listItem = new ArrayList<>();
     private Context ctx;
@@ -58,7 +59,7 @@ public class HistorySellBoard extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         rvSell.setLayoutManager(layoutManager);
         initializeData();
-        adapter = new BuyAdapter(listItem);
+        adapter = new SellAdapter(listItem);
         rvSell.setAdapter(adapter);
         return rootView;
     }
@@ -70,7 +71,7 @@ public class HistorySellBoard extends Fragment {
                 listItem.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                    if(map.get("buyer").equals(MainActivity.getUserLogin())){
+                    if(map.get("seller").equals(MainActivity.getUserLogin())){
                         Booking booking = new Booking();
                         booking.setProduct_name(map.get("product_name"));
                         booking.setTotal(map.get("total"));

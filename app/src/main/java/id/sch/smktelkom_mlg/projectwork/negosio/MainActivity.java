@@ -1,6 +1,5 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,11 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,35 +20,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import id.sch.smktelkom_mlg.projectwork.negosio.board.NavigationBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
-import io.realm.Realm;
 
-public class MainActivity extends AppCompatActivity implements NavigationBoard.FragmentDrawerListener{
+public class MainActivity extends AppCompatActivity {
 
-    static ArrayList<UserLogin> login = new ArrayList<>();
-    private static LoginHelper loginHelper;
-    private static String userLogin;
     private Toolbar toolbar;
     private NavigationView navigationBoard;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private LinearLayout navigationDrawer;
-    private Realm realm;
+    private LinearLayout navigationDrawer, llProfile;
     private Context ctx;
     private View header;
     private TextView tvUsername, tvEmail;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseUser user;
 
     public static String getUserLogin() {
-        login = loginHelper.getUserLogin();
-        for (int i = 0; i < login.size(); i++) {
-            userLogin = login.get(i).getUsername();
-        }
-        return userLogin;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return user!=null?user.getDisplayName():"";
     }
 
     @Override
@@ -66,12 +56,20 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         ctx = getApplicationContext();
-        realm = Realm.getDefaultInstance();
-        loginHelper = new LoginHelper(realm);
+        auth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         navigationBoard = (NavigationView) findViewById(R.id.navigationFragment);
         header = navigationBoard.getHeaderView(0);
         tvUsername = (TextView)header.findViewById(R.id.tvUsername);
         tvEmail = (TextView)header.findViewById(R.id.tvEmail);
+        llProfile = (LinearLayout)header.findViewById(R.id.llProfile);
+
+        llProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayView(R.string.ClassProfile);
+            }
+        });
 
         setNavigatonMenu();
         navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -94,8 +92,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
                     case R.id.nav_login:
                         displayView(R.string.ClassLogin);
                         break;
+                    case R.id.nav_register:
+                        displayView(R.string.ClassRegister);
+                        break;
                     case R.id.nav_logout:
-                        loginHelper.logOut();
+                        auth.signOut();
                         finish();
                         startActivity(getIntent());
                         break;
@@ -110,18 +111,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
 
     private void setNavigatonMenu() {
         Menu nav = navigationBoard.getMenu();
-        if(loginHelper.getUserLogin().size() == 1){
+        if(user != null){
             nav.findItem(R.id.nav_sewa).setVisible(true);
             nav.findItem(R.id.nav_transaksi).setVisible(true);
             nav.findItem(R.id.nav_login).setVisible(false);
             nav.findItem(R.id.nav_logout).setVisible(true);
-            tvUsername.setText("User");
-            tvEmail.setText("Email User");
+            nav.findItem(R.id.nav_myItem).setVisible(true);
+            nav.findItem(R.id.nav_register).setVisible(false);
+            tvUsername.setText(getUserLogin());
+            tvEmail.setText(user.getEmail());
         } else {
             nav.findItem(R.id.nav_sewa).setVisible(false);
             nav.findItem(R.id.nav_transaksi).setVisible(false);
             nav.findItem(R.id.nav_login).setVisible(true);
             nav.findItem(R.id.nav_logout).setVisible(false);
+            nav.findItem(R.id.nav_myItem).setVisible(false);
+            nav.findItem(R.id.nav_register).setVisible(true);
         }
     }
 
@@ -140,44 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBoard.F
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        MenuItem search = menu.findItem(R.id.action_search);
-//
-//        if(search != null) {
-//            SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-//            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//                @Override
-//                public boolean onClose() {
-//                    return false;
-//                }
-//            });
-//            searchView.setOnSearchClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
-//        }
-//
-//        return true;
-//    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         finish();
-    }
-
-    @Override
-    public void onDrawerItemSelected(View view, int position) {
-        String title = "sample";
-    }
-
-    @Override
-    public void onDrawerProfileSelected(View view) {
-
     }
 
     public void refreshActivity() {

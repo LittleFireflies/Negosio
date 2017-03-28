@@ -30,12 +30,10 @@ import com.google.firebase.storage.UploadTask;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
-import io.realm.Realm;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,8 +53,6 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     LinearLayout llAttachment;
     private DatabaseReference dbRef;
     private StorageReference storageRef;
-    private Realm realm;
-    private LoginHelper loginHelper;
     private String username  = MainActivity.getUserLogin();
     private ProgressDialog progressDialog;
     Uri downloadUri;
@@ -90,8 +86,6 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         storageRef = FirebaseStorage.getInstance().getReference();
 
         controller = new AppController();
-        realm = Realm.getDefaultInstance();
-        loginHelper = new LoginHelper(realm);
 
         etProduct = (EditText) rootView.findViewById(R.id.etProduct);
         etPrice = (EditText) rootView.findViewById(R.id.etPrice);

@@ -68,7 +68,7 @@ public class HistoryBuyBoard extends Fragment {
                 listItem.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                    if(map.get("seller").equals(MainActivity.getUserLogin())){
+                    if(map.get("buyer").equals(MainActivity.getUserLogin())){
                         Booking booking = new Booking();
                         booking.setProduct_name(map.get("product_name"));
                         booking.setTotal(map.get("total"));

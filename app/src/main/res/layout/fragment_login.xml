@@ -38,14 +38,14 @@
             android:src="@drawable/ic_person_black_24dp" />
 
         <EditText
-            android:id="@+id/etUsername"
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
 
 
             android:ems="10"
-            android:hint="Username"
+            android:hint="Email"
             android:inputType="textPersonName"
             android:textColor="#fff"
             android:textColorHint="@color/White" />
@@ -95,5 +95,25 @@
             android:background="@drawable/rounded_button_white"
             android:backgroundTint="#fff"
             android:text="LOGIN" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:textColor="@color/White"/>
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create One"
+                android:textColor="@color/White"
+                android:textStyle="bold"/>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

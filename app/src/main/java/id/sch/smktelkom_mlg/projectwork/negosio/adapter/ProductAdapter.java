@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,13 +48,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private Context ctx;
     private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess;
     private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvCategory, dialog_tvType, dialog_btnBack;
-    private ImageView dialog_ivImage;
+    private ImageView dialog_ivImage, dialog_ivBack;
     private EditText dialog_etFrom, dialog_etTo;
     private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatabaseReference dbRef;
     private AppController controller;
-    private String username = MainActivity.getUserLogin();
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private boolean valid;
 
     public ProductAdapter(List<Barang> param){
@@ -111,6 +113,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_etTo = (EditText) dialogDetail.findViewById(R.id.etDateTo);
         dialog_btnSewa = (Button) dialogDetail.findViewById(R.id.btnSewa);
         dialog_btnEdit = (Button) dialogDetail.findViewById(R.id.btnEdit);
+        dialog_ivBack = (ImageView) dialogDetail.findViewById(R.id.ivBack);
 
         dialog_back = (Button) dialogUnlogged.findViewById(R.id.btnBack);
         dialog_btnYes = (Button) dialogConfirm.findViewById(R.id.btnYes);
@@ -142,7 +145,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 dialog_tvType.setText(listProduct.get(position).getType());
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
-                if(username != null && username.equals(dialog_tvUsername.getText().toString())){
+                if(user != null && user.getDisplayName().equals(dialog_tvUsername.getText().toString())){
                     dialog_btnSewa.setVisibility(View.GONE);
                     dialog_btnEdit.setVisibility(View.VISIBLE);
                 } else {
@@ -151,6 +154,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 }
                 PicassoClient.downloadImage(ctx, listProduct.get(position).getImg(), dialog_ivImage);
 
+                dialog_ivBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogDetail.dismiss();
+                    }
+                });
                 dialog_btnSewa.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -159,7 +168,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                             double price = controller.currencyTonumber(dialog_tvPrice.getText().toString());
                             final double total = time * price;
 
-                            if (username != null) {
+                            if (user != null) {
                                 dialogConfirm.show();
                                 dialog_btnYes.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -174,7 +183,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             booking.setEnd_date(dialog_etTo.getText().toString());
                                             booking.setTime(String.valueOf(time));
                                             booking.setTotal(controller.numberTocurrency(total));
-                                            booking.setBuyer(username);
+                                            booking.setBuyer(user.getDisplayName());
                                             booking.setSeller(dialog_tvUsername.getText().toString());
                                             booking.setImg(listProduct.get(position).getImg());
 

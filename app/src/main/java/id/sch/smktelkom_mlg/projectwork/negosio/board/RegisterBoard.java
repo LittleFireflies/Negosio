@@ -1,8 +1,10 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -12,9 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,8 +52,10 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     ArrayAdapter<String> adapterKota;
     ArrayAdapter<String> spinnerArrayAdapter;
     private DatabaseReference dbRef;
+    private FirebaseAuth auth;
     private Spinner spCity, spSub;
     private Button btnRegister;
+    private ProgressDialog progressDialog;
 
     public RegisterBoard() {
         // Required empty public constructor
@@ -115,6 +124,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     private void assignToView() {
         //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
 
         etUsername = (EditText) rootView.findViewById(R.id.etUsername);
         etName = (EditText) rootView.findViewById(R.id.etName);
@@ -126,6 +136,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
         spSub = (Spinner) rootView.findViewById(R.id.spKecamatan);
 
         btnRegister = (Button) rootView.findViewById(R.id.btnRegister);
+        progressDialog = new ProgressDialog(ctx);
 
         String[] city = new String[]{
                 "Kota Malang",
@@ -141,6 +152,8 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnRegister:
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
                 register();
                 break;
         }
@@ -156,7 +169,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             final String phone = etPhone.getText().toString().trim();
             final String location = spSub.getSelectedItem().toString() + ", " + spCity.getSelectedItem().toString();
 
-            UserRegistration userRegistration = new UserRegistration();
+            final UserRegistration userRegistration = new UserRegistration();
             userRegistration.setUsername(username);
             userRegistration.setName(name);
             userRegistration.setPassword(Base64.encodeToString(password.getBytes(), Base64.DEFAULT));
@@ -164,9 +177,24 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             userRegistration.setPhone(phone);
             userRegistration.setLocation(location);
 
-            dbRef.child("User").child(username).setValue(userRegistration);
-            Toast.makeText(ctx, "Register Success", Toast.LENGTH_SHORT).show();
-            ((MainActivity)ctx).displayView(R.string.ClassLogin);
+
+
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        progressDialog.dismiss();
+                        Toast.makeText(ctx, "Registration Failed." + task.getException(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        progressDialog.dismiss();
+                        dbRef.child("User").push().setValue(userRegistration);
+                        Toast.makeText(ctx, "Register Success", Toast.LENGTH_SHORT).show();
+                        ((MainActivity)ctx).displayView(R.string.ClassLogin);
+                    }
+                }
+            });
+
+
         }
     }
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="125dp">
+    android:layout_height="130dp">
     <LinearLayout
+        android:id="@+id/llItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
@@ -23,18 +24,20 @@
                 android:text="title"
                 android:textColor="@color/Black"
                 android:textSize="20sp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="10dp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="Total"/>
+                    android:text="Total"
+                    android:textSize="13sp"/>
                 <TextView
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text=" : "/>
+                    android:text=" : "
+                    android:textSize="13sp"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,13 +48,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Rp. "
-                        android:textSize="16sp"/>
+                        android:textSize="14sp"/>
                     <TextView
                         android:id="@+id/tvPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="18.000"
-                        android:textSize="16sp"/>
+                        android:textSize="14sp"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -60,16 +63,19 @@
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="Category"/>
+                    android:text="Category"
+                    android:textSize="13sp"/>
                 <TextView
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text=" : "/>
+                    android:text=" : "
+                    android:textSize="13sp"/>
                 <TextView
                     android:id="@+id/tvCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ClassCamera"/>
+                    android:text="@string/ClassCamera"
+                    android:textSize="13sp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -77,16 +83,39 @@
                 <TextView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="Posted On"/>
+                    android:text="Book Date"
+                    android:textSize="13sp"/>
                 <TextView
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text=" : "/>
+                    android:text=" : "
+                    android:textSize="13sp"/>
                 <TextView
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="01 January 2017"/>
+                    android:text="01 January 2017"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="Seller"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/tvSeller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seller Name"
+                    android:textSize="13sp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

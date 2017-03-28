@@ -15,8 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ViewPagerAdapter;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
-import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,8 +54,8 @@ public class HistoryTransactionBoard extends Fragment {
 
     private void setupViewPaget(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(new HistoryBuyBoard(), "ONE");
-        adapter.addFragment(new HistorySellBoard(), "TWO");
+        adapter.addFragment(new HistoryBuyBoard(), "Items In");
+        adapter.addFragment(new HistorySellBoard(), "Items Out");
         viewPager.setAdapter(adapter);
     }
 

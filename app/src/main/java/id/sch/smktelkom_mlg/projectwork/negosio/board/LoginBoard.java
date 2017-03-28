@@ -1,11 +1,14 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,10 +34,6 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.database.UserLogin;
-import id.sch.smktelkom_mlg.projectwork.negosio.helper.LoginHelper;
-import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
-import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,12 +42,13 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
     View rootView;
     Context ctx;
-    ArrayList<UserRegistration> listUser = new ArrayList<>();
     private DatabaseReference dbRef;
-    private LoginHelper loginHelper;
-    private Realm realm;
-    private EditText etUsername, etPassword;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private EditText etEmail, etPassword;
+    private TextView tvRegister;
     private Button btnLogin;
+    private ProgressDialog progressDialog;
 
     public LoginBoard() {
         // Required empty public constructor
@@ -55,8 +61,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ctx = getContext();
         dbRef = FirebaseDatabase.getInstance().getReference();
-        realm = Realm.getDefaultInstance();
-        loginHelper = new LoginHelper(realm);
+        auth = FirebaseAuth.getInstance();
         assignToView();
         onSetView();
         return rootView;
@@ -64,45 +69,83 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
     private void onSetView() {
         btnLogin.setOnClickListener(this);
+        tvRegister.setOnClickListener(this);
     }
 
     private void assignToView() {
-        etUsername = (EditText) rootView.findViewById(R.id.etUsername);
+        progressDialog = new ProgressDialog(ctx);
+        etEmail = (EditText) rootView.findViewById(R.id.etEmail);
         etPassword = (EditText) rootView.findViewById(R.id.etPassword);
+        tvRegister = (TextView) rootView.findViewById(R.id.tvRegister);
         btnLogin = (Button) rootView.findViewById(R.id.btnLogin);
     }
 
     @Override
     public void onClick(View view) {
-        final String username = etUsername.getText().toString().trim();
-        final String password = etPassword.getText().toString().trim();
-        final String[] tampil = {""};
+        switch (view.getId()){
+            case R.id.btnLogin:
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
+                doLogin();
+                break;
+            case R.id.tvRegister:
+                ((MainActivity)ctx).displayView(R.string.ClassRegister);
+                break;
+        }
+    }
 
-        if(isValid(username, password)){
-            dbRef.child("User").child(username).addValueEventListener(new ValueEventListener() {
+    private void doLogin() {
+        final String email = etEmail.getText().toString().trim();
+        final String password = etPassword.getText().toString().trim();
+
+        if(isValid(email, password)){
+            dbRef.child("User").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    try {
-                        Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
-                        String dbUsername = map.get("username");
-                        String dbPassword = new String(Base64.decode(map.get("password"), Base64.DEFAULT));
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        final Map<String, String> dataUser = (Map<String, String>) snapshot.getValue();
+                        if(email.equals(dataUser.get("email"))){
+                            try {
+                                final String dbUsername = dataUser.get("username");
+                                final String dbPassword = new String(Base64.decode(dataUser.get("password"), Base64.DEFAULT));
+                                final String dbEmail = dataUser.get("email");
 
-                        if(dbUsername.equals(username) && dbPassword.equals(password)){
-                            UserLogin obj = new UserLogin();
-                            obj.setUsername(username);
-                            obj.setPassword(password);
-                            loginHelper.logIn(obj);
+                                if(dbEmail.equals(email) && dbPassword.equals(password)){
 
-                            Toast.makeText(ctx, "LoginBoard Successfull", Toast.LENGTH_SHORT).show();
-//                                ((MainActivity)ctx).displayView(R.string.ClassHome);
 
-                            MainActivity mainActivity = (MainActivity) getActivity();
-                            mainActivity.refreshActivity();
-                        } else {
-                            Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
+                                    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if(!task.isSuccessful()){
+                                                progressDialog.dismiss();
+                                                Toast.makeText(ctx, "Login Failed : " + task.getException(), Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                progressDialog.dismiss();
+                                                user = auth.getCurrentUser();
+                                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                        .setDisplayName(dbUsername)
+                                                        .build();
+                                                user.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+
+                                                            MainActivity mainActivity = (MainActivity) getActivity();
+                                                            mainActivity.refreshActivity();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e){
+                                e.printStackTrace();
+//                                Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    } catch (Exception e){
-                        Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -119,10 +162,10 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
         //validation username
         if(username.equals("")){
-            etUsername.setError("Please enter your username");
+            etEmail.setError("Please enter your username");
             isValid = false;
         } else {
-            etUsername.setError(null);
+            etEmail.setError(null);
         }
 
         //validation password
