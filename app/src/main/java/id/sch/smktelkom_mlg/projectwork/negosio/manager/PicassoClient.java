@@ -19,4 +19,12 @@ public class PicassoClient {
             Picasso.with(ctx).load(R.drawable.placeholder).into(imageView);
         }
     }
+
+    public static void downloadProfilePict(Context ctx, String url, ImageView imageView){
+        if(url != null && url.length()>0){
+            Picasso.with(ctx).load(url).fit().centerCrop().placeholder(R.drawable.no_profile).into(imageView);
+        } else {
+            Picasso.with(ctx).load(R.drawable.no_profile).into(imageView);
+        }
+    }
 }

@@ -22,11 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
@@ -54,6 +59,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     private DatabaseReference dbRef;
     private StorageReference storageRef;
     private String username  = MainActivity.getUserLogin();
+    private String location;
     private ProgressDialog progressDialog;
     Uri downloadUri;
     private boolean valid;
@@ -78,6 +84,22 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         btnAdd.setOnClickListener(this);
         btnAttach.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(username)){
+                        location = map.get(location);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void assignToView() {
@@ -91,7 +113,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         etPrice = (EditText) rootView.findViewById(R.id.etPrice);
         etDesc = (EditText) rootView.findViewById(R.id.etDesc);
         spCategory = (Spinner) rootView.findViewById(R.id.spCategory);
-        spType = (Spinner) rootView.findViewById(R.id.sptype);
+        spType = (Spinner) rootView.findViewById(R.id.spType);
         btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
         btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
         ivAttachment = (ImageView) rootView.findViewById(R.id.ivAttachment);
@@ -223,6 +245,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 barang.setUsername(username);
                 barang.setDate(controller.getDate("dd MMMM yyyy"));
                 barang.setImg(String.valueOf(downloadUri));
+                barang.setLocation(location);
 
                 dbRef.child("Barang").push().setValue(barang);
                 Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();

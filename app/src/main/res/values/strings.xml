@@ -21,6 +21,8 @@
     <string name="ClassTransaction">History Transaction</string>
     <string name="ClassMyItem">My Item</string>
     <string name="ClassProfile">My Profile</string>
+    <string name="ClassEditProfile">Edit Profile</string>
+    <string name="ClassSetting">Setting</string>
 
     <!--Validation Error-->
     <string name="EmptyField">Please enter the field</string>
@@ -121,4 +123,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_profile_board">ProfileBoard</string>
 </resources>

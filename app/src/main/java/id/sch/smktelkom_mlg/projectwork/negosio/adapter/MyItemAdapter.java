@@ -9,15 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
@@ -31,9 +39,12 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
     private Context ctx;
     private DatabaseReference dbRef;
     private ArrayList<Barang> listItem;
-    private Dialog dialogDetail;
-    private TextView dialog_tvTitle, dialog_tvPrice, dialog_tvType, dialog_tvCategory, dialog_tvDesc, dialog_tvDate, dialog_tvUsername;
-    private ImageView dialog_ivItem, dialog_ivBack;
+    private Dialog dialogDetail, dialogDelete, dialogEdit;
+    private TextView dialog_tvTitle, dialog_tvPrice, dialog_tvType, dialog_tvCategory, dialog_tvDesc, dialog_tvDate, dialog_tvUsername, dialog_tvBack, dialog_tvEditUsername, dialog_tvEditDate;
+    private ImageView dialog_ivItem, dialog_ivBack, dialog_ivEditImage;
+    private Button dialog_btnEdit, dialog_btnDelete, dialog_btnYes, dialog_btnSaveEdit;
+    private EditText dialog_etTitle, dialog_etPrice, dialog_etDesc;
+    private Spinner dialog_spType, dialog_spCategory;
 
     public MyItemAdapter(ArrayList<Barang> param){
         listItem = param;
@@ -56,6 +67,20 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
         dialogDetail.setCanceledOnTouchOutside(false);
         dialogDetail.onBackPressed();
 
+        dialogDelete = new Dialog(ctx);
+        dialogDelete.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogDelete.setContentView(R.layout.dialog_delete);
+        dialogDelete.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogDelete.setCanceledOnTouchOutside(false);
+        dialogDelete.onBackPressed();
+
+        dialogEdit = new Dialog(ctx);
+        dialogEdit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogEdit.setContentView(R.layout.detail_edit_item);
+        dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogEdit.setCanceledOnTouchOutside(false);
+        dialogEdit.onBackPressed();
+
         dialog_ivBack = (ImageView) dialogDetail.findViewById(R.id.ivBack);
         dialog_tvTitle = (TextView) dialogDetail.findViewById(R.id.tvTitle);
         dialog_tvPrice = (TextView) dialogDetail.findViewById(R.id.tvPrice);
@@ -65,6 +90,21 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
         dialog_tvUsername = (TextView) dialogDetail.findViewById(R.id.tvUsername);
         dialog_tvDate = (TextView) dialogDetail.findViewById(R.id.tvDate);
         dialog_ivItem = (ImageView) dialogDetail.findViewById(R.id.ivDetail);
+        dialog_btnEdit = (Button) dialogDetail.findViewById(R.id.btnEdit);
+        dialog_btnDelete = (Button) dialogDetail.findViewById(R.id.btnDelete);
+        dialog_btnYes = (Button) dialogDelete.findViewById(R.id.btnYes);
+        dialog_tvBack = (TextView) dialogDelete.findViewById(R.id.tvBack);
+
+        dialog_etTitle = (EditText) dialogEdit.findViewById(R.id.etTitle);
+        dialog_etPrice = (EditText) dialogEdit.findViewById(R.id.etPrice);
+        dialog_spType = (Spinner) dialogEdit.findViewById(R.id.spType);
+        dialog_spCategory = (Spinner) dialogEdit.findViewById(R.id.spCategory);
+        dialog_etDesc = (EditText) dialogEdit.findViewById(R.id.etDesc);
+        dialog_btnSaveEdit = (Button) dialogEdit.findViewById(R.id.btnSaveEdit);
+        dialog_ivBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
+        dialog_tvEditDate = (TextView) dialogEdit.findViewById(R.id.tvEditDate);
+        dialog_tvEditUsername = (TextView) dialogEdit.findViewById(R.id.tvEditUsername);
+        dialog_ivEditImage = (ImageView) dialogEdit.findViewById(R.id.ivEditDetail);
     }
 
     @Override
@@ -91,6 +131,89 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
                     @Override
                     public void onClick(View view) {
                         dialogDetail.dismiss();
+                    }
+                });
+                dialog_btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogDelete.show();
+                        dialog_btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                            if(map.get("productname").equals(dialog_tvTitle.getText().toString())
+                                                    && map.get("username").equals(dialog_tvUsername.getText().toString())
+                                                    && map.get("price").equals(dialog_tvPrice.getText().toString())
+                                                    && map.get("date").equals(dialog_tvDate.getText().toString())){
+                                                dbRef.child("Barang").child(snapshot.getKey()).setValue(null);
+                                                dialogDelete.dismiss();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+                        dialog_tvBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialogDelete.dismiss();
+                            }
+                        });
+                    }
+                });
+                dialog_btnEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogEdit.show();
+                        dialogDetail.dismiss();
+                        dialog_etTitle.setText(dialog_tvTitle.getText().toString());
+                        dialog_etPrice.setText(dialog_tvPrice.getText().toString());
+                        dialog_etDesc.setText(dialog_tvDesc.getText().toString());
+                        dialog_tvEditUsername.setText(dialog_tvUsername.getText().toString());
+                        dialog_tvEditDate.setText(dialog_tvDate.getText().toString());
+                        dialog_btnSaveEdit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+
+                                            if (map.get("username").equals(MainActivity.getUserLogin())
+                                                    && map.get("productname").equals(dialog_tvTitle.getText().toString())
+                                                    && map.get("date").equals(dialog_tvEditDate.getText().toString())) {
+                                                Barang obj = new Barang();
+                                                obj.setProductname(dialog_etTitle.getText().toString());
+                                                obj.setPrice(dialog_etPrice.getText().toString());
+                                                obj.setType(dialog_spType.getSelectedItem().toString());
+                                                obj.setCategory(dialog_spCategory.getSelectedItem().toString());
+                                                obj.setDescription(dialog_etDesc.getText().toString());
+                                                obj.setDate(map.get("date"));
+                                                obj.setUsername(map.get("username"));
+                                                obj.setImg(map.get("img"));
+                                                dbRef.child("Barang").child(snapshot.getKey()).setValue(obj);
+                                                dialogEdit.dismiss();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }

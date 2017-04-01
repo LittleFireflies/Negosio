@@ -16,6 +16,8 @@ public class Booking {
     String seller;
     String category;
     String img;
+    String key;
+    String token;
 
     public String getTgl_booking() {
         return tgl_booking;
@@ -103,5 +105,21 @@ public class Booking {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

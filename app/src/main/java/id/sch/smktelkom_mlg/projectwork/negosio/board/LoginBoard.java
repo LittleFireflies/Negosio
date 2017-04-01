@@ -4,6 +4,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio.board;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,9 @@ import java.util.Map;
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 
+import static android.content.Context.MODE_PRIVATE;
+import static id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService.MY_PREFERENCE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -49,6 +53,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
     private TextView tvRegister;
     private Button btnLogin;
     private ProgressDialog progressDialog;
+    String token;
 
     public LoginBoard() {
         // Required empty public constructor
@@ -62,6 +67,8 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         ctx = getContext();
         dbRef = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
+        SharedPreferences pref = ctx.getSharedPreferences(MY_PREFERENCE, MODE_PRIVATE);
+        token = pref.getString("token", "");
         assignToView();
         onSetView();
         return rootView;
@@ -102,7 +109,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
             dbRef.child("User").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for(final DataSnapshot snapshot : dataSnapshot.getChildren()){
                         final Map<String, String> dataUser = (Map<String, String>) snapshot.getValue();
                         if(email.equals(dataUser.get("email"))){
                             try {
@@ -111,8 +118,6 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                                 final String dbEmail = dataUser.get("email");
 
                                 if(dbEmail.equals(email) && dbPassword.equals(password)){
-
-
                                     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -129,7 +134,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if(task.isSuccessful()){
-
+                                                            dbRef.child("User").child(snapshot.getKey()).child("token").setValue(token);
                                                             MainActivity mainActivity = (MainActivity) getActivity();
                                                             mainActivity.refreshActivity();
                                                         }
@@ -139,11 +144,13 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                                         }
                                     });
                                 } else {
+                                    progressDialog.dismiss();
                                     Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (Exception e){
+                                progressDialog.dismiss();
                                 e.printStackTrace();
-//                                Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

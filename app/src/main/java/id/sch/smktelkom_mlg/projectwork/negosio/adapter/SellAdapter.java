@@ -82,7 +82,7 @@ public class SellAdapter extends RecyclerView.Adapter<SellAdapter.ViewHolder>{
         holder.tvPrice.setText(listItem.get(position).getTotal());
         holder.tvCategory.setText(listItem.get(position).getCategory());
         holder.tvDate.setText(listItem.get(position).getTgl_booking());
-        holder.tvBuyer.setText(listItem.get(position).getSeller());
+        holder.tvBuyer.setText(listItem.get(position).getBuyer());
         PicassoClient.downloadImage(ctx, listItem.get(position).getImg(), holder.ivItem);
         holder.llItem.setOnClickListener(new View.OnClickListener() {
             @Override

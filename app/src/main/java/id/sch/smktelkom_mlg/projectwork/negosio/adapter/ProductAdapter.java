@@ -2,11 +2,16 @@ package id.sch.smktelkom_mlg.projectwork.negosio.adapter;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,22 +22,32 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
@@ -45,17 +60,22 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>{
     List<Barang> listProduct;
     View layout;
-    private Context ctx;
-    private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess;
-    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvDate, dialog_tvPrice, dialog_tvCategory, dialog_tvType, dialog_btnBack;
-    private ImageView dialog_ivImage, dialog_ivBack;
+    private static Context ctx;
+    private Dialog dialogDetail, dialogUnlogged, dialogConfirm, dialogSuccess, dialogEdit;
+    private TextView dialog_tvUsername, dialog_tvTitle, dialog_tvDesc, dialog_tvLocation, dialog_tvDate, dialog_tvPrice, dialog_tvCategory, dialog_tvType, dialog_btnBack, dialog_tvEditUsername, dialog_tvEditDate;
+    private EditText dialog_etTitle, dialog_etPrice, dialog_etDesc;
+    private Spinner dialog_spType, dialog_spCategory;
+    private ImageView dialog_ivImage, dialog_ivBack, dialog_ivEditImage, dialog_IvEditBack, dialog_ivChangePict;
     private EditText dialog_etFrom, dialog_etTo;
-    private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk;
+    private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk, dialog_btnSaveEdit;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatabaseReference dbRef;
+    private static StorageReference storageRef;
     private AppController controller;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private boolean valid;
+    private static ProgressDialog progressDialog;
+    private String sellerToken;
 
     public ProductAdapter(List<Barang> param){
         listProduct = param;
@@ -66,6 +86,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_category, parent, false);
         ctx = parent.getContext();
         controller = new AppController();
+        progressDialog = new ProgressDialog(ctx);
+        storageRef = FirebaseStorage.getInstance().getReference();
         dbRef = FirebaseDatabase.getInstance().getReference();
         setDialog();
 
@@ -101,11 +123,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialogSuccess.setCanceledOnTouchOutside(false);
         dialogSuccess.onBackPressed();
 
+        dialogEdit = new Dialog(ctx);
+        dialogEdit.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogEdit.setContentView(R.layout.detail_edit_item);
+        dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogEdit.setCanceledOnTouchOutside(false);
+        dialogEdit.onBackPressed();
+
         dialog_tvUsername = (TextView) dialogDetail.findViewById(R.id.tvUsername);
         dialog_ivImage = (ImageView) dialogDetail.findViewById(R.id.ivDetail);
         dialog_tvDate = (TextView) dialogDetail.findViewById(R.id.tvDate);
         dialog_tvTitle = (TextView) dialogDetail.findViewById(R.id.tvTitle);
         dialog_tvDesc = (TextView) dialogDetail.findViewById(R.id.tvDesc);
+        dialog_tvLocation = (TextView) dialogDetail.findViewById(R.id.tvLocation);
         dialog_tvPrice = (TextView) dialogDetail.findViewById(R.id.tvPrice);
         dialog_tvCategory = (TextView) dialogDetail.findViewById(R.id.tvCategory);
         dialog_tvType = (TextView) dialogDetail.findViewById(R.id.tvType);
@@ -114,6 +144,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_btnSewa = (Button) dialogDetail.findViewById(R.id.btnSewa);
         dialog_btnEdit = (Button) dialogDetail.findViewById(R.id.btnEdit);
         dialog_ivBack = (ImageView) dialogDetail.findViewById(R.id.ivBack);
+
+        dialog_etTitle = (EditText) dialogEdit.findViewById(R.id.etTitle);
+        dialog_etPrice = (EditText) dialogEdit.findViewById(R.id.etPrice);
+        dialog_spType = (Spinner) dialogEdit.findViewById(R.id.spType);
+        dialog_spCategory = (Spinner) dialogEdit.findViewById(R.id.spCategory);
+        dialog_etDesc = (EditText) dialogEdit.findViewById(R.id.etDesc);
+        dialog_btnSaveEdit = (Button) dialogEdit.findViewById(R.id.btnSaveEdit);
+        dialog_ivBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
+        dialog_ivChangePict = (ImageView) dialogEdit.findViewById(R.id.btnChangeImage);
+        dialog_tvEditDate = (TextView) dialogEdit.findViewById(R.id.tvEditDate);
+        dialog_tvEditUsername = (TextView) dialogEdit.findViewById(R.id.tvEditUsername);
+        dialog_ivEditImage = (ImageView) dialogEdit.findViewById(R.id.ivEditDetail);
 
         dialog_back = (Button) dialogUnlogged.findViewById(R.id.btnBack);
         dialog_btnYes = (Button) dialogConfirm.findViewById(R.id.btnYes);
@@ -141,11 +183,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 dialog_tvTitle.setText(listProduct.get(position).getProductname());
                 dialog_tvDesc.setText(listProduct.get(position).getDescription());
                 dialog_tvPrice.setText(listProduct.get(position).getPrice());
+                dialog_tvLocation.setText(listProduct.get(position).getLocation());
                 dialog_tvCategory.setText(listProduct.get(position).getCategory());
                 dialog_tvType.setText(listProduct.get(position).getType());
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
-                if(user != null && user.getDisplayName().equals(dialog_tvUsername.getText().toString())){
+                getSellerToken(listProduct.get(position).getUsername());
+//                while(sellerToken == null){
+//                   try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    //Wait for data got
+//                }
+
+                if (user != null && user.getDisplayName().equals(dialog_tvUsername.getText().toString())) {
                     dialog_btnSewa.setVisibility(View.GONE);
                     dialog_btnEdit.setVisibility(View.VISIBLE);
                 } else {
@@ -173,7 +226,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                 dialog_btnYes.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        try{
+                                        try {
                                             Booking booking = new Booking();
                                             booking.setTgl_booking(controller.getDate("dd MMMM yyyy HH:mm"));
                                             booking.setProduct_name(dialog_tvTitle.getText().toString());
@@ -186,6 +239,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             booking.setBuyer(user.getDisplayName());
                                             booking.setSeller(dialog_tvUsername.getText().toString());
                                             booking.setImg(listProduct.get(position).getImg());
+                                            booking.setToken(sellerToken);
 
                                             dbRef.child("Booking").push().setValue(booking);
                                             dialogConfirm.dismiss();
@@ -198,7 +252,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                                     ctx.startActivity(new Intent(ctx, MainActivity.class));
                                                 }
                                             });
-                                        } catch (Exception e){
+                                        } catch (Exception e) {
                                             Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -223,6 +277,54 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                         }
                     }
                 });
+
+                dialog_btnEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogEdit.show();
+                        dialogDetail.dismiss();
+                        dialog_etTitle.setText(dialog_tvTitle.getText().toString());
+                        dialog_etPrice.setText(dialog_tvPrice.getText().toString());
+                        dialog_etDesc.setText(dialog_tvDesc.getText().toString());
+                        dialog_tvEditUsername.setText(dialog_tvUsername.getText().toString());
+                        dialog_tvEditDate.setText(dialog_tvDate.getText().toString());
+                        dialog_btnSaveEdit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+
+                                            if (map.get("username").equals(MainActivity.getUserLogin())
+                                                    && map.get("productname").equals(dialog_tvTitle.getText().toString())
+                                                    && map.get("date").equals(dialog_tvEditDate.getText().toString())) {
+                                                Barang obj = new Barang();
+                                                obj.setProductname(dialog_etTitle.getText().toString());
+                                                obj.setPrice(dialog_etPrice.getText().toString());
+                                                obj.setType(dialog_spType.getSelectedItem().toString());
+                                                obj.setCategory(dialog_spCategory.getSelectedItem().toString());
+                                                obj.setDescription(dialog_etDesc.getText().toString());
+                                                obj.setDate(map.get("date"));
+                                                obj.setUsername(map.get("username"));
+                                                obj.setImg(map.get("img"));
+                                                dbRef.child("Barang").child(snapshot.getKey()).setValue(obj);
+                                                dialogEdit.dismiss();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
                 dialog_etFrom.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -364,6 +466,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
 
         return valid;
+    }
+
+    public void getSellerToken(final String username) {
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(username)){
+                        sellerToken = map.get("token");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -20,7 +20,7 @@
         android:paddingTop="30dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/ivProfile"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentStart="true"
@@ -32,7 +32,7 @@
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imageView"
+            android:layout_toRightOf="@+id/ivProfile"
             android:text="android.studio@android.com"
             android:textColor="#fff"
             android:textSize="20dp" />
@@ -48,6 +48,7 @@
         android:text="+ Sewa barang" />
 
     <Button
+        android:id="@+id/btnEditProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -77,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imageView1"
             android:layout_weight="0.94"
-            android:text="Nama"
+            android:text=""
             android:textSize="20dp" />
     </LinearLayout>
 
@@ -102,7 +103,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imageView1"
             android:layout_weight="0.94"
-            android:text="Email"
+            android:text=""
             android:textSize="20dp" />
     </LinearLayout>
 
@@ -127,7 +128,31 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/imageView1"
             android:layout_weight="0.94"
-            android:text="Telepon"
+            android:text=""
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_location_on_black_24dp" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/imageView1"
+            android:layout_weight="0.94"
+            android:text=""
             android:textSize="20dp" />
     </LinearLayout>
 

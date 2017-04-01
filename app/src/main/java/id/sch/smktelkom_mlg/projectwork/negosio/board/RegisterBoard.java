@@ -34,6 +34,7 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 /**

@@ -18,6 +18,7 @@ public class Barang {
     public String username;
     public String date;
     public String img;
+    public String location;
 
     public String getProductname() {
         return productname;
@@ -81,5 +82,13 @@ public class Barang {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

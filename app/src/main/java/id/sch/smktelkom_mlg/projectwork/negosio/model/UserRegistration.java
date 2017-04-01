@@ -11,6 +11,8 @@ public class UserRegistration {
     private String email;
     private String phone;
     private String location;
+    private String pict;
+    private String token;
 
     public UserRegistration() {
     }
@@ -61,5 +63,21 @@ public class UserRegistration {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPict() {
+        return pict;
+    }
+
+    public void setPict(String pict) {
+        this.pict = pict;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

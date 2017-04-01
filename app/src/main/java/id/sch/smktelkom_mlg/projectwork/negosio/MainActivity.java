@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,17 +14,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private Context ctx;
     private View header;
     private TextView tvUsername, tvEmail;
+    private ImageView ivProfilePict, ivLogo;
+    private DatabaseReference dbRef;
     private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser user;
 
     public static String getUserLogin() {
@@ -56,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         ctx = getApplicationContext();
+        dbRef = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         navigationBoard = (NavigationView) findViewById(R.id.navigationFragment);
@@ -63,11 +78,14 @@ public class MainActivity extends AppCompatActivity {
         tvUsername = (TextView)header.findViewById(R.id.tvUsername);
         tvEmail = (TextView)header.findViewById(R.id.tvEmail);
         llProfile = (LinearLayout)header.findViewById(R.id.llProfile);
+        ivProfilePict = (ImageView)header.findViewById(R.id.ivProfilePict);
+        ivLogo = (ImageView)header.findViewById(R.id.ivLogo);
 
         llProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 displayView(R.string.ClassProfile);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -100,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         startActivity(getIntent());
                         break;
+                    case R.id.nav_setting:
+                        displayView(R.string.ClassSetting);
+                        break;
                 }
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -112,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
     private void setNavigatonMenu() {
         Menu nav = navigationBoard.getMenu();
         if(user != null){
+            ivLogo.setVisibility(View.GONE);
+            ivProfilePict.setVisibility(View.VISIBLE);
             nav.findItem(R.id.nav_sewa).setVisible(true);
             nav.findItem(R.id.nav_transaksi).setVisible(true);
             nav.findItem(R.id.nav_login).setVisible(false);
@@ -120,7 +143,26 @@ public class MainActivity extends AppCompatActivity {
             nav.findItem(R.id.nav_register).setVisible(false);
             tvUsername.setText(getUserLogin());
             tvEmail.setText(user.getEmail());
+            dbRef.child("User").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                        if(map.get("username").equals(getUserLogin())){
+                            PicassoClient.downloadProfilePict(ctx, map.get("pict"), ivProfilePict);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         } else {
+            ivLogo.setVisibility(View.VISIBLE);
+            ivProfilePict.setVisibility(View.GONE);
+            llProfile.setEnabled(false);
             nav.findItem(R.id.nav_sewa).setVisible(false);
             nav.findItem(R.id.nav_transaksi).setVisible(false);
             nav.findItem(R.id.nav_login).setVisible(true);

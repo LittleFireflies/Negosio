@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.manager;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -31,9 +32,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
 
     private void showNotification(Map<String, String> payload) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle(payload.get("username"));
-        builder.setContentText(payload.get("email"));
+        builder.setSmallIcon(R.mipmap.icon_negosio);
+        builder.setContentTitle(payload.get("title"));
+        builder.setContentText(payload.get("content"));
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(payload.get("content")));
+        builder.setAutoCancel(true);
+        builder.setDefaults(Notification.DEFAULT_ALL);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

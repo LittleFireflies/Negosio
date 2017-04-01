@@ -8,12 +8,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.EditProfileBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HistoryTransactionBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.HomeBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.LoginBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.MyItemBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.ProfileBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.RegisterBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.SettingBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -26,13 +28,6 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("negosio")
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(config);
 
     }
 
@@ -60,6 +55,12 @@ public class AppController extends Application {
                 break;
             case R.string.ClassProfile:
                 fragment = new ProfileBoard();
+                break;
+            case R.string.ClassEditProfile:
+                fragment = new EditProfileBoard();
+                break;
+            case R.string.ClassSetting:
+                fragment = new SettingBoard();
                 break;
         }
 

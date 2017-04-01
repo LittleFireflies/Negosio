@@ -27,7 +27,7 @@
             android:layout_weight="0.44"
             android:text="Category"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <Spinner
             android:id="@+id/spCategory"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content">
 
             <Spinner
-                android:id="@+id/sptype"
+                android:id="@+id/spType"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:entries="@array/type" />
@@ -94,6 +94,13 @@
                 android:hint="Product Description"
                 android:maxLength="250"
                 android:inputType="textMultiLine" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:text="*Max. 250 characters"
+                android:textSize="11sp" />
         </android.support.design.widget.TextInputLayout>
         <TextView
             android:id="@+id/tvAttachment"

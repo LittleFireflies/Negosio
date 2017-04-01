@@ -50,7 +50,6 @@ public class CoverFlowAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View view, ViewGroup patrnt) {
         final ViewHolder viewHolder;
-        realm = Realm.getDefaultInstance();
 
         if(view == null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
