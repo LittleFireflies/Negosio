@@ -49,6 +49,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
@@ -162,7 +163,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_btnBack = (TextView) dialogConfirm.findViewById(R.id.tvBack);
         dialog_btnOk = (Button) dialogSuccess.findViewById(R.id.btnOK);
 
-        dialogDetail.onBackPressed();
+        dialog_etPrice.addTextChangedListener(new NumberTextWatcher(dialog_etPrice, "#,###", "currency", null));
     }
 
     @Override

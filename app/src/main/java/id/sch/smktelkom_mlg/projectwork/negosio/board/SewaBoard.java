@@ -90,7 +90,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
                     if(map.get("username").equals(username)){
-                        location = map.get(location);
+                        location = map.get("location");
                     }
                 }
             }

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
@@ -105,6 +106,8 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
         dialog_tvEditDate = (TextView) dialogEdit.findViewById(R.id.tvEditDate);
         dialog_tvEditUsername = (TextView) dialogEdit.findViewById(R.id.tvEditUsername);
         dialog_ivEditImage = (ImageView) dialogEdit.findViewById(R.id.ivEditDetail);
+
+        dialog_etPrice.addTextChangedListener(new NumberTextWatcher(dialog_etPrice, "#,###", "currency", null));
     }
 
     @Override
