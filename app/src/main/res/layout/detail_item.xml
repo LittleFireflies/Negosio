@@ -318,10 +318,23 @@
                             android:layout_centerInParent="true"
                             android:layout_marginBottom="30dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
+                            android:layout_marginRight="10dp"
                             android:layout_weight="1"
                             android:background="@color/colorPrimary"
                             android:text="Rent"
+                            android:visibility="gone"
+                            android:textColor="@color/White" />
+                        <Button
+                            android:id="@+id/btnCall"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="1"
+                            android:background="@color/LimeGreen"
+                            android:text="Call the Owner"
                             android:visibility="gone"
                             android:textColor="@color/White" />
                         <Button

@@ -100,7 +100,7 @@ public class HomeBoard extends Fragment implements View.OnClickListener{
         listKategori.add(new Kategori("004", "Event", R.drawable.event));
         listKategori.add(new Kategori("005", "Heavy Equipment", R.drawable.heavy_equipment));
         listKategori.add(new Kategori("006", "Baby Care", R.drawable.baby));
-        listKategori.add(new Kategori("007", "Others", R.drawable.placeholder));
+        listKategori.add(new Kategori("007", "Others", R.drawable.other));
     }
 
     @Override

@@ -19,6 +19,7 @@ public class Barang {
     public String date;
     public String img;
     public String location;
+    public String phone;
 
     public String getProductname() {
         return productname;
@@ -90,5 +91,13 @@ public class Barang {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

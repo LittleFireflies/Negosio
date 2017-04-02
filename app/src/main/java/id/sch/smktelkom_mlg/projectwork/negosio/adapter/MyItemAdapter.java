@@ -42,7 +42,7 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
     private ArrayList<Barang> listItem;
     private Dialog dialogDetail, dialogDelete, dialogEdit;
     private TextView dialog_tvTitle, dialog_tvPrice, dialog_tvType, dialog_tvCategory, dialog_tvDesc, dialog_tvDate, dialog_tvUsername, dialog_tvBack, dialog_tvEditUsername, dialog_tvEditDate;
-    private ImageView dialog_ivItem, dialog_ivBack, dialog_ivEditImage;
+    private ImageView dialog_ivItem, dialog_ivBack, dialog_ivEditImage, dialog_ivEditBack;
     private Button dialog_btnEdit, dialog_btnDelete, dialog_btnYes, dialog_btnSaveEdit;
     private EditText dialog_etTitle, dialog_etPrice, dialog_etDesc;
     private Spinner dialog_spType, dialog_spCategory;
@@ -102,7 +102,7 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
         dialog_spCategory = (Spinner) dialogEdit.findViewById(R.id.spCategory);
         dialog_etDesc = (EditText) dialogEdit.findViewById(R.id.etDesc);
         dialog_btnSaveEdit = (Button) dialogEdit.findViewById(R.id.btnSaveEdit);
-        dialog_ivBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
+        dialog_ivEditBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
         dialog_tvEditDate = (TextView) dialogEdit.findViewById(R.id.tvEditDate);
         dialog_tvEditUsername = (TextView) dialogEdit.findViewById(R.id.tvEditUsername);
         dialog_ivEditImage = (ImageView) dialogEdit.findViewById(R.id.ivEditDetail);
@@ -183,6 +183,12 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
                         dialog_etDesc.setText(dialog_tvDesc.getText().toString());
                         dialog_tvEditUsername.setText(dialog_tvUsername.getText().toString());
                         dialog_tvEditDate.setText(dialog_tvDate.getText().toString());
+                        dialog_ivEditBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialogEdit.dismiss();
+                            }
+                        });
                         dialog_btnSaveEdit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

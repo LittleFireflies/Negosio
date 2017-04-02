@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.adapter;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -7,10 +8,12 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,7 +61,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
  * Created by LittleFireflies on 28-Jan-17.
  */
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>{
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     List<Barang> listProduct;
     View layout;
     private static Context ctx;
@@ -68,7 +71,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private Spinner dialog_spType, dialog_spCategory;
     private ImageView dialog_ivImage, dialog_ivBack, dialog_ivEditImage, dialog_IvEditBack, dialog_ivChangePict;
     private EditText dialog_etFrom, dialog_etTo;
-    private Button dialog_btnSewa, dialog_btnEdit, dialog_back, dialog_btnYes, dialog_btnOk, dialog_btnSaveEdit;
+    private Button dialog_btnSewa, dialog_btnEdit, dialog_btnCall, dialog_back, dialog_btnYes, dialog_btnOk, dialog_btnSaveEdit;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private DatabaseReference dbRef;
     private static StorageReference storageRef;
@@ -78,7 +81,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private static ProgressDialog progressDialog;
     private String sellerToken;
 
-    public ProductAdapter(List<Barang> param){
+    public ProductAdapter(List<Barang> param) {
         listProduct = param;
     }
 
@@ -144,6 +147,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_etTo = (EditText) dialogDetail.findViewById(R.id.etDateTo);
         dialog_btnSewa = (Button) dialogDetail.findViewById(R.id.btnSewa);
         dialog_btnEdit = (Button) dialogDetail.findViewById(R.id.btnEdit);
+        dialog_btnCall = (Button) dialogDetail.findViewById(R.id.btnCall);
         dialog_ivBack = (ImageView) dialogDetail.findViewById(R.id.ivBack);
 
         dialog_etTitle = (EditText) dialogEdit.findViewById(R.id.etTitle);
@@ -152,7 +156,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         dialog_spCategory = (Spinner) dialogEdit.findViewById(R.id.spCategory);
         dialog_etDesc = (EditText) dialogEdit.findViewById(R.id.etDesc);
         dialog_btnSaveEdit = (Button) dialogEdit.findViewById(R.id.btnSaveEdit);
-        dialog_ivBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
+        dialog_IvEditBack = (ImageView) dialogEdit.findViewById(R.id.ivBack);
         dialog_ivChangePict = (ImageView) dialogEdit.findViewById(R.id.btnChangeImage);
         dialog_tvEditDate = (TextView) dialogEdit.findViewById(R.id.tvEditDate);
         dialog_tvEditUsername = (TextView) dialogEdit.findViewById(R.id.tvEditUsername);
@@ -202,9 +206,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if (user != null && user.getDisplayName().equals(dialog_tvUsername.getText().toString())) {
                     dialog_btnSewa.setVisibility(View.GONE);
                     dialog_btnEdit.setVisibility(View.VISIBLE);
+                    dialog_btnCall.setVisibility(View.GONE);
                 } else {
                     dialog_btnSewa.setVisibility(View.VISIBLE);
                     dialog_btnEdit.setVisibility(View.GONE);
+                    dialog_btnCall.setVisibility(View.VISIBLE);
                 }
                 PicassoClient.downloadImage(ctx, listProduct.get(position).getImg(), dialog_ivImage);
 
@@ -212,6 +218,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     @Override
                     public void onClick(View view) {
                         dialogDetail.dismiss();
+                    }
+                });
+                dialog_btnCall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        intent.setData(Uri.parse("tel:" + listProduct.get(position).getPhone()));
+                        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        ctx.startActivity(intent);
                     }
                 });
                 dialog_btnSewa.setOnClickListener(new View.OnClickListener() {
@@ -323,6 +347,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                 });
                             }
                         });
+                        dialog_IvEditBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialogEdit.dismiss();
+                            }
+                        });
                     }
                 });
 
@@ -424,19 +454,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         int years = months/12;
         switch (type){
             case "Per Hour":
-                return hours;
+                return hours!=0?hours:1;
             case "Per 3 Hour":
-                return hours/3;
+                return (hours/3)!=0?(hours/3):1;
             case "Per 12 Hour":
-                return hours/12;
+                return (hours/12)!=0?(hours/12):1;
             case "Per Day":
-                return days;
+                return days!=0?days:1;
             case "Per 3 Days":
-                return days/3;
+                return (days/3)!=0?(days/3):1;
             case "Per Month":
-                return months;
+                return months!=0?months:1;
             case "Per year":
-                return years;
+                return years!=0?years:1;
         }
         return days;
     }

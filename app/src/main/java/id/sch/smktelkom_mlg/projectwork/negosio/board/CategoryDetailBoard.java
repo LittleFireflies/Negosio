@@ -79,6 +79,8 @@ public class CategoryDetailBoard extends AppCompatActivity {
                         obj.setUsername(map.get("username"));
                         obj.setDate(map.get("date"));
                         obj.setImg(map.get("img"));
+                        obj.setLocation(map.get("location"));
+                        obj.setPhone(map.get("phone"));
                         listBarang.add(obj);
                     }
                 }

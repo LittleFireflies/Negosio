@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/LightGrey"
-        android:text="+ Sewa barang" />
+        android:text="+ Start Renting" />
 
     <Button
         android:id="@+id/btnEditProfile"
@@ -54,7 +54,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/OrangeRed"
-        android:text="EDIT PROFIL"
+        android:text="EDIT PROFILE"
         android:textColor="@color/White" />
 
     <LinearLayout

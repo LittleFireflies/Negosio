@@ -54,6 +54,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
     private Button btnLogin;
     private ProgressDialog progressDialog;
     String token;
+    String emailUser;
 
     public LoginBoard() {
         // Required empty public constructor
@@ -112,6 +113,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                     for(final DataSnapshot snapshot : dataSnapshot.getChildren()){
                         final Map<String, String> dataUser = (Map<String, String>) snapshot.getValue();
                         if(email.equals(dataUser.get("email"))){
+                            emailUser = dataUser.get("email");
                             try {
                                 final String dbUsername = dataUser.get("username");
                                 final String dbPassword = new String(Base64.decode(dataUser.get("password"), Base64.DEFAULT));
@@ -154,6 +156,11 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                             }
                         }
                     }
+
+                    if(emailUser == null){
+                        progressDialog.dismiss();
+                        Toast.makeText(ctx, "Your username or password does not match", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -169,7 +176,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
         //validation username
         if(username.equals("")){
-            etEmail.setError("Please enter your username");
+            etEmail.setError("Please enter your email");
             isValid = false;
         } else {
             etEmail.setError(null);

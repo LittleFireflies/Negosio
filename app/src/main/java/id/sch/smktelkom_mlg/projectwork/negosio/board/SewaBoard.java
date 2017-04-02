@@ -60,6 +60,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     private StorageReference storageRef;
     private String username  = MainActivity.getUserLogin();
     private String location;
+    private String phone;
     private ProgressDialog progressDialog;
     Uri downloadUri;
     private boolean valid;
@@ -91,6 +92,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
                     if(map.get("username").equals(username)){
                         location = map.get("location");
+                        phone = map.get("phone");
                     }
                 }
             }
@@ -246,6 +248,8 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 barang.setDate(controller.getDate("dd MMMM yyyy"));
                 barang.setImg(String.valueOf(downloadUri));
                 barang.setLocation(location);
+                barang.setPhone(phone);
+
 
                 dbRef.child("Barang").push().setValue(barang);
                 Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();

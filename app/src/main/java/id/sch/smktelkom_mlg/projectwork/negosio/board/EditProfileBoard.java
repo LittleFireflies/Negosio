@@ -163,6 +163,8 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
                                 user.setPhone(phone);
                                 user.setLocation(location);
                                 user.setPassword(map.get("password"));
+                                user.setPict(map.get("pict"));
+                                user.setToken(map.get("token"));
                                 dbRef.child("User").child(snapshot.getKey()).setValue(user);
                                 ((MainActivity)ctx).displayView(R.string.ClassHome);
                             } else {
