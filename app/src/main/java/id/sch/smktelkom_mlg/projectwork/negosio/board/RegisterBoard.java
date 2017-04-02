@@ -46,7 +46,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     Context ctx;
     EditText etUsername, etName, etPassword, etRePassword, etEmail, etPhone;
     String[][] arKota = {{"Klojen", "Blimbing", "Kedungkandang", "Lowokwaru", "Sukun"},
-                              {},
+                              {"Bululawang", "Dampit", "Dau", "Gondanglegi", "Kalipare", "Karangploso", "Kasembon", "Kepanjen", "Lawang", "Ngantang", "Pakis", "Pakisaji", "Pujon", "Sumbermanjing Wetan", "Singosari", "Sumberpucung", "Tumpang", "Turen", "Wonosari"},
                               {"Batu", "Bumiaji", "Junrejo"}};
     ArrayList<String> listKota = new ArrayList<>();
     ArrayList<String> user = new ArrayList<>();
