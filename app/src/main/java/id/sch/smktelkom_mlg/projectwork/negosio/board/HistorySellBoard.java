@@ -22,7 +22,6 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.adapter.BuyAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.SellAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
@@ -51,7 +50,7 @@ public class HistorySellBoard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_history_buy_board, container, false);
+        rootView = inflater.inflate(R.layout.fragment_history_sell_board, container, false);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
         //Config RecyclerView
@@ -82,6 +81,8 @@ public class HistorySellBoard extends Fragment {
                         booking.setTime(map.get("time"));
                         booking.setTgl_booking(map.get("tgl_booking"));
                         booking.setBuyer(map.get("buyer"));
+                        booking.setBuyer_phone(map.get("buyer_phone"));
+                        booking.setBuyer_location(map.get("buyer_location"));
                         booking.setSeller(map.get("seller"));
                         booking.setImg(map.get("img"));
                         listItem.add(booking);

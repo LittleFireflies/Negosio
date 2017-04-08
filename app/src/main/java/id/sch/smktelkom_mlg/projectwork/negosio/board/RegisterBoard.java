@@ -196,6 +196,8 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             });
 
 
+        } else {
+            progressDialog.dismiss();
         }
     }
 
@@ -210,7 +212,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //validation username
         if(username.equals("")){
-            etUsername.setError(String.valueOf(R.string.EmptyField));
+            etUsername.setError(getText(R.string.EmptyField));
             isValid = false;
         } else if(username.length() < 6 || username.length() > 20){
             etUsername.setError("Your username must have 6-20 characters");
@@ -224,7 +226,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //Full Name validation
         if (name.equals("")){
-            etName.setError(String.valueOf(R.string.EmptyField));
+            etName.setError(getText(R.string.EmptyField));
             isValid = false;
         } else {
             etName.setError(null);
@@ -232,7 +234,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //password validation
         if(password.equals("")){
-            etPassword.setError(String.valueOf(R.string.EmptyField));
+            etPassword.setError(getText(R.string.EmptyField));
             isValid = false;
         } else if(password.length() <6){
             etPassword.setError("Password must have at least 6 characters");
@@ -243,7 +245,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //rePassword validation
         if(rePassword.equals("")){
-            etRePassword.setError(String.valueOf(R.string.EmptyField));
+            etRePassword.setError(getText(R.string.EmptyField));
             isValid = false;
         } else if(!rePassword.equals(password)){
             etRePassword.setError("Please check your password again");
@@ -254,7 +256,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //email validation
         if(email.equals("")){
-            etEmail.setError(String.valueOf(R.string.EmptyField));
+            etEmail.setError(getText(R.string.EmptyField));
             isValid = false;
         } else {
             etEmail.setError(null);
@@ -262,7 +264,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
         //phone validation
         if(phone.equals("")){
-            etPhone.setError(String.valueOf(R.string.EmptyField));
+            etPhone.setError(getText(R.string.EmptyField));
             isValid = false;
         } else {
             etPhone.setError(null);

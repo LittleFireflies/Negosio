@@ -6,15 +6,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +27,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +36,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,7 +45,6 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
@@ -80,6 +74,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private boolean valid;
     private static ProgressDialog progressDialog;
     private String sellerToken;
+    private String buyerPhone, buyerLocation;
 
     public ProductAdapter(List<Barang> param) {
         listProduct = param;
@@ -194,14 +189,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 dialog_etFrom.setText("");
                 dialog_etTo.setText("");
                 getSellerToken(listProduct.get(position).getUsername());
-//                while(sellerToken == null){
-//                   try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    //Wait for data got
-//                }
+                getBuyerData();
 
                 if (user != null && user.getDisplayName().equals(dialog_tvUsername.getText().toString())) {
                     dialog_btnSewa.setVisibility(View.GONE);
@@ -265,6 +253,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             booking.setSeller(dialog_tvUsername.getText().toString());
                                             booking.setImg(listProduct.get(position).getImg());
                                             booking.setToken(sellerToken);
+                                            booking.setBuyer_phone(buyerPhone);
+                                            booking.setBuyer_location(buyerLocation);
 
                                             dbRef.child("Booking").push().setValue(booking);
                                             dialogConfirm.dismiss();
@@ -425,6 +415,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                         datePickerDialog.show();
                     }
                 });
+            }
+        });
+    }
+
+    private void getBuyerData() {
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(MainActivity.getUserLogin())){
+                        buyerPhone = map.get("phone");
+                        buyerLocation = map.get("location");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

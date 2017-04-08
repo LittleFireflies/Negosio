@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,13 +39,9 @@ import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 
-import static android.app.Activity.RESULT_OK;
-
-
-public class SewaBoard extends Fragment implements View.OnClickListener {
+public class SewaBoard extends AppCompatActivity implements View.OnClickListener{
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
-    View rootView;
     AppController controller;
     Context ctx;
     EditText etProduct, etPrice, etDesc;
@@ -65,20 +60,15 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     Uri downloadUri;
     private boolean valid;
 
-    public SewaBoard() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_sewa, container, false);
-        ctx = getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_sewa);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Add Product");
+        ctx = getApplicationContext();
         assignToView();
         onSetView();
-        return rootView;
     }
 
     private void onSetView() {
@@ -105,29 +95,27 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     }
 
     private void assignToView() {
-        //Firebase
         dbRef = FirebaseDatabase.getInstance().getReference();
         storageRef = FirebaseStorage.getInstance().getReference();
 
         controller = new AppController();
 
-        etProduct = (EditText) rootView.findViewById(R.id.etProduct);
-        etPrice = (EditText) rootView.findViewById(R.id.etPrice);
-        etDesc = (EditText) rootView.findViewById(R.id.etDesc);
-        spCategory = (Spinner) rootView.findViewById(R.id.spCategory);
-        spType = (Spinner) rootView.findViewById(R.id.spType);
-        btnAdd = (Button) rootView.findViewById(R.id.btnAdd);
-        btnAttach = (Button) rootView.findViewById(R.id.btnAttach);
-        ivAttachment = (ImageView) rootView.findViewById(R.id.ivAttachment);
-        tvDelete = (TextView) rootView.findViewById(R.id.tvDelete);
-        llAttachment = (LinearLayout) rootView.findViewById(R.id.llAttachment);
+        etProduct = (EditText) findViewById(R.id.etProduct);
+        etPrice = (EditText) findViewById(R.id.etPrice);
+        etDesc = (EditText) findViewById(R.id.etDesc);
+        spCategory = (Spinner) findViewById(R.id.spCategory);
+        spType = (Spinner) findViewById(R.id.spType);
+        btnAdd = (Button) findViewById(R.id.btnAdd);
+        btnAttach = (Button) findViewById(R.id.btnAttach);
+        ivAttachment = (ImageView) findViewById(R.id.ivAttachment);
+        tvDelete = (TextView) findViewById(R.id.tvDelete);
+        llAttachment = (LinearLayout) findViewById(R.id.llAttachment);
 
         etPrice.addTextChangedListener(new NumberTextWatcher(etPrice, "#,###", "currency", null));
 
         dialog = new Dialog(ctx);
-        progressDialog = new ProgressDialog(ctx);
+        progressDialog = new ProgressDialog(SewaBoard.this);
     }
-
 
     @Override
     public void onClick(View v) {
@@ -152,7 +140,7 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
     private void uploadImage() {
         final String[] items = {"Take Photo", "Choose from Gallery", "Cancel"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder((ctx));
+        AlertDialog.Builder builder = new AlertDialog.Builder(SewaBoard.this);
         builder.setTitle("Add Attachment");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -175,6 +163,71 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
         builder.show();
     }
 
+    private void add() {
+        if (isValid()) {
+            final String productname = etProduct.getText().toString().trim();
+            final String price = etPrice.getText().toString().trim();
+            final String description = etDesc.getText().toString().trim();
+            String type = spType.getSelectedItem().toString().trim();
+            String category = spCategory.getSelectedItem().toString().trim();
+//            String username = "";
+
+            try {
+                Barang barang = new Barang();
+                barang.setProductname(productname);
+                barang.setPrice(price);
+                barang.setDescription(description);
+                barang.setCategory(category);
+                barang.setType(type);
+                barang.setUsername(username);
+                barang.setDate(controller.getDate("dd MMMM yyyy"));
+                barang.setImg(String.valueOf(downloadUri));
+                barang.setLocation(location);
+                barang.setPhone(phone);
+
+
+                dbRef.child("Barang").push().setValue(barang);
+                Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
+                finish();
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    public boolean isValid() {
+        valid = true;
+        String product_name = etProduct.getText().toString();
+        String price = etPrice.getText().toString();
+        String description = etDesc.getText().toString();
+
+        if(product_name.equals("")){
+            etProduct.setError(getText(R.string.EmptyField));
+            valid = false;
+        } else {
+            etProduct.setError(null);
+        }
+
+        if(price.equals("")){
+            etPrice.setError(getText(R.string.EmptyField));
+            valid = false;
+        } else {
+            etPrice.setError(null);
+        }
+
+        if(description.equals("")){
+            etDesc.setError(getText(R.string.EmptyField));
+            valid = false;
+        } else if(description.length() > 250){
+            etDesc.setError("Description Max. 250 characters");
+            valid = false;
+        } else {
+            etDesc.setError(null);
+        }
+
+        return valid;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -184,6 +237,15 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
             else if(requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onCaptureImageResult(Intent data) {
@@ -226,70 +288,5 @@ public class SewaBoard extends Fragment implements View.OnClickListener {
                 }
             });
         }
-    }
-
-    private void add() {
-        if (isValid()) {
-            final String productname = etProduct.getText().toString().trim();
-            final String price = etPrice.getText().toString().trim();
-            final String description = etDesc.getText().toString().trim();
-            String type = spType.getSelectedItem().toString().trim();
-            String category = spCategory.getSelectedItem().toString().trim();
-//            String username = "";
-
-            try {
-                Barang barang = new Barang();
-                barang.setProductname(productname);
-                barang.setPrice(price);
-                barang.setDescription(description);
-                barang.setCategory(category);
-                barang.setType(type);
-                barang.setUsername(username);
-                barang.setDate(controller.getDate("dd MMMM yyyy"));
-                barang.setImg(String.valueOf(downloadUri));
-                barang.setLocation(location);
-                barang.setPhone(phone);
-
-
-                dbRef.child("Barang").push().setValue(barang);
-                Toast.makeText(ctx, "Add Success", Toast.LENGTH_SHORT).show();
-                ((MainActivity) ctx).displayView(R.string.ClassHome);
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
-    public boolean isValid() {
-        valid = true;
-        String product_name = etProduct.getText().toString();
-        String price = etPrice.getText().toString();
-        String description = etDesc.getText().toString();
-
-        if(product_name.equals("")){
-            etProduct.setError(String.valueOf(R.string.EmptyField));
-            valid = false;
-        } else {
-            etProduct.setError(null);
-        }
-
-        if(price.equals("")){
-            etPrice.setError(String.valueOf(R.string.EmptyField));
-            valid = false;
-        } else {
-            etPrice.setError(null);
-        }
-
-        if(description.equals("")){
-            etDesc.setError(String.valueOf(R.string.EmptyField));
-            valid = false;
-        } else if(description.length() > 250){
-            etDesc.setError("Description Max. 250 characters");
-            valid = false;
-        } else {
-            etDesc.setError(null);
-        }
-
-        return valid;
     }
 }

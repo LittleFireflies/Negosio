@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.board.ProfileBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
-import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private String userKey;
+    private ProgressDialog progressDialog;
 
     public static String getUserLogin() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -80,15 +82,32 @@ public class MainActivity extends AppCompatActivity {
         llProfile = (LinearLayout)header.findViewById(R.id.llProfile);
         ivProfilePict = (ImageView)header.findViewById(R.id.ivProfilePict);
         ivLogo = (ImageView)header.findViewById(R.id.ivLogo);
+        progressDialog = new ProgressDialog(MainActivity.this);
 
         llProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayView(R.string.ClassProfile);
-                drawerLayout.closeDrawers();
+//                displayView(R.string.ClassProfile);
+//                drawerLayout.closeDrawers();
+                startActivity(new Intent(MainActivity.this, ProfileBoard.class));
             }
         });
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(getUserLogin())){
+                        userKey = snapshot.getKey();
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         setNavigatonMenu();
         navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -99,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                         displayView(R.string.ClassHome);
                         break;
                     case R.id.nav_sewa:
-                        displayView(R.string.ClassSewa);
+//                        displayView(R.string.ClassSewa);
+                        startActivity(new Intent(MainActivity.this, SewaBoard.class));
                         break;
                     case R.id.nav_transaksi:
                         displayView(R.string.ClassTransaction);
@@ -115,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_logout:
                         auth.signOut();
+                        dbRef.child("User").child(userKey).child("token").setValue(null);
                         finish();
                         startActivity(getIntent());
                         break;
@@ -128,6 +149,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         displayView(R.string.ClassHome);
+    }
+
+    private void logout() {
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(getUserLogin())){
+                        dbRef.child("User").child(snapshot.getKey()).child("token").setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setNavigatonMenu() {

@@ -107,7 +107,7 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
         final String password = etPassword.getText().toString().trim();
 
         if(isValid(email, password)){
-            dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            dbRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for(final DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -168,6 +168,8 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
 
                 }
             });
+        } else {
+            progressDialog.dismiss();
         }
     }
 
