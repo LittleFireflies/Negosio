@@ -1,5 +1,6 @@
 package id.sch.smktelkom_mlg.projectwork.negosio;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.board.ProfileBoard;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
 
@@ -49,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private boolean backPressedToExitOnce = false;
+    private String userKey;
+    private ProgressDialog progressDialog;
 
     public static String getUserLogin() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -78,15 +82,32 @@ public class MainActivity extends AppCompatActivity {
         llProfile = (LinearLayout)header.findViewById(R.id.llProfile);
         ivProfilePict = (ImageView)header.findViewById(R.id.ivProfilePict);
         ivLogo = (ImageView)header.findViewById(R.id.ivLogo);
+        progressDialog = new ProgressDialog(MainActivity.this);
 
         llProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayView(R.string.ClassProfile);
-                drawerLayout.closeDrawers();
+//                displayView(R.string.ClassProfile);
+//                drawerLayout.closeDrawers();
+                startActivity(new Intent(MainActivity.this, ProfileBoard.class));
             }
         });
+        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    if(map.get("username").equals(getUserLogin())){
+                        userKey = snapshot.getKey();
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         setNavigatonMenu();
         navigationBoard.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -97,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                         displayView(R.string.ClassHome);
                         break;
                     case R.id.nav_sewa:
-                        displayView(R.string.ClassSewa);
+//                        displayView(R.string.ClassSewa);
+                        startActivity(new Intent(MainActivity.this, SewaBoard.class));
                         break;
                     case R.id.nav_transaksi:
                         displayView(R.string.ClassTransaction);
@@ -113,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_logout:
                         auth.signOut();
+                        dbRef.child("User").child(userKey).child("token").setValue(null);
                         finish();
                         startActivity(getIntent());
                         break;
@@ -168,9 +191,6 @@ public class MainActivity extends AppCompatActivity {
             nav.findItem(R.id.nav_myItem).setVisible(false);
             nav.findItem(R.id.nav_register).setVisible(true);
         }
-
-        Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
-        startActivity(intent);
     }
 
     public void displayView(int titleDrawer) {
@@ -199,6 +219,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    private boolean backPressedToExitOnce = false;
+
     @Override
     public void onBackPressed() {
         if (backPressedToExitOnce) {
@@ -218,5 +240,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 }

@@ -1,13 +1,11 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
-
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,43 +27,35 @@ import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class EditProfileBoard extends Fragment implements View.OnClickListener{
-    View rootView;
+public class EditProfileBoard extends AppCompatActivity implements View.OnClickListener{
+
     Context ctx;
     EditText etNama, etPassword, etRePassword, etEmail, etPhone;
     Spinner spCity, spSub;
     Button btnSave;
+
     String[][] arKota = {{"Klojen", "Blimbing", "Kedungkandang", "Lowokwaru", "Sukun"},
-            {},
+            {"Bululawang", "Dampit", "Dau", "Gondanglegi", "Kalipare", "Karangploso", "Kasembon", "Kepanjen", "Lawang", "Ngantang", "Pakis", "Pakisaji", "Pujon", "Sumbermanjing Wetan", "Singosari", "Sumberpucung", "Tumpang", "Turen", "Wonosari"},
             {"Batu", "Bumiaji", "Junrejo"}};
     ArrayList<String> listKota = new ArrayList<>();
     ArrayAdapter<String> adapterKota;
     ArrayAdapter<String> spinnerArrayAdapter;
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
-
-    public EditProfileBoard() {
-        // Required empty public constructor
-    }
-
+    private boolean valid;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_edit_profile_board, container, false);
-        ctx = getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_edit_profile_board);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ctx = getApplicationContext();
         dbRef = FirebaseDatabase.getInstance().getReference();
         auth = FirebaseAuth.getInstance();
         assignToView();
         setSpinner();
         onSetView();
-
-
-        return rootView;
     }
 
     private void onSetView() {
@@ -74,7 +64,7 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
                 "Kabupaten Malang",
                 "Kota Batu"
         };
-        spinnerArrayAdapter = new ArrayAdapter<String>(ctx, R.layout.spinner_item, city);
+        spinnerArrayAdapter = new ArrayAdapter<String>(EditProfileBoard.this, R.layout.spinner_item, city);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCity.setAdapter(spinnerArrayAdapter);
 
@@ -99,19 +89,8 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
         btnSave.setOnClickListener(this);
     }
 
-    private void assignToView() {
-        etNama = (EditText) rootView.findViewById(R.id.etName);
-        etEmail = (EditText) rootView.findViewById(R.id.etEmail);
-        etPhone = (EditText) rootView.findViewById(R.id.etPhone);
-        spCity = (Spinner) rootView.findViewById(R.id.spKota);
-        spSub = (Spinner) rootView.findViewById(R.id.spKecamatan);
-        etPassword = (EditText) rootView.findViewById(R.id.etPassword);
-        etRePassword = (EditText) rootView.findViewById(R.id.etRePassword);
-        btnSave = (Button) rootView.findViewById(R.id.btnSaveProfile);
-    }
-
     private void setSpinner() {
-        adapterKota = new ArrayAdapter<>(ctx, R.layout.spinner_item, listKota);
+        adapterKota = new ArrayAdapter<>(EditProfileBoard.this, R.layout.spinner_item, listKota);
         adapterKota.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSub.setAdapter(adapterKota);
 
@@ -131,6 +110,17 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
         });
     }
 
+    private void assignToView() {
+        etNama = (EditText) findViewById(R.id.etName);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPhone = (EditText) findViewById(R.id.etPhone);
+        spCity = (Spinner) findViewById(R.id.spKota);
+        spSub = (Spinner) findViewById(R.id.spKecamatan);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        etRePassword = (EditText) findViewById(R.id.etRePassword);
+        btnSave = (Button) findViewById(R.id.btnSaveProfile);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -142,12 +132,12 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
 
     private void editProfile() {
         if (isValid()) {
-            dbRef.child("User").addValueEventListener(new ValueEventListener() {
+            dbRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                        if(map.get("username").equals(MainActivity.getUserLogin())){
+                        if (map.get("username").equals(MainActivity.getUserLogin())) {
                             String name = etNama.getText().toString();
                             String email = etEmail.getText().toString();
                             String phone = etPhone.getText().toString();
@@ -156,7 +146,7 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
                             String rePassword = etRePassword.getText().toString();
 
                             UserRegistration user = new UserRegistration();
-                            if(password.equals("")){
+                            if (password.equals("")) {
                                 user.setUsername(MainActivity.getUserLogin());
                                 user.setName(name);
                                 user.setEmail(email);
@@ -166,13 +156,13 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
                                 user.setPict(map.get("pict"));
                                 user.setToken(map.get("token"));
                                 dbRef.child("User").child(snapshot.getKey()).setValue(user);
-                                ((MainActivity)ctx).displayView(R.string.ClassHome);
+                                finish();
                             } else {
-                                if(password.length() < 6){
+                                if (password.length() < 6) {
                                     etPassword.setError("Password must have at least 6 characters");
-                                } else if(rePassword.equals("")){
-                                    etRePassword.setError(String.valueOf(R.string.EmptyField));
-                                } else if(!password.equals(rePassword)){
+                                } else if (rePassword.equals("")) {
+                                    etRePassword.setError(getText(R.string.EmptyField));
+                                } else if (!password.equals(rePassword)) {
                                     etRePassword.setError("Password does not match");
                                 } else {
                                     etPassword.setError(null);
@@ -183,8 +173,10 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
                                     user.setPhone(phone);
                                     user.setLocation(location);
                                     user.setPassword(Base64.encodeToString(password.getBytes(), Base64.DEFAULT));
+                                    user.setPict(map.get("pict"));
+                                    user.setToken(map.get("token"));
                                     dbRef.child("User").child(snapshot.getKey()).setValue(user);
-                                    ((MainActivity)ctx).displayView(R.string.ClassHome);
+                                    finish();
                                 }
                             }
                         }
@@ -200,7 +192,7 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
     }
 
     public boolean isValid() {
-        boolean isValid = true;
+        valid = true;
         String name = etNama.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String rePassword = etRePassword.getText().toString().trim();
@@ -208,26 +200,35 @@ public class EditProfileBoard extends Fragment implements View.OnClickListener{
         String phone = etPhone.getText().toString().trim();
 
         if(name.equals("")){
-            etNama.setError(String.valueOf(R.string.EmptyField));
-            isValid = false;
+            etNama.setError(getText(R.string.EmptyField));
+            valid = false;
         } else {
             etNama.setError(null);
         }
 
         if(email.equals("")){
-            etEmail.setError(String.valueOf(R.string.EmptyField));
-            isValid = false;
+            etEmail.setError(getText(R.string.EmptyField));
+            valid = false;
         } else {
             etEmail.setError(null);
         }
 
         if(phone.equals("")){
-            etPhone.setError(String.valueOf(R.string.EmptyField));
-            isValid = false;
+            etPhone.setError(getText(R.string.EmptyField));
+            valid = false;
         } else {
             etPhone.setError(null);
         }
 
-        return isValid;
+        return valid;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

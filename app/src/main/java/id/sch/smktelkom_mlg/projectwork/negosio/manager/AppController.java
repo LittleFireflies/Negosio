@@ -44,21 +44,21 @@ public class AppController extends Application {
             case R.string.ClassRegister:
                 fragment = new RegisterBoard();
                 break;
-            case R.string.ClassSewa:
-                fragment = new SewaBoard();
-                break;
+//            case R.string.ClassSewa:
+//                fragment = new SewaBoard();
+//                break;
             case R.string.ClassTransaction:
                 fragment = new HistoryTransactionBoard();
                 break;
             case R.string.ClassMyItem:
                 fragment = new MyItemBoard();
                 break;
-            case R.string.ClassProfile:
-                fragment = new ProfileBoard();
-                break;
-            case R.string.ClassEditProfile:
-                fragment = new EditProfileBoard();
-                break;
+//            case R.string.ClassProfile:
+//                fragment = new ProfileBoard();
+//                break;
+//            case R.string.ClassEditProfile:
+//                fragment = new EditProfileBoard();
+//                break;
             case R.string.ClassSetting:
                 fragment = new SettingBoard();
                 break;

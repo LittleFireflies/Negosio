@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".manager.AppController"
@@ -62,7 +62,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".board.AboutBoard"></activity>
+        <activity android:name=".board.AboutBoard" />
+        <activity
+            android:name=".board.ProfileBoard"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".board.SewaBoard" />
+        <activity android:name=".board.EditProfileBoard"></activity>
     </application>
 
 </manifest>

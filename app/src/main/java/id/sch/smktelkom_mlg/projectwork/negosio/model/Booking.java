@@ -18,6 +18,8 @@ public class Booking {
     String img;
     String key;
     String token;
+    String buyer_phone;
+    String buyer_location;
 
     public String getTgl_booking() {
         return tgl_booking;
@@ -121,5 +123,21 @@ public class Booking {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getBuyer_phone() {
+        return buyer_phone;
+    }
+
+    public void setBuyer_phone(String buyer_phone) {
+        this.buyer_phone = buyer_phone;
+    }
+
+    public String getBuyer_location() {
+        return buyer_location;
+    }
+
+    public void setBuyer_location(String buyer_location) {
+        this.buyer_location = buyer_location;
     }
 }
