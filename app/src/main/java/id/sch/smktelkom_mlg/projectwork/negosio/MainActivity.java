@@ -14,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,9 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
-import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    private boolean backPressedToExitOnce = false;
 
     public static String getUserLogin() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -170,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
             nav.findItem(R.id.nav_myItem).setVisible(false);
             nav.findItem(R.id.nav_register).setVisible(true);
         }
+
+        Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+        startActivity(intent);
     }
 
     public void displayView(int titleDrawer) {
@@ -198,8 +199,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
-    private boolean backPressedToExitOnce = false;
-
     @Override
     public void onBackPressed() {
         if (backPressedToExitOnce) {
@@ -219,4 +218,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 }
