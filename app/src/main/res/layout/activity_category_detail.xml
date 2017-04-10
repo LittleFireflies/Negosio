@@ -5,41 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
-    tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard">
-    <LinearLayout
-        android:id="@+id/llEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/cart_empty"
-            android:layout_gravity="center_horizontal"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/White"
-            android:text="This categegory is currently empty"
-            android:textSize="24sp"
-            android:textAlignment="center"/>
-    </LinearLayout>
+    tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.CameraBoard">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCamera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <Button
-        android:id="@+id/btnRefresh"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:text="New Data"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/rounded_button_white"/>
+
 </RelativeLayout>

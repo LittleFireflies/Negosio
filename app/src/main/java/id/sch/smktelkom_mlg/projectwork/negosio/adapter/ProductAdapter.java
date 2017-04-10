@@ -45,8 +45,6 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
-import id.sch.smktelkom_mlg.projectwork.negosio.board.LoginActivityBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
@@ -290,8 +288,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                     @Override
                                     public void onClick(View view) {
                                         dialogUnlogged.dismiss();
-                                        ((CategoryDetailBoard)ctx).finish();
-                                        ctx.startActivity(new Intent(ctx, LoginActivityBoard.class));
+//                                        Intent intent = new Intent(ctx, MainActivity.class);
+//                                        intent.putExtra(DIRECTION, R.string.ClassHome);
+//                                        ctx.startActivity(intent);
                                     }
                                 });
                             }
