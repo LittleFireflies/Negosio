@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +26,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.Map;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ProductAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.CoverFlowAdapter;
@@ -36,6 +39,8 @@ import static id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard.SELECT_FI
 public class CategoryDetailBoard extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private LinearLayout llEmpty;
+    private Button btnRefresh;
     private ProductAdapter adapter;
     private ArrayList<Barang> listBarang = new ArrayList<>();
     private DatabaseReference dbRef;
@@ -52,24 +57,47 @@ public class CategoryDetailBoard extends AppCompatActivity {
         dbRef = FirebaseDatabase.getInstance().getReference();
         storageRef = FirebaseStorage.getInstance().getReference();
         //Config RecyclerView
+        llEmpty = (LinearLayout) findViewById(R.id.llEmpty);
+        btnRefresh = (Button) findViewById(R.id.btnRefresh);
+        btnRefresh.setVisibility(View.GONE);
         recyclerView = (RecyclerView) findViewById(R.id.rvCamera);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
+        dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                btnRefresh.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         initializeData();
         adapter = new ProductAdapter(listBarang);
         recyclerView.setAdapter(adapter);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initializeData();
+//                startActivity(getIntent());
+            }
+        });
+
     }
 
     private void initializeData() {
-        dbRef.child("Barang").addValueEventListener(new ValueEventListener() {
+        dbRef.child("Barang").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listBarang.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
                     if(map.get("category").equals(getIntent().getStringExtra(CoverFlowAdapter.CATEGORY))){
+                        llEmpty.setVisibility(View.GONE);
                         Barang obj = new Barang();
                         obj.setCategory(map.get("category"));
                         obj.setDescription(map.get("description"));
@@ -85,6 +113,7 @@ public class CategoryDetailBoard extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                btnRefresh.setVisibility(View.GONE);
             }
 
             @Override

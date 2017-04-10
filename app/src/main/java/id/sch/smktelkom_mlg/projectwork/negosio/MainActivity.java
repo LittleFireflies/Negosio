@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String userKey;
     private ProgressDialog progressDialog;
+    static MainActivity mainActivity;
 
     public static String getUserLogin() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
 
+        mainActivity = this;
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -170,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
         displayView(R.string.ClassHome);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void setNavigatonMenu() {
         Menu nav = navigationBoard.getMenu();
         if(user != null){
@@ -236,6 +243,10 @@ public class MainActivity extends AppCompatActivity {
     public void refreshActivity() {
         finish();
         startActivity(getIntent());
+    }
+
+    public static MainActivity getInstance(){
+        return mainActivity;
     }
 
     private boolean backPressedToExitOnce = false;
