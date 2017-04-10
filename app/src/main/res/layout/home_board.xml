@@ -21,7 +21,8 @@
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search..."
+            android:hint="Search the item that you want to rent..."
+            android:textSize="14sp"
             android:drawableLeft="@drawable/ic_search_black_24dp"/>
     </RelativeLayout>
     <it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow

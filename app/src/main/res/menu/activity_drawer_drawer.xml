@@ -21,7 +21,7 @@
 
     </group>
 
-    <item android:title="Lainnya">
+    <item android:title="More">
         <menu>
             <item
                 android:id="@+id/nav_login"

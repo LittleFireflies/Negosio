@@ -43,6 +43,7 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
     private boolean valid;
+    private String[] location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,9 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
                         etNama.setText(map.get("name"));
                         etEmail.setText(map.get("email"));
                         etPhone.setText(map.get("phone"));
+                        location = map.get("location").split(", ");
+                        spCity.setSelection(getIndex(spCity, location[1]));
+                        spSub.setSelection(getIndex(spSub, location[0]));
                     }
                 }
             }
@@ -87,6 +91,17 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
             }
         });
         btnSave.setOnClickListener(this);
+    }
+
+    private int getIndex(Spinner spinner, String value) {
+        int index = 0;
+
+        for(int i=0; i<spinner.getCount(); i++){
+            if(spinner.getItemAtPosition(i).equals(value)){
+                index = i;
+            }
+        }
+        return index;
     }
 
     private void setSpinner() {

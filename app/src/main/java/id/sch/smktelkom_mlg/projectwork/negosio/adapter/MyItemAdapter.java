@@ -154,6 +154,7 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
                                                     && map.get("date").equals(dialog_tvDate.getText().toString())){
                                                 dbRef.child("Barang").child(snapshot.getKey()).setValue(null);
                                                 dialogDelete.dismiss();
+                                                dialogDetail.dismiss();
                                             }
                                         }
                                     }
@@ -183,6 +184,8 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
                         dialog_etDesc.setText(dialog_tvDesc.getText().toString());
                         dialog_tvEditUsername.setText(dialog_tvUsername.getText().toString());
                         dialog_tvEditDate.setText(dialog_tvDate.getText().toString());
+                        dialog_spType.setSelection(getIndex(dialog_spType, dialog_tvType.getText().toString()));
+                        dialog_spCategory.setSelection(getIndex(dialog_spCategory, dialog_tvCategory.getText().toString()));
                         dialog_ivEditBack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -227,6 +230,17 @@ public class MyItemAdapter extends RecyclerView.Adapter<MyItemAdapter.ViewHolder
                 });
             }
         });
+    }
+
+    private int getIndex(Spinner spinner, String type) {
+        int index = 0;
+
+        for(int i=0; i<spinner.getCount(); i++){
+            if(spinner.getItemAtPosition(i).equals(type)){
+                index = i;
+            }
+        }
+        return index;
     }
 
     @Override

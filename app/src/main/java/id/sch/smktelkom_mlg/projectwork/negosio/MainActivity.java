@@ -3,6 +3,7 @@ package id.sch.smktelkom_mlg.projectwork.negosio;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ProductAdapter;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.ProfileBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
@@ -67,6 +69,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.mainboard);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences sharedPreferences = getSharedPreferences(AppController.FLAG, Context.MODE_PRIVATE);
+
+                if(sharedPreferences.getBoolean(AppController.FLAG, true)){
+                    startActivity(new Intent(MainActivity.this, IntroActivity.class));
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(AppController.FLAG, false);
+                    editor.commit();
+                }
+            }
+        });
+        thread.start();
+
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);

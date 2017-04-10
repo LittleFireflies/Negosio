@@ -51,8 +51,8 @@ public class HistoryTransactionBoard extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new HistoryBuyBoard(), "Items In");
-        adapter.addFragment(new HistorySellBoard(), "Items Out");
+        adapter.addFragment(new HistorySellBoard(), "Rent Out");
+        adapter.addFragment(new HistoryBuyBoard(), "Rent In");
         viewPager.setAdapter(adapter);
     }
 

@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class ProfileBoard extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
+    public static final int CAMERA_CODE = 23;
     DatabaseReference dbRef;
     StorageReference storageRef;
     TextView tvNama, tvEmail, tvPhone, tvLocation;
@@ -57,6 +59,7 @@ public class ProfileBoard extends AppCompatActivity {
     ProgressDialog progressDialog;
     Uri downloadUri;
     String key;
+    private boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,25 +147,18 @@ public class ProfileBoard extends AppCompatActivity {
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(items[i].equals("Take Photo")){
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            if (ActivityCompat.checkSelfPermission(ProfileBoard.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                                // TODO: Consider calling
-                                //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions, and then overriding
-                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                //                                          int[] grantResults)
-                                // to handle the case where the user grants the permission. See the documentation
-                                // for ActivityCompat#requestPermissions for more details.
-                                return;
+                        if (items[i].equals("Take Photo")) {
+                            if (isCameraAllowed()) {
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, REQUEST_CAMERA);
                             }
-                            startActivityForResult(intent, REQUEST_CAMERA);
-                        } else if(items[i].equals("Choose from Gallery")){
+                            requestCameraPermission();
+                        } else if (items[i].equals("Choose from Gallery")) {
                             Intent intent = new Intent();
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
-                        } else if(items[i].equals("Cancel")){
+                        } else if (items[i].equals("Cancel")) {
                             dialog.dismiss();
                         }
                     }
@@ -170,6 +166,13 @@ public class ProfileBoard extends AppCompatActivity {
                 builder.show();
             }
         });
+    }
+
+    private void requestCameraPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+
+        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_CODE);
     }
 
     private void setDialog() {
@@ -260,5 +263,27 @@ public class ProfileBoard extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean isCameraAllowed() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if(result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == CAMERA_CODE){
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CAMERA);
+            } else {
+
+            }
+        }
     }
 }

@@ -66,6 +66,8 @@ public class CoverFlowAdapter extends BaseAdapter{
         viewHolder.ivCategory.setImageResource(kategori.get(position).getPict());
 
         view.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
+        viewHolder.ivCategory.setOnClickListener(onClickListener(viewHolder.categoryName.getText().toString()));
+
         return view;
     }
 
@@ -75,29 +77,6 @@ public class CoverFlowAdapter extends BaseAdapter{
             public void onClick(View view) {
                 Intent intent = new Intent(context, CategoryDetailBoard.class);
                 intent.putExtra(CATEGORY, name);
-//                switch (name){
-//                    case "Camera":
-////                        context.startActivity(new Intent(context, CameraBoard.class));
-//                        break;
-//                    case "Transportation":
-//                        context.startActivity(new Intent(context, TransportationBoard.class));
-//                        break;
-//                    case "Property":
-//                        context.startActivity(new Intent(context, PropertyBoard.class));
-//                        break;
-//                    case "Event":
-//                        context.startActivity(new Intent(context, EventBoard.class));
-//                        break;
-//                    case "Heavy Equipment":
-//                        context.startActivity(new Intent(context, HeavyEquipmentBoard.class));
-//                        break;
-//                    case "Baby Care":
-//                        context.startActivity(new Intent(context, BabyCareBoard.class));
-//                        break;
-//                    case "Others":
-//                        context.startActivity(new Intent(context, OthersBoard.class));
-//                        break;
-//                }
                 context.startActivity(intent);
             }
         };

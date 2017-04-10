@@ -1,12 +1,17 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +47,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
 public class SewaBoard extends AppCompatActivity implements View.OnClickListener{
     public static final int REQUEST_CAMERA = 1;
     public static final int SELECT_FILE = 2;
+    public static final int CAMERA_CODE = 23;
     AppController controller;
     Context ctx;
     EditText etProduct, etPrice, etDesc;
@@ -59,6 +65,7 @@ public class SewaBoard extends AppCompatActivity implements View.OnClickListener
     private ProgressDialog progressDialog;
     Uri downloadUri;
     private boolean valid;
+    private boolean result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,20 +154,30 @@ public class SewaBoard extends AppCompatActivity implements View.OnClickListener
             public void onClick(DialogInterface dialogInterface, int i) {
 //                boolean result = Utility.checkPermission(ctx);
 
-                if(items[i].equals("Take Photo")){
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, REQUEST_CAMERA);
-                } else if(items[i].equals("Choose from Gallery")){
+                if (items[i].equals("Take Photo")) {
+                    if (isCameraAllowed()) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    }
+                    requestCameraPermission();
+                } else if (items[i].equals("Choose from Gallery")) {
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
-                } else if(items[i].equals("Cancel")){
+                } else if (items[i].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
         });
         builder.show();
+    }
+
+    private void requestCameraPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+
+        }
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_CODE);
     }
 
     private void add() {
@@ -287,6 +304,28 @@ public class SewaBoard extends AppCompatActivity implements View.OnClickListener
                     PicassoClient.downloadImage(ctx, String.valueOf(downloadUri), ivAttachment);
                 }
             });
+        }
+    }
+
+    public boolean isCameraAllowed() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if(result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == CAMERA_CODE){
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, REQUEST_CAMERA);
+            } else {
+
+            }
         }
     }
 }

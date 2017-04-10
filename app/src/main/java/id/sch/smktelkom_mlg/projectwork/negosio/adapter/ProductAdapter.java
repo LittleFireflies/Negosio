@@ -56,6 +56,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
  */
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+    public static final String DIRECTION = "Direction";
     List<Barang> listProduct;
     View layout;
     private static Context ctx;
@@ -264,7 +265,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                                 @Override
                                                 public void onClick(View view) {
                                                     dialogSuccess.dismiss();
-                                                    ctx.startActivity(new Intent(ctx, MainActivity.class));
+                                                    dialog_etFrom.setText("");
+                                                    dialog_etTo.setText("");
                                                 }
                                             });
                                         } catch (Exception e) {
@@ -286,6 +288,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                     @Override
                                     public void onClick(View view) {
                                         dialogUnlogged.dismiss();
+//                                        Intent intent = new Intent(ctx, MainActivity.class);
+//                                        intent.putExtra(DIRECTION, R.string.ClassHome);
+//                                        ctx.startActivity(intent);
                                     }
                                 });
                             }

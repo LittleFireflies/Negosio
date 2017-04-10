@@ -25,6 +25,7 @@ import io.realm.RealmConfiguration;
  */
 
 public class AppController extends Application {
+    public static String FLAG = "It the start";
     @Override
     public void onCreate() {
         super.onCreate();
