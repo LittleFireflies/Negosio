@@ -27,12 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SplashScreen"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".IntroActivity" />
+        <activity android:name=".IntroActivity"
+            android:screenOrientation="portrait"/>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -64,12 +60,16 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".board.AboutBoard" />
+        <activity android:name=".board.AboutBoard"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".board.ProfileBoard"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity android:name=".board.SewaBoard" />
-        <activity android:name=".board.EditProfileBoard"></activity>
+        <activity android:name=".board.SewaBoard"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".board.EditProfileBoard"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

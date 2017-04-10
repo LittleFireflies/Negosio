@@ -29,23 +29,5 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", refreshToken);
         editor.commit();
-
-//        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-//        dbRef.child("User").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-//                    Map<String, String> map = (Map<String, String>) snapshot.getValue();
-//                    if(map.get("username").equals(MainActivity.getUserLogin())){
-//                        dbRef.child("User").child(snapshot.getKey()).child("token").setValue(refreshToken);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 }

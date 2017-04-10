@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
                         displayView(R.string.ClassRegister);
                         break;
                     case R.id.nav_logout:
-                        auth.signOut();
                         dbRef.child("User").child(userKey).child("token").setValue(null);
+                        auth.signOut();
                         finish();
                         startActivity(getIntent());
                         break;
