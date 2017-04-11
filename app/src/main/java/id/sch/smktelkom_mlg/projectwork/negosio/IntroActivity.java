@@ -44,6 +44,5 @@ public class IntroActivity extends AppIntro {
 
     private void loadMainActivity() {
         finish();
-//        startActivity(new Intent(this, MainActivity.class));
     }
 }
