@@ -197,6 +197,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
 
 
         } else {
+//            Toast.makeText(ctx, "123", Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         }
     }
