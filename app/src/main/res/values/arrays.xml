@@ -23,4 +23,12 @@
         <item>Per Month</item>
         <item>Per year</item>
     </string-array>
+    <string-array name="status">
+        <item>All</item>
+        <item>Waiting for Confirmation</item>
+        <item>On Loan</item>
+        <item>Waiting for Completion</item>
+        <item>Completed</item>
+        <item>Rejected</item>
+    </string-array>
 </resources>

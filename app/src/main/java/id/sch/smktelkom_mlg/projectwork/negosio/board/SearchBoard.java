@@ -63,8 +63,9 @@ public class SearchBoard extends AppCompatActivity {
 
                 searchList.clear();
                 for(int i=0; i < listBarang.size(); i++){
-                    String text = listBarang.get(i).getProductname().toLowerCase();
-                    if(text.contains(query)){
+                    String product = listBarang.get(i).getProductname().toLowerCase();
+                    String owner = listBarang.get(i).getUsername().toLowerCase();
+                    if(product.contains(query) || owner.contains(query)){
                         Barang obj = new Barang();
                         obj.setCategory(listBarang.get(i).getCategory());
                         obj.setDescription(listBarang.get(i).getDescription());
@@ -74,6 +75,8 @@ public class SearchBoard extends AppCompatActivity {
                         obj.setUsername(listBarang.get(i).getUsername());
                         obj.setDate(listBarang.get(i).getDate());
                         obj.setImg(listBarang.get(i).getImg());
+                        obj.setPhone(listBarang.get(i).getPhone());
+                        obj.setLocation(listBarang.get(i).getLocation());
                         searchList.add(obj);
                     }
 
@@ -107,6 +110,8 @@ public class SearchBoard extends AppCompatActivity {
                         obj.setUsername(map.get("username"));
                         obj.setDate(map.get("date"));
                         obj.setImg(map.get("img"));
+                        obj.setPhone(map.get("phone"));
+                        obj.setLocation(map.get("location"));
                         listBarang.add(obj);
                 }
                 adapter = new ProductAdapter(listBarang);

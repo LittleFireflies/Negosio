@@ -35,6 +35,7 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 import static android.content.Context.MODE_PRIVATE;
 import static id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService.MY_PREFERENCE;
@@ -139,6 +140,65 @@ public class LoginBoard extends Fragment implements View.OnClickListener{
                                                             dbRef.child("User").child(snapshot.getKey()).child("token").setValue(token);
                                                             MainActivity mainActivity = (MainActivity) getActivity();
                                                             mainActivity.refreshActivity();
+                                                            dbRef.child("Booking").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                                        Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                                                        if(map.get("buyer").equals(dbUsername)){
+                                                                            Booking booking = new Booking();
+                                                                            booking.setProduct_name(map.get("product_name"));
+                                                                            booking.setTotal(map.get("total"));
+                                                                            booking.setCategory(map.get("category"));
+                                                                            booking.setStart_date(map.get("start_date"));
+                                                                            booking.setEnd_date(map.get("end_date"));
+                                                                            booking.setPrice(map.get("price"));
+                                                                            booking.setTime(map.get("time"));
+                                                                            booking.setTgl_booking(map.get("tgl_booking"));
+                                                                            booking.setBuyer(map.get("buyer"));
+                                                                            booking.setBuyer_phone(map.get("buyer_phone"));
+                                                                            booking.setBuyer_location(map.get("buyer_location"));
+                                                                            booking.setRenter_token(token);
+                                                                            booking.setSeller(map.get("seller"));
+                                                                            booking.setSeller_phone(map.get("seller_phone"));
+                                                                            booking.setSeller_location(map.get("seller_location"));
+                                                                            booking.setOwner_token(map.get("owner_token"));
+                                                                            booking.setImg(map.get("img"));
+                                                                            booking.setStatus(map.get("status"));
+                                                                            booking.setReason(map.get("reason"));
+                                                                            dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                                                        }
+                                                                        if(map.get("seller").equals(dbUsername)){
+                                                                            Booking booking = new Booking();
+                                                                            booking.setProduct_name(map.get("product_name"));
+                                                                            booking.setTotal(map.get("total"));
+                                                                            booking.setCategory(map.get("category"));
+                                                                            booking.setStart_date(map.get("start_date"));
+                                                                            booking.setEnd_date(map.get("end_date"));
+                                                                            booking.setPrice(map.get("price"));
+                                                                            booking.setTime(map.get("time"));
+                                                                            booking.setTgl_booking(map.get("tgl_booking"));
+                                                                            booking.setBuyer(map.get("buyer"));
+                                                                            booking.setBuyer_phone(map.get("buyer_phone"));
+                                                                            booking.setBuyer_location(map.get("buyer_location"));
+                                                                            booking.setRenter_token(map.get("renter_token"));
+                                                                            booking.setSeller(map.get("seller"));
+                                                                            booking.setSeller_phone(map.get("seller_phone"));
+                                                                            booking.setSeller_location(map.get("seller_location"));
+                                                                            booking.setOwner_token(token);
+                                                                            booking.setImg(map.get("img"));
+                                                                            booking.setStatus(map.get("status"));
+                                                                            booking.setReason(map.get("reason"));
+                                                                            dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                }
+                                                            });
                                                         }
                                                     }
                                                 });

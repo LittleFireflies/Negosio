@@ -16,10 +16,14 @@ public class Booking {
     String seller;
     String category;
     String img;
-    String key;
-    String token;
+    String owner_token;
+    String renter_token;
+    String status;
     String buyer_phone;
     String buyer_location;
+    String seller_phone;
+    String seller_location;
+    String reason;
 
     public String getTgl_booking() {
         return tgl_booking;
@@ -109,22 +113,6 @@ public class Booking {
         this.img = img;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getBuyer_phone() {
         return buyer_phone;
     }
@@ -139,5 +127,53 @@ public class Booking {
 
     public void setBuyer_location(String buyer_location) {
         this.buyer_location = buyer_location;
+    }
+
+    public String getOwner_token() {
+        return owner_token;
+    }
+
+    public void setOwner_token(String owner_token) {
+        this.owner_token = owner_token;
+    }
+
+    public String getRenter_token() {
+        return renter_token;
+    }
+
+    public void setRenter_token(String renter_token) {
+        this.renter_token = renter_token;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getSeller_phone() {
+        return seller_phone;
+    }
+
+    public void setSeller_phone(String seller_phone) {
+        this.seller_phone = seller_phone;
+    }
+
+    public String getSeller_location() {
+        return seller_location;
+    }
+
+    public void setSeller_location(String seller_location) {
+        this.seller_location = seller_location;
     }
 }

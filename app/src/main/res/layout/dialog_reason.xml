@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:background="@color/White">
+        <TextView
+            android:id="@+id/tvTitle_AddNew"
+            android:padding="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Rejection Reason"
+            android:textSize="24sp"
+            android:textColor="@color/White"
+            android:background="@color/Red"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Please note why you reject this order"
+            android:textAlignment="center"
+            android:layout_marginTop="10dp"/>
+        <RelativeLayout
+            android:background="@drawable/new_outline_grey"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <EditText
+                android:id="@+id/etReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="type here..."
+                android:textStyle="italic"
+                android:inputType="textFilter|textMultiLine"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_gravity="end|bottom">
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Submit"
+                android:textColor="@color/White"
+                android:textSize="16sp"
+                android:background="@drawable/rounded_button_sewa"/>
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="75dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/btnSubmit"
+                android:text="Cancel"
+                android:gravity="center"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

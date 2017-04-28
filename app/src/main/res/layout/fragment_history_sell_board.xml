@@ -2,11 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="id.sch.smktelkom_mlg.projectwork.negosio.board.HistorySellBoard">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/llFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_marginBottom="8dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Show"
+            android:textSize="18sp"/>
+        <Spinner
+            android:id="@+id/spFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:entries="@array/status"/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvBuy"
+        android:layout_below="@+id/llFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +40,7 @@ public class HistoryBuyBoard extends Fragment {
     private DatabaseReference dbRef;
     private ArrayList<Booking> listItem = new ArrayList<>();
     private Context ctx;
+    private Spinner spFilter;
     View rootView;
 
     public HistoryBuyBoard() {
@@ -51,17 +54,29 @@ public class HistoryBuyBoard extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_history_buy_board, container, false);
 
         dbRef = FirebaseDatabase.getInstance().getReference();
+        spFilter = (Spinner) rootView.findViewById(R.id.spFilter);
         //Config RecyclerView
         rvBuy = (RecyclerView) rootView.findViewById(R.id.rvBuy);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         rvBuy.setLayoutManager(layoutManager);
-        initializeData();
+        spFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = spFilter.getSelectedItem().toString();
+                initializeData(selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         adapter = new BuyAdapter(listItem);
         rvBuy.setAdapter(adapter);
         return rootView;
     }
 
-    private void initializeData() {
+    private void initializeData(String filter) {
         dbRef.child("Booking").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,8 +94,16 @@ public class HistoryBuyBoard extends Fragment {
                         booking.setTime(map.get("time"));
                         booking.setTgl_booking(map.get("tgl_booking"));
                         booking.setBuyer(map.get("buyer"));
+                        booking.setBuyer_phone(map.get("buyer_phone"));
+                        booking.setBuyer_location(map.get("buyer_location"));
+                        booking.setRenter_token(map.get("renter_token"));
                         booking.setSeller(map.get("seller"));
+                        booking.setSeller_phone(map.get("seller_phone"));
+                        booking.setSeller_location(map.get("seller_location"));
+                        booking.setOwner_token(map.get("owner_token"));
                         booking.setImg(map.get("img"));
+                        booking.setStatus(map.get("status"));
+                        booking.setReason(map.get("reason"));
                         listItem.add(booking);
                     }
                 }

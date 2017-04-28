@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,7 +33,6 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
-import id.sch.smktelkom_mlg.projectwork.negosio.manager.MyFirebaseInstanceIdService;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 /**
@@ -45,16 +43,18 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     View rootView;
     Context ctx;
     EditText etUsername, etName, etPassword, etRePassword, etEmail, etPhone;
-    String[][] arKota = {{"Klojen", "Blimbing", "Kedungkandang", "Lowokwaru", "Sukun"},
-                              {"Bululawang", "Dampit", "Dau", "Gondanglegi", "Kalipare", "Karangploso", "Kasembon", "Kepanjen", "Lawang", "Ngantang", "Pakis", "Pakisaji", "Pujon", "Sumbermanjing Wetan", "Singosari", "Sumberpucung", "Tumpang", "Turen", "Wonosari"},
-                              {"Batu", "Bumiaji", "Junrejo"}};
-    ArrayList<String> listKota = new ArrayList<>();
+    String[][] arProv = {{"Jakarta Pusat", "Jakarta Utara", "Jakarta Timur", "Jakarta Selatan", "Jakarta Timur"},
+                              {"Bandung", "Cimahi", "Depok", "Tasikmalaya", "Sukabumi", "Garut", "Bekasi", "Bogor"},
+                              {"Semarang", "Solo", "Salatiga", "Boyolali", "Brebes", "Cilacap", "Demak"},
+                              {"Yogyakarta", "Sleman", "Bantul"},
+                              {"Surabaya", "Malang", "Kediri", "Blitar", "Tulungagung", "Jombang"}};
+    ArrayList<String> listProv = new ArrayList<>();
     ArrayList<String> user = new ArrayList<>();
-    ArrayAdapter<String> adapterKota;
+    ArrayAdapter<String> adapterProv;
     ArrayAdapter<String> spinnerArrayAdapter;
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
-    private Spinner spCity, spSub;
+    private Spinner spProv, spCity;
     private Button btnRegister;
     private ProgressDialog progressDialog;
 
@@ -98,17 +98,17 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
     }
 
     private void setSpinner() {
-        adapterKota = new ArrayAdapter<>(ctx, R.layout.spinner_item, listKota);
-        adapterKota.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSub.setAdapter(adapterKota);
+        adapterProv = new ArrayAdapter<>(ctx, R.layout.spinner_item, listProv);
+        adapterProv.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCity.setAdapter(adapterProv);
 
-        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spProv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                listKota.clear();
-                listKota.addAll(Arrays.asList(arKota[pos]));
-                adapterKota.notifyDataSetChanged();
-                spSub.setSelection(0);
+                listProv.clear();
+                listProv.addAll(Arrays.asList(arProv[pos]));
+                adapterProv.notifyDataSetChanged();
+                spCity.setSelection(0);
             }
 
             @Override
@@ -133,20 +133,22 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
         etRePassword = (EditText) rootView.findViewById(R.id.etRePassword);
         etEmail = (EditText) rootView.findViewById(R.id.etEmail);
         etPhone = (EditText) rootView.findViewById(R.id.etPhone);
-        spCity = (Spinner) rootView.findViewById(R.id.spKota) ;
-        spSub = (Spinner) rootView.findViewById(R.id.spKecamatan);
+        spProv = (Spinner) rootView.findViewById(R.id.spProvinsi) ;
+        spCity = (Spinner) rootView.findViewById(R.id.spKota);
 
         btnRegister = (Button) rootView.findViewById(R.id.btnRegister);
         progressDialog = new ProgressDialog(ctx);
 
         String[] city = new String[]{
-                "Kota Malang",
-                "Kabupaten Malang",
-                "Kota Batu"
+                "DKI Jakarta",
+                "Jawa Barat",
+                "Jawa Tengah",
+                "DI Yogyakarta",
+                "Jawa Timur"
         };
         spinnerArrayAdapter = new ArrayAdapter<String>(ctx, R.layout.spinner_item, city);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCity.setAdapter(spinnerArrayAdapter);
+        spProv.setAdapter(spinnerArrayAdapter);
     }
 
     @Override
@@ -168,7 +170,7 @@ public class RegisterBoard extends Fragment implements View.OnClickListener{
             final String rePassword = etRePassword.getText().toString().trim();
             final String email = etEmail.getText().toString().trim();
             final String phone = etPhone.getText().toString().trim();
-            final String location = spSub.getSelectedItem().toString() + ", " + spCity.getSelectedItem().toString();
+            final String location = spCity.getSelectedItem().toString() + ", " + spProv.getSelectedItem().toString();
 
             final UserRegistration userRegistration = new UserRegistration();
             userRegistration.setUsername(username);

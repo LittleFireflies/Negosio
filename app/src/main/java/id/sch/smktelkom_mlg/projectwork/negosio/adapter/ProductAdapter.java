@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.adapter;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -12,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +47,7 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.CategoryDetailBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.NumberTextWatcher;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.PicassoClient;
@@ -57,6 +60,7 @@ import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     public static final String DIRECTION = "Direction";
+    public static final int CALL_CODE = 24;
     List<Barang> listProduct;
     View layout;
     private static Context ctx;
@@ -74,8 +78,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private boolean valid;
     private static ProgressDialog progressDialog;
-    private String sellerToken;
-    private String buyerPhone, buyerLocation;
+    private String ownerToken, ownerLocation, ownerPhone;
+    private String renterPhone, renterLocation, renterToken;
 
     public ProductAdapter(List<Barang> param) {
         listProduct = param;
@@ -214,17 +218,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     public void onClick(View view) {
                         Intent intent = new Intent(Intent.ACTION_CALL);
                         intent.setData(Uri.parse("tel:" + listProduct.get(position).getPhone()));
-                        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                            return;
+                        if(ContextCompat.checkSelfPermission(ctx, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                            ActivityCompat.requestPermissions((Activity) ctx, new String[]{Manifest.permission.CALL_PHONE}, CALL_CODE);
+                        } else {
+                            ctx.startActivity(intent);
                         }
-                        ctx.startActivity(intent);
+
                     }
                 });
                 dialog_btnSewa.setOnClickListener(new View.OnClickListener() {
@@ -253,9 +252,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                                             booking.setBuyer(user.getDisplayName());
                                             booking.setSeller(dialog_tvUsername.getText().toString());
                                             booking.setImg(listProduct.get(position).getImg());
-                                            booking.setToken(sellerToken);
-                                            booking.setBuyer_phone(buyerPhone);
-                                            booking.setBuyer_location(buyerLocation);
+                                            booking.setOwner_token(ownerToken);
+                                            booking.setRenter_token(renterToken);
+                                            booking.setBuyer_phone(renterPhone);
+                                            booking.setBuyer_location(renterLocation);
+                                            booking.setSeller_phone(ownerPhone);
+                                            booking.setSeller_location(ownerLocation);
+                                            booking.setStatus("Waiting for Confirmation");
 
                                             dbRef.child("Booking").push().setValue(booking);
                                             dialogConfirm.dismiss();
@@ -306,6 +309,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                         dialog_etTitle.setText(dialog_tvTitle.getText().toString());
                         dialog_etPrice.setText(dialog_tvPrice.getText().toString());
                         dialog_etDesc.setText(dialog_tvDesc.getText().toString());
+                        dialog_spType.setSelection(getIndex(dialog_spType, dialog_tvType.getText().toString()));
+                        dialog_spCategory.setSelection(getIndex(dialog_spCategory, dialog_tvCategory.getText().toString()));
                         dialog_tvEditUsername.setText(dialog_tvUsername.getText().toString());
                         dialog_tvEditDate.setText(dialog_tvDate.getText().toString());
                         dialog_btnSaveEdit.setOnClickListener(new View.OnClickListener() {
@@ -424,6 +429,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         });
     }
 
+    private int getIndex(Spinner spinner, String value) {
+        int index = 0;
+
+        for(int i=0; i<spinner.getCount(); i++){
+            if(spinner.getItemAtPosition(i).equals(value)){
+                index = i;
+            }
+        }
+        return index;
+    }
+
     private void getBuyerData() {
         dbRef.child("User").addValueEventListener(new ValueEventListener() {
             @Override
@@ -431,8 +447,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
                     if(map.get("username").equals(MainActivity.getUserLogin())){
-                        buyerPhone = map.get("phone");
-                        buyerLocation = map.get("location");
+                        renterPhone = map.get("phone");
+                        renterLocation = map.get("location");
+                        renterToken = map.get("token");
                     }
                 }
             }
@@ -521,7 +538,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Map<String, String> map = (Map<String, String>) snapshot.getValue();
                     if(map.get("username").equals(username)){
-                        sellerToken = map.get("token");
+                        ownerToken = map.get("token");
+                        ownerPhone = map.get("phone");
+                        ownerLocation = map.get("location");
                     }
                 }
             }

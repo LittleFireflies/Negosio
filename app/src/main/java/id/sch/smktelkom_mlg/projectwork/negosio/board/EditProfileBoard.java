@@ -1,6 +1,7 @@
 package id.sch.smktelkom_mlg.projectwork.negosio.board;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -11,8 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,20 +30,24 @@ import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.MainActivity;
 import id.sch.smktelkom_mlg.projectwork.negosio.R;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Barang;
+import id.sch.smktelkom_mlg.projectwork.negosio.model.Booking;
 import id.sch.smktelkom_mlg.projectwork.negosio.model.UserRegistration;
 
 public class EditProfileBoard extends AppCompatActivity implements View.OnClickListener{
 
     Context ctx;
     EditText etNama, etPassword, etRePassword, etEmail, etPhone;
-    Spinner spCity, spSub;
+    Spinner spProv, spCity;
     Button btnSave;
 
-    String[][] arKota = {{"Klojen", "Blimbing", "Kedungkandang", "Lowokwaru", "Sukun"},
-            {"Bululawang", "Dampit", "Dau", "Gondanglegi", "Kalipare", "Karangploso", "Kasembon", "Kepanjen", "Lawang", "Ngantang", "Pakis", "Pakisaji", "Pujon", "Sumbermanjing Wetan", "Singosari", "Sumberpucung", "Tumpang", "Turen", "Wonosari"},
-            {"Batu", "Bumiaji", "Junrejo"}};
-    ArrayList<String> listKota = new ArrayList<>();
-    ArrayAdapter<String> adapterKota;
+    String[][] arProv = {{"Jakarta Pusat", "Jakarta Utara", "Jakarta Timur", "Jakarta Selatan", "Jakarta Timur"},
+            {"Bandung", "Cimahi", "Depok", "Tasikmalaya", "Sukabumi", "Garut", "Bekasi", "Bogor"},
+            {"Semarang", "Solo", "Salatiga", "Boyolali", "Brebes", "Cilacap", "Demak"},
+            {"Yogyakarta", "Sleman", "Bantul"},
+            {"Surabaya", "Malang", "Kediri", "Blitar", "Tulungagung", "Jombang"}};
+    ArrayList<String> listProv = new ArrayList<>();
+    ArrayAdapter<String> adapterProv;
     ArrayAdapter<String> spinnerArrayAdapter;
     private DatabaseReference dbRef;
     private FirebaseAuth auth;
@@ -61,15 +70,17 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
 
     private void onSetView() {
         String[] city = new String[]{
-                "Kota Malang",
-                "Kabupaten Malang",
-                "Kota Batu"
+                "DKI Jakarta",
+                "Jawa Barat",
+                "Jawa Tengah",
+                "DI Yogyakarta",
+                "Jawa Timur"
         };
         spinnerArrayAdapter = new ArrayAdapter<String>(EditProfileBoard.this, R.layout.spinner_item, city);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCity.setAdapter(spinnerArrayAdapter);
+        spProv.setAdapter(spinnerArrayAdapter);
 
-        dbRef.child("User").addValueEventListener(new ValueEventListener() {
+        dbRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -79,8 +90,8 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
                         etEmail.setText(map.get("email"));
                         etPhone.setText(map.get("phone"));
                         location = map.get("location").split(", ");
-                        spCity.setSelection(getIndex(spCity, location[1]));
-                        spSub.setSelection(getIndex(spSub, location[0]));
+                        spProv.setSelection(getIndex(spProv, location[1]));
+                        spCity.setSelection(getIndex(spCity, location[0]));
                     }
                 }
             }
@@ -105,17 +116,17 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
     }
 
     private void setSpinner() {
-        adapterKota = new ArrayAdapter<>(EditProfileBoard.this, R.layout.spinner_item, listKota);
-        adapterKota.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSub.setAdapter(adapterKota);
+        adapterProv = new ArrayAdapter<>(EditProfileBoard.this, R.layout.spinner_item, listProv);
+        adapterProv.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCity.setAdapter(adapterProv);
 
-        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spProv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                listKota.clear();
-                listKota.addAll(Arrays.asList(arKota[pos]));
-                adapterKota.notifyDataSetChanged();
-                spSub.setSelection(0);
+                listProv.clear();
+                listProv.addAll(Arrays.asList(arProv[pos]));
+                adapterProv.notifyDataSetChanged();
+                spCity.setSelection(0);
             }
 
             @Override
@@ -129,8 +140,8 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
         etNama = (EditText) findViewById(R.id.etName);
         etEmail = (EditText) findViewById(R.id.etEmail);
         etPhone = (EditText) findViewById(R.id.etPhone);
+        spProv = (Spinner) findViewById(R.id.spProvinsi);
         spCity = (Spinner) findViewById(R.id.spKota);
-        spSub = (Spinner) findViewById(R.id.spKecamatan);
         etPassword = (EditText) findViewById(R.id.etPassword);
         etRePassword = (EditText) findViewById(R.id.etRePassword);
         btnSave = (Button) findViewById(R.id.btnSaveProfile);
@@ -150,17 +161,17 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
             dbRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                    for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        final Map<String, String> map = (Map<String, String>) snapshot.getValue();
                         if (map.get("username").equals(MainActivity.getUserLogin())) {
                             String name = etNama.getText().toString();
                             String email = etEmail.getText().toString();
-                            String phone = etPhone.getText().toString();
-                            String location = spSub.getSelectedItem().toString() + ", " + spCity.getSelectedItem().toString();
+                            final String phone = etPhone.getText().toString();
+                            final String location = spCity.getSelectedItem().toString() + ", " + spProv.getSelectedItem().toString();
                             String password = etPassword.getText().toString();
                             String rePassword = etRePassword.getText().toString();
 
-                            UserRegistration user = new UserRegistration();
+                            final UserRegistration user = new UserRegistration();
                             if (password.equals("")) {
                                 user.setUsername(MainActivity.getUserLogin());
                                 user.setName(name);
@@ -171,6 +182,92 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
                                 user.setPict(map.get("pict"));
                                 user.setToken(map.get("token"));
                                 dbRef.child("User").child(snapshot.getKey()).setValue(user);
+                                dbRef.child("Barang").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                            if(map.get("username").equals(MainActivity.getUserLogin())){
+                                                Barang barang = new Barang();
+                                                barang.setUsername(map.get("username"));
+                                                barang.setProductname(map.get("productname"));
+                                                barang.setPrice(map.get("price"));
+                                                barang.setDescription(map.get("description"));
+                                                barang.setImg(map.get("img"));
+                                                barang.setPhone(phone);
+                                                barang.setLocation(location);
+                                                barang.setCategory(map.get("category"));
+                                                barang.setType(map.get("type"));
+                                                barang.setDate(map.get("date"));
+                                                dbRef.child("Barang").child(snapshot.getKey()).setValue(barang);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                dbRef.child("Booking").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                            if(map.get("buyer").equals(MainActivity.getUserLogin())){
+                                                Booking booking = new Booking();
+                                                booking.setProduct_name(map.get("product_name"));
+                                                booking.setTotal(map.get("total"));
+                                                booking.setCategory(map.get("category"));
+                                                booking.setStart_date(map.get("start_date"));
+                                                booking.setEnd_date(map.get("end_date"));
+                                                booking.setPrice(map.get("price"));
+                                                booking.setTime(map.get("time"));
+                                                booking.setTgl_booking(map.get("tgl_booking"));
+                                                booking.setBuyer(map.get("buyer"));
+                                                booking.setBuyer_phone(phone);
+                                                booking.setBuyer_location(location);
+                                                booking.setRenter_token(map.get("renter_token"));
+                                                booking.setSeller(map.get("seller"));
+                                                booking.setSeller_phone(map.get("seller_phone"));
+                                                booking.setSeller_location(map.get("seller_location"));
+                                                booking.setOwner_token(map.get("owner_token"));
+                                                booking.setImg(map.get("img"));
+                                                booking.setStatus(map.get("status"));
+                                                booking.setReason(map.get("reason"));
+                                                dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                            }
+                                            if(map.get("seller").equals(MainActivity.getUserLogin())){
+                                                Booking booking = new Booking();
+                                                booking.setProduct_name(map.get("product_name"));
+                                                booking.setTotal(map.get("total"));
+                                                booking.setCategory(map.get("category"));
+                                                booking.setStart_date(map.get("start_date"));
+                                                booking.setEnd_date(map.get("end_date"));
+                                                booking.setPrice(map.get("price"));
+                                                booking.setTime(map.get("time"));
+                                                booking.setTgl_booking(map.get("tgl_booking"));
+                                                booking.setBuyer(map.get("buyer"));
+                                                booking.setBuyer_phone(map.get("buyer_phone"));
+                                                booking.setBuyer_location(map.get("buyer_location"));
+                                                booking.setRenter_token(map.get("renter_token"));
+                                                booking.setSeller(map.get("seller"));
+                                                booking.setSeller_phone(phone);
+                                                booking.setSeller_location(location);
+                                                booking.setOwner_token(map.get("owner_token"));
+                                                booking.setImg(map.get("img"));
+                                                booking.setStatus(map.get("status"));
+                                                booking.setReason(map.get("reason"));
+                                                dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                                 finish();
                             } else {
                                 if (password.length() < 6) {
@@ -190,8 +287,105 @@ public class EditProfileBoard extends AppCompatActivity implements View.OnClickL
                                     user.setPassword(Base64.encodeToString(password.getBytes(), Base64.DEFAULT));
                                     user.setPict(map.get("pict"));
                                     user.setToken(map.get("token"));
-                                    dbRef.child("User").child(snapshot.getKey()).setValue(user);
-                                    finish();
+                                    FirebaseUser userAuth = FirebaseAuth.getInstance().getCurrentUser();
+                                    userAuth.updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                dbRef.child("User").child(snapshot.getKey()).setValue(user);
+                                                dbRef.child("Barang").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                                            if(map.get("username").equals(MainActivity.getUserLogin())){
+                                                                Barang barang = new Barang();
+                                                                barang.setUsername(map.get("username"));
+                                                                barang.setProductname(map.get("productname"));
+                                                                barang.setPrice(map.get("price"));
+                                                                barang.setDescription(map.get("description"));
+                                                                barang.setImg(map.get("img"));
+                                                                barang.setPhone(phone);
+                                                                barang.setLocation(location);
+                                                                barang.setCategory(map.get("category"));
+                                                                barang.setType(map.get("type"));
+                                                                barang.setDate(map.get("date"));
+                                                                dbRef.child("Barang").child(snapshot.getKey()).setValue(barang);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                                dbRef.child("Booking").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                            Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                                                            if(map.get("buyer").equals(MainActivity.getUserLogin())){
+                                                                Booking booking = new Booking();
+                                                                booking.setProduct_name(map.get("product_name"));
+                                                                booking.setTotal(map.get("total"));
+                                                                booking.setCategory(map.get("category"));
+                                                                booking.setStart_date(map.get("start_date"));
+                                                                booking.setEnd_date(map.get("end_date"));
+                                                                booking.setPrice(map.get("price"));
+                                                                booking.setTime(map.get("time"));
+                                                                booking.setTgl_booking(map.get("tgl_booking"));
+                                                                booking.setBuyer(map.get("buyer"));
+                                                                booking.setBuyer_phone(phone);
+                                                                booking.setBuyer_location(location);
+                                                                booking.setRenter_token(map.get("renter_token"));
+                                                                booking.setSeller(map.get("seller"));
+                                                                booking.setSeller_phone(map.get("seller_phone"));
+                                                                booking.setSeller_location(map.get("seller_location"));
+                                                                booking.setOwner_token(map.get("owner_token"));
+                                                                booking.setImg(map.get("img"));
+                                                                booking.setStatus(map.get("status"));
+                                                                booking.setReason(map.get("reason"));
+                                                                dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                                            }
+                                                            if(map.get("seller").equals(MainActivity.getUserLogin())){
+                                                                Booking booking = new Booking();
+                                                                booking.setProduct_name(map.get("product_name"));
+                                                                booking.setTotal(map.get("total"));
+                                                                booking.setCategory(map.get("category"));
+                                                                booking.setStart_date(map.get("start_date"));
+                                                                booking.setEnd_date(map.get("end_date"));
+                                                                booking.setPrice(map.get("price"));
+                                                                booking.setTime(map.get("time"));
+                                                                booking.setTgl_booking(map.get("tgl_booking"));
+                                                                booking.setBuyer(map.get("buyer"));
+                                                                booking.setBuyer_phone(map.get("buyer_phone"));
+                                                                booking.setBuyer_location(map.get("buyer_location"));
+                                                                booking.setRenter_token(map.get("renter_token"));
+                                                                booking.setSeller(map.get("seller"));
+                                                                booking.setSeller_phone(phone);
+                                                                booking.setSeller_location(location);
+                                                                booking.setOwner_token(map.get("owner_token"));
+                                                                booking.setImg(map.get("img"));
+                                                                booking.setStatus(map.get("status"));
+                                                                booking.setReason(map.get("reason"));
+                                                                dbRef.child("Booking").child(snapshot.getKey()).setValue(booking);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                                finish();
+                                            } else {
+                                                Toast.makeText(EditProfileBoard.this, "Failed to update password: " + task.getException() , Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
                                 }
                             }
                         }

@@ -174,7 +174,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="City"
+                    android:text="Province"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="#fff" />
 
@@ -183,7 +183,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Subdistrict"
+                    android:text="City"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="#fff" />
             </LinearLayout>
@@ -198,14 +198,14 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/spKota"
+                    android:id="@+id/spProvinsi"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@android:color/white" />
 
                 <Spinner
-                    android:id="@+id/spKecamatan"
+                    android:id="@+id/spKota"
                     android:layout_width="0dp"
 
                     android:layout_height="wrap_content"

@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Map;
 
 import id.sch.smktelkom_mlg.projectwork.negosio.adapter.ProductAdapter;
+import id.sch.smktelkom_mlg.projectwork.negosio.board.AboutBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.ProfileBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.board.SewaBoard;
 import id.sch.smktelkom_mlg.projectwork.negosio.manager.AppController;
@@ -159,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(getIntent());
                         break;
                     case R.id.nav_setting:
-                        displayView(R.string.ClassSetting);
+//                        displayView(R.string.ClassSetting);
+                        startActivity(new Intent(MainActivity.this, AboutBoard.class));
                         break;
                 }
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
