@@ -105,7 +105,7 @@ public class BuyAdapter extends RecyclerView.Adapter<BuyAdapter.ViewHolder>{
         dialog_llReason = (LinearLayout) dialogDetail.findViewById(R.id.llReason);
 
         dialog_btnYes = (Button) dialogComplete.findViewById(R.id.btnYes);
-        dialog_tvCancel = (TextView) dialogComplete.findViewById(R.id.tvCancel);
+        dialog_tvCancel = (TextView) dialogComplete.findViewById(R.id.tvBack);
     }
 
     @Override
